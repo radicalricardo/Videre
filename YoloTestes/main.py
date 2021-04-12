@@ -4,7 +4,7 @@ import time
 
 # Comenta e descomenta o dataset desejado
 # net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # Melhor Performance, Pior resultado
-net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg") # Pior Performance, Melhor resultado
+net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights") # Pior Performance, Melhor resultado
 
 # https://pjreddie.com/media/files/yolov3-spp.weights site oficial do ficheiro do yolov3.weights
 
@@ -28,8 +28,10 @@ frame_id = 0
 while True:
     _, frame = imagem.read()  # Capta imagem OpenCV
     frame_id += 1
-    altura, comprimento, channels = frame.shape
-    blob = cv2.dnn.blobFromImage(frame, 0.00392, (320, 320), (0, 0, 0), True, crop=False)  # cria blob da imagem
+    altura = frame.shape[0]
+    comprimento = frame.shape[1]
+
+    blob = cv2.dnn.blobFromImage(frame, 1/255, (320, 320), [0, 0, 0], True, crop=False)  # cria blob da imagem
     # 320x320 com Yolo normal, 1~2 fps
     # 128x128 com Yolo Normal a 5~6 fps
     # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 20 centimetos pode ser muito dificil de detetar
@@ -48,7 +50,7 @@ while True:
             class_id = np.argmax(pontuacoes)
             certeza = pontuacoes[class_id]
 
-            if certeza > 0.3:
+            if certeza > 0.5:
                 # Otem posição (eu não percebo a magia negra que o net.forward faz, mas as posições das coisas estão ai)
                 centroX = int(ObjetosApanhados[0] * comprimento)
                 centroY = int(ObjetosApanhados[1] * altura)
@@ -61,14 +63,18 @@ while True:
                 confidences.append(float(certeza))
                 class_ids.append(class_id)
 
-    indexes = cv2.dnn.NMSBoxes(caixas, confidences, 0.4, 0.6)
+    indexes = cv2.dnn.NMSBoxes(caixas, confidences, 0.5, 0.4)
 
-    for i in range(len(caixas)):
-        if i in indexes:
-            x, y, w, h = caixas[i]
-            label = str(classes[class_ids[i]])
-            cv2.rectangle(frame, (x, y), (x + w, y + h), CoresCaixas[class_ids[i]], 2)
-            cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y + 30), font, 1, (0, 0, 0), 2)
+    for i in indexes:
+        i = i[0]
+        caixa = caixas[i]
+        x = caixa[0]
+        y = caixa[1]
+        w = caixa[2]
+        h = caixa[3]
+        label = str(classes[class_ids[i]])
+        cv2.rectangle(frame, (x, y), (x + w, y + h), CoresCaixas[class_ids[i]], 2)
+        cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y + 30), font, 1, (0, 0, 0), 2)
 
     # FrameRate
     tempo_passado = time.time() - tempo_inicial

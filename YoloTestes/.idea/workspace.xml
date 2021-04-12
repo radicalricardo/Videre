@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="065fb1f8-d9cc-4511-b262-0d07b7a2b9f1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yolov3.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/yolov3.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,22 +88,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="513" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1618093444121" />
-    <state width="1515" height="210" key="GridCell.Tab.0.bottom" timestamp="1618250003502">
+    <state width="1515" height="210" key="GridCell.Tab.0.bottom" timestamp="1618264562397">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1618250003502" />
-    <state width="1515" height="210" key="GridCell.Tab.0.center" timestamp="1618250003502">
+    <state width="1515" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1618264562397" />
+    <state width="1515" height="210" key="GridCell.Tab.0.center" timestamp="1618264562397">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1618250003502" />
-    <state width="1515" height="210" key="GridCell.Tab.0.left" timestamp="1618250003502">
+    <state width="1515" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1618264562397" />
+    <state width="1515" height="210" key="GridCell.Tab.0.left" timestamp="1618264562397">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1618250003502" />
-    <state width="1515" height="210" key="GridCell.Tab.0.right" timestamp="1618250003502">
+    <state width="1515" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1618264562397" />
+    <state width="1515" height="210" key="GridCell.Tab.0.right" timestamp="1618264562397">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1618250003502" />
+    <state width="1515" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1618264562397" />
     <state x="603" y="514" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1618093400649">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
