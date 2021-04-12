@@ -4,7 +4,8 @@ from flask import Flask, render_template, Response
 import cv2
 
 app = Flask(__name__)
-imagem = cv2.VideoCapture(0)
+if os.environ.get('WERKZEUG_RUN_MAIN') or Flask.debug is False:
+    imagem = cv2.VideoCapture(-1)
 
 carasDados = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
