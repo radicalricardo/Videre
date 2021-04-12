@@ -27,7 +27,7 @@ frame_id = 0
 
 while True:
     ativo, frame = imagem.read()  # Capta imagem OpenCV
-    if ativo: # Se for falso é porque deixou de receber imagem
+    if not ativo: # Se for falso é porque deixou de receber imagem
         break
     frame_id += 1
     altura = frame.shape[0]
