@@ -6,6 +6,8 @@ import time
 # net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # Melhor Performance, Pior resultado
 net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg") # Pior Performance, Melhor resultado
 
+# https://pjreddie.com/media/files/yolov3-spp.weights site oficial do ficheiro do yolov3.weights
+
 classes = []  # Classes de noms dos objetos
 with open("coco.names", "r") as f:  # Coco dataset é o dataset do yolo que contem os mais de 40 objetos
     classes = [line.strip() for line in f.readlines()]
@@ -27,7 +29,7 @@ while True:
     _, frame = imagem.read()  # Capta imagem OpenCV
     frame_id += 1
     altura, comprimento, channels = frame.shape
-    blob = cv2.dnn.blobFromImage(frame, 0.00392, (128, 128), (0, 0, 0), True, crop=False)  # cria blob da imagem a 128x128
+    blob = cv2.dnn.blobFromImage(frame, 0.00392, (320, 320), (0, 0, 0), True, crop=False)  # cria blob da imagem
     # 320x320 com Yolo normal, 1~2 fps
     # 128x128 com Yolo Normal a 5~6 fps
     # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 20 centimetos pode ser muito dificil de detetar
