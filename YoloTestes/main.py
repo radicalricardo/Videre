@@ -26,15 +26,17 @@ tempo_inicial = time.time()
 frame_id = 0
 
 while True:
-    _, frame = imagem.read()  # Capta imagem OpenCV
+    ativo, frame = imagem.read()  # Capta imagem OpenCV
+    if ativo: # Se for falso é porque deixou de receber imagem
+        break
     frame_id += 1
     altura = frame.shape[0]
     comprimento = frame.shape[1]
 
     blob = cv2.dnn.blobFromImage(frame, 1/255, (320, 320), [0, 0, 0], True, crop=False)  # cria blob da imagem
-    # 320x320 com Yolo normal, 1~2 fps
-    # 128x128 com Yolo Normal a 5~6 fps
-    # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 20 centimetos pode ser muito dificil de detetar
+    # 320x320 com Yolo normal, 1~2 fps (Fica possivel detetar objetos pelo menos dentro de 3 metros)
+    # 128x128 com Yolo Normal a 5~6 fps (Menos de 1 metro)
+    # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 15 centimetos pode ser muito dificil de detetar
     # Redução da resolução tem claro aumento desempenho, no Yolo Tiny a superior a 30fps a 128x128
     # Resultados com i5-8300H a 4.0 GHz, prolongamento de tempo verificou-se a 40 Watts
 
