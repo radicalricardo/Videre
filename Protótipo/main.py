@@ -2,12 +2,15 @@ import time
 from flask import Flask, render_template, Response
 import cv2
 import numpy as np
+from googletrans import Translator
 
 app = Flask(__name__)
 imagem = cv2.VideoCapture(0)
+tradutor = Translator()
 
 # Prepara Yolo
 net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")
+# net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # tiny yolo
 classes = []  # Classes de noms dos objetos
 with open("coco.names", "r") as f:  # Coco dataset é o dataset do yolo que contem os mais de 40 objetos
     classes = [line.strip() for line in f.readlines()]
@@ -22,8 +25,7 @@ def obtemFrames():
 
         altura = frame.shape[0]
         comprimento = frame.shape[1]
-
-        blob = cv2.dnn.blobFromImage(frame, 1 / 255, (320, 320), [0, 0, 0], True, crop=False)
+        blob = cv2.dnn.blobFromImage(frame, 1 / 255, (128, 128), [0, 0, 0], True, crop=False)
         net.setInput(blob)
         processados = net.forward(outputlayers)
 
@@ -58,7 +60,7 @@ def obtemFrames():
             y = caixa[1]
             w = caixa[2]
             h = caixa[3]
-            label = str(classes[class_ids[i]])
+            label = tradutor.translate(str(classes[class_ids[i]]), src='en', dest='pt').text
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
                         (0, 0, 0), 2)
@@ -80,4 +82,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
