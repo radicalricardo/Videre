@@ -76,7 +76,7 @@ while True:
         h = caixa[3]
         label = str(classes[class_ids[i]])
         cv2.rectangle(frame, (x, y), (x + w, y + h), CoresCaixas[class_ids[i]], 2)
-        cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y + 30), font, 1, (0, 0, 0), 2)
+        cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), font, 1, (0, 0, 0), 2)
 
     # FrameRate
     tempo_passado = time.time() - tempo_inicial
