@@ -6,7 +6,10 @@ import time
 # net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # Melhor Performance, Pior resultado
 net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights") # Pior Performance, Melhor resultado
 
-# https://pjreddie.com/media/files/yolov3-spp.weights site oficial do ficheiro do yolov3.weights
+# Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas 
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+# https://pjreddie.com/media/files/yolov3.weights site oficial do ficheiro do yolov3.weights
 
 classes = []  # Classes de noms dos objetos
 with open("coco.names", "r") as f:  # Coco dataset é o dataset do yolo que contem os mais de 40 objetos
@@ -21,19 +24,17 @@ CoresCaixas = np.random.uniform(0, 255, size=(len(classes), 3)) # faz uma cor al
 imagem = cv2.VideoCapture(0)  # Obtem imagem webcam
 font = cv2.FONT_HERSHEY_PLAIN
 
-# Util para determinar framerate
-tempo_inicial = time.time()
-frame_id = 0
-
 while True:
+    tempo_incial = time.time() 
+
     ativo, frame = imagem.read()  # Capta imagem OpenCV
     if not ativo: # Se for falso é porque deixou de receber imagem
         break
-    frame_id += 1
+
     altura = frame.shape[0]
     comprimento = frame.shape[1]
 
-    blob = cv2.dnn.blobFromImage(frame, 1/255, (320, 320), [0, 0, 0], True, crop=False)  # cria blob da imagem
+    blob = cv2.dnn.blobFromImage(frame, 1/255, (128, 128), [0, 0, 0], True, crop=False)  # cria blob da imagem
     # 320x320 com Yolo normal, 1~2 fps (Fica possivel detetar objetos pelo menos dentro de 3 metros)
     # 128x128 com Yolo Normal a 5~6 fps (Menos de 1 metro)
     # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 15 centimetos pode ser muito dificil de detetar
@@ -79,8 +80,9 @@ while True:
         cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), font, 1, (0, 0, 0), 2)
 
     # FrameRate
-    tempo_passado = time.time() - tempo_inicial
-    cv2.putText(frame, "FPS:" + str(round(frame_id / tempo_passado, 2)), (10, 50), font, 2, (0, 0, 0), 1)
+    fps = str(round(1.0 / (time.time() - tempo_incial)))
+    cv2.putText(frame, "FPS:" + fps, (10, 50), font, 2, (0, 0, 0), 1)
+
     cv2.imshow("JANELA", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação (é preciso carregar 50 vezes no Q porque sim)
