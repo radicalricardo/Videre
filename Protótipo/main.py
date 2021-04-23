@@ -1,14 +1,15 @@
-import time
-from flask import Flask, render_template, Response
 import cv2
 import numpy as np
+from flask import Flask, render_template, Response
 
 app = Flask(__name__)
+
 imagem = cv2.VideoCapture(0)
+# imagem = cv2.imread('imagem.png', 0)
 
 # Prepara Yolo
-# net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")
-net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # tiny yolo
+net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")
+# net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")  # tiny yolo
 classes = []  # Classes de noms dos objetos
 with open("coco.names", "r") as f:  # Coco dataset é o dataset do yolo que contem os mais de 40 objetos
     classes = [line.strip() for line in f.readlines()]
@@ -19,6 +20,7 @@ outputlayers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 def obtemFrames():
     while True:
         ativo, frame = imagem.read()
+
         if not ativo: break
 
         altura = frame.shape[0]
@@ -67,6 +69,11 @@ def obtemFrames():
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'  # ????? mas funciona
+        if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação (é preciso carregar 50 vezes no Q porque sim)
+            break
+
+    cv2.destroyAllWindows()
+    imagem.release()
 
 
 @app.route('/video_feed')
@@ -77,6 +84,8 @@ def video_feed():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
 
 
 if __name__ == "__main__":
