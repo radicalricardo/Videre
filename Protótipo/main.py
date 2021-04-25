@@ -1,10 +1,14 @@
 import cv2
 import numpy as np
 from flask import Flask, render_template, Response
+from flask import Flask, session
+
+import utilizador
 
 app = Flask(__name__)
+app.secret_key = "senha"
 
-imagem = cv2.VideoCapture(0)
+# imagem = cv2.VideoCapture(0)
 # imagem = cv2.imread('imagem.png', 0)
 
 # Prepara Yolo
@@ -17,7 +21,7 @@ layer_names = net.getLayerNames()
 outputlayers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 
-def obtemFrames():
+def obtemFrames(imagem):
     while True:
         ativo, frame = imagem.read()
 
@@ -76,16 +80,23 @@ def obtemFrames():
     imagem.release()
 
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(obtemFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed<string:nome>')
+def video_feed(nome):
+    if nome in session:
+        return Response(obtemFrames(utilizador.obtemUser(nome).camara), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/login<string:nome>')
+def login(nome):
+    session[nome] = "Admin"
+    u = utilizador.Utilizador(nome)
+    utilizador.lista.append(u)
+    return "Ligou"
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
 
 
 if __name__ == "__main__":
