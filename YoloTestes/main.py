@@ -54,7 +54,7 @@ class Camara:
             altura = frame.shape[0]
             comprimento = frame.shape[1]
 
-            blob = cv2.dnn.blobFromImage(frame, 1 / 255, (128, 128), [0, 0, 0], True, crop=False)  # cria blob da imagem
+            blob = cv2.dnn.blobFromImage(frame, 1 / 255, (320, 320), [0, 0, 0], True, crop=False)  # cria blob da imagem
             # 320x320 com Yolo normal, 1~2 fps (Fica possivel detetar objetos pelo menos dentro de 3 metros)
             # 128x128 com Yolo Normal a 5~6 fps (Menos de 1 metro)
             # 68x68 com Yolo Normal a 15 fps (Objetos a mais de 15 centimetos pode ser muito dificil de detetar
@@ -111,7 +111,7 @@ class Camara:
                 break
 
 
-for i in range(0, 2):
+for i in range(0, 10):
     c = Camara(i, 0)
     threading.Thread(target=c.transmite).start()
 
