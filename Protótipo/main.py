@@ -22,7 +22,7 @@ def video_feed(nome):
 def login(nome):
     session[nome] = "Admin"
     print(nome)
-    id = int(time.time())
+    id = int(round(time.time() * 1000))
     u = utilizador.Utilizador(nome, id)
     utilizador.UTILIZADORES_ATIVOS.append(u)
     return "Ligou"
