@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from flask import Flask, render_template, Response
 from flask import Flask, session
-
+import time
 import utilizador
 
 app = Flask(__name__)
@@ -22,7 +22,8 @@ def video_feed(nome):
 def login(nome):
     session[nome] = "Admin"
     print(nome)
-    u = utilizador.Utilizador(nome, 0)
+    id = int(time.time())
+    u = utilizador.Utilizador(nome, id)
     utilizador.UTILIZADORES_ATIVOS.append(u)
     return "Ligou"
 
