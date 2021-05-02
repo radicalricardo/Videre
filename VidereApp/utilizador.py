@@ -36,9 +36,13 @@ class Camara:
         self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
         self.framecurrente = None
 
-        # Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas
-        self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-        self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
+        if cv2.cuda.getCudaEnabledDeviceCount() > 0:
+            self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+            self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        else:
+            self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_DEFAULT)
+            self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     def terminaVideo(self):
         pass
