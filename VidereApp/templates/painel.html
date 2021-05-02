@@ -36,7 +36,7 @@
         <div class="container" style="padding-top: 2%;">
 
             {% for i in vds_id %}
-                 <img src="tb{{ i.id }}" width="100px" height="100px">
+                <img id="tumb" src="tb{{ i.id }}">
                 <p>Link Video = <a href="vd{{ i.id }}" >vd{{ i.id }}</a></p>
             {% endfor %}
             <form method="post">

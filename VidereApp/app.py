@@ -1,4 +1,6 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, session
+import io
+
+from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file
 import utilizador
 
 app = Flask(__name__)
@@ -62,9 +64,8 @@ def transmitirImagem(feed):
 def transmitirTumbNail(feed):
     if "user" in session:
         tb = utilizador.obtemUser(session["user"], feed).obtemTumbnail()
-        print(tb)
-        if tb is None:
-            return "/static/img/eye.png"
+        if tb is None: # Se não houver frames disponiveis, retorna uma imagem comum de loading
+            return redirect(url_for('static', filename='img/eyetumb.png'))
         else:
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:

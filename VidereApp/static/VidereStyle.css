@@ -34,3 +34,9 @@ left: 50%;
 body{
     background-color: rgba(226,230,234,1);
 }
+
+#tumb{
+    border-radius: 48px;
+    width: 300px;
+    height 300px;
+}
