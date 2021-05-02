@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+    <title>Videre</title>
+</head>
+<body>
+    <div class="container" style="padding-top: 2%;">
+        <form id="caixaDeLogin" method="post">
+            <div class="form-group">
+                <img src="static/img/eye.png" id="logo">
+                <h2 class="text-center">Login</h2>
+                <label>Utilizador</label> <br>
+                <input name="userNome" type="text" class="form-control">
+                <br>
+                <label>Senha</label> <br>
+                <input name="userSenha" type="password" class="form-control">
+                <br>
+
+                 <p><input type="submit" value="Entrar"></p>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -31,8 +31,9 @@ font = cv2.FONT_HERSHEY_PLAIN
 class Camara:
     def __init__(self, id_c, lnk):
         self.id = id_c
-        self.imagem = cv2.VideoCapture(lnk)
+        self.imagem = cv2.VideoCapture(0, lnk)
         self.net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")  # Pior Performance, Melhor resultado
+        self.frameatual = None
 
         # Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas
         self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -105,14 +106,21 @@ class Camara:
             fps = str(round(1.0 / (time.time() - tempo_incial)))
             cv2.putText(frame, "FPS:" + fps, (10, 50), font, 2, (0, 0, 0), 1)
 
-            cv2.imshow("JANELA" + str(self.id), frame)
+            self.frameatual = frame
+            cv2.imshow("JANELA" + str(self.id), self.frameatual)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação (é preciso carregar 50 vezes no Q porque sim)
                 break
 
 
-for i in range(0, 10):
+listac = []
+for i in range(0, 1):
     c = Camara(i, 0)
+    listac.append(c)
     threading.Thread(target=c.transmite).start()
+
+
+while True:
+    print(c.frameatual)
 
 # cv2.destroyAllWindows()

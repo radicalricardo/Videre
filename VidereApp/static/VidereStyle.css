@@ -1,0 +1,36 @@
+#caixaDeLogin {
+	color: white;
+
+	/*Centra */
+	left: 50%;
+	transform: translate(-50%, 0);
+
+	position: fixed;
+
+	width: 550px;
+    margin: 100px auto;
+	font-size: 15px;
+	margin-bottom: 15px;
+	background-color: rgba(0, 123, 255, 0.61);
+	border-radius: 10px;
+	padding: 80px;
+
+    filter: drop-shadow(0px 8px 6px rgba(39, 61, 82, 0.161));
+	padding-bottom: 2%;
+}
+
+#logo{
+left: 50%;
+	transform: translate(-50%, 0);
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+    position: absolute;
+    width: 227px;
+    height: 138px;
+    top: -67px;
+
+    overflow: visible;
+}
+
+body{
+    background-color: rgba(226,230,234,1);
+}

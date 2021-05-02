@@ -1,37 +1,62 @@
 import threading
+import uuid
 import cv2
 import numpy as np
 import dataset
 
-UTILIZADORES_ATIVOS = []
+UTILIZADORES_ATIVOS = []  # Lista de mantem todos os utilizadores em processo no servidor (simula BD de momento)
 
 
-def obtemUser(nome):
+# Uso de testes apenas, extremamente lento em uso de mundo real
+def obtemUser(nome, vid):  # Função temporaria para obter um utilizador com camara em processo com id do video
     for i in UTILIZADORES_ATIVOS:
         if i.id == nome:
-            return i
+            for n in i.videos:
+                if n.id == vid:
+                    return n
 
 
 class Utilizador:
-    def __init__(self, id_c, lnk):
-        self.id = id_c
-        self.imagem = cv2.VideoCapture(lnk)
-        self.net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")
+    def __init__(self, id_u):
+        self.id = id_u
+        self.videos = []
+        self.indexv = 0
+
+    def iniciaVideo(self, lnk):
+        vd = Camara(self.indexv, lnk)
+        self.indexv = self.indexv + 1
+        self.videos.append(vd)
+        threading.Thread(target=vd.processa).start()
+
+
+class Camara:
+    def __init__(self, indexv, lnk):
+        self.id = str(uuid.uuid1()).replace("-", "")
+        self.imagem = cv2.VideoCapture(indexv, lnk)
+        self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
+        self.framecurrente = None
 
         # Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas
         self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
         self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
+    def terminaVideo(self):
+        pass
+
+    def obtemFrame(self):
+        while True:
+            yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
+
+    def obtemTumbnail(self):
+        if self.framecurrente is None:
+            return None
+        else:
+            return b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
+
     def __del__(self):
         self.imagem.release()
 
-    def terminaProcesso(self):
-        pass
-
-    def criaProcesso(self):
-        threading.Thread(target=self.transmite).start()
-
-    def transmite(self):
+    def processa(self):
         while True:
             ativo, frame = self.imagem.read()
 
@@ -85,7 +110,8 @@ class Utilizador:
             # Converte para jpg
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-            yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'  # ????? mas funciona
+            # yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'  # ????? mas funciona
+            self.framecurrente = frame
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação (é preciso carregar 50 vezes no Q porque sim)
+            if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação
                 break

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+    <title>Painel Videre</title>
+</head>
+<body>
+    <!-- Barra de navegação -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a id="bnt_cmrs" class="nav-link active">Câmaras</a>
+                </li>
+
+                <li class="nav-item">
+                    <a id="bnt_grl" class="nav-link">Galeria</a>
+                </li>
+                <li class="nav-item">
+                    <a id="bnt_desligar" class="nav-link" href="{{url_for('desligar')}}">Sair</a>
+                </li>
+              </ul>
+
+            </div>
+        </nav>
+
+    <section>
+        <div class="container" style="padding-top: 2%;">
+
+            {% for i in vds_id %}
+                 <img src="tb{{ i.id }}" width="100px" height="100px">
+                <p>Link Video = <a href="vd{{ i.id }}" >vd{{ i.id }}</a></p>
+            {% endfor %}
+            <form method="post">
+            <input type="submit" name="novacmr" value="Nova Camara">
+            </form>
+        </div>
+
+
+    </section>
+</body>
+</html>
