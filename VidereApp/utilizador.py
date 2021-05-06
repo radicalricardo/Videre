@@ -1,3 +1,4 @@
+import random
 import threading
 import uuid
 import cv2
@@ -20,19 +21,18 @@ class Utilizador:
     def __init__(self, id_u):
         self.id = id_u
         self.videos = []
-        self.indexv = 0
 
     def iniciaVideo(self, lnk):
-        vd = Camara(self.indexv, lnk)
-        self.indexv = self.indexv + 1
+        vd = Camara(lnk)
         self.videos.append(vd)
         threading.Thread(target=vd.processa).start()
+        # threading.Thread(target=corre).start()
 
 
 class Camara:
-    def __init__(self, indexv, lnk):
+    def __init__(self, lnk):
         self.id = str(uuid.uuid1()).replace("-", "")
-        self.imagem = cv2.VideoCapture(indexv, lnk)
+        self.imagem = cv2.VideoCapture(0, lnk)
         self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
         self.framecurrente = None
 
@@ -63,7 +63,6 @@ class Camara:
     def processa(self):
         while True:
             ativo, frame = self.imagem.read()
-
             if not ativo: break
 
             layer_names = self.net.getLayerNames()
@@ -114,8 +113,4 @@ class Camara:
             # Converte para jpg
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-            # yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'  # ????? mas funciona
             self.framecurrente = frame
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # Termina aplicação
-                break

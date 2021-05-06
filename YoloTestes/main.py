@@ -31,7 +31,7 @@ font = cv2.FONT_HERSHEY_PLAIN
 class Camara:
     def __init__(self, id_c, lnk):
         self.id = id_c
-        self.imagem = cv2.VideoCapture(0, lnk)
+        self.imagem = cv2.VideoCapture(id_c, lnk)
         self.net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")  # Pior Performance, Melhor resultado
         self.frameatual = None
 
@@ -114,7 +114,7 @@ class Camara:
 
 
 listac = []
-for i in range(0, 1):
+for i in range(0, 3):
     c = Camara(i, 0)
     listac.append(c)
     threading.Thread(target=c.transmite).start()

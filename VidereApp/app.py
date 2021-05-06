@@ -20,7 +20,7 @@ def login():
         print(request)
         user = request.form["userNome"]
         session["user"] = user
-
+        print(len(utilizador.UTILIZADORES_ATIVOS))
         # PARA TESTES
         u = utilizador.Utilizador(user)
         utilizador.UTILIZADORES_ATIVOS.append(u)
@@ -64,7 +64,7 @@ def transmitirImagem(feed):
 def transmitirTumbNail(feed):
     if "user" in session:
         tb = utilizador.obtemUser(session["user"], feed).obtemTumbnail()
-        if tb is None: # Se não houver frames disponiveis, retorna uma imagem comum de loading
+        if tb is None:  # Se não houver frames disponiveis, retorna uma imagem comum de loading
             return redirect(url_for('static', filename='img/eyetumb.png'))
         else:
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -75,6 +75,11 @@ def transmitirTumbNail(feed):
 @app.route('/camara')
 def janelaCamara():
     pass
+
+
+@app.route('/sucesso')
+def sucessoPainel():
+    return redirect(url_for("painel"))
 
 
 @app.route('/terminarsessao')
