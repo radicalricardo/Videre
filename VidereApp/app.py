@@ -20,7 +20,7 @@ def login():
         print(request)
         user = request.form["userNome"]
         session["user"] = user
-        print(len(utilizador.UTILIZADORES_ATIVOS))
+
         # PARA TESTES
         u = utilizador.Utilizador(user)
         utilizador.UTILIZADORES_ATIVOS.append(u)

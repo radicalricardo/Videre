@@ -33,17 +33,21 @@
         </nav>
 
     <section>
-        <div class="container" style="padding-top: 2%;">
+       <form method="post">
+                <input type="submit" name="novacmr" value="Nova Camara">
+       </form>
+        <div class="container-fluid d-flex justify-content-center" style="padding-top: 2%;">
+            <div class="row d-flex justify-content-center" id="grelhaPainel">
 
-            {% for i in vds_id %}
-                <img id="tumb" src="tb{{ i.id }}">
-                <p>Link Video = <a href="vd{{ i.id }}" >vd{{ i.id }}</a></p>
-            {% endfor %}
-            <form method="post">
-            <input type="submit" name="novacmr" value="Nova Camara">
-            </form>
+                {% for i in vds_id %}
+                <div class="card cartaCamara">
+                    <img id="tumb" src="tb{{ i.id }}">
+                    <div class="card-body cartaTituloCamara"> <h4 class="card-title">CMR</h4></div>
+                </div>
+                {% endfor %}
+
+            </div>
         </div>
-
 
     </section>
 </body>
