@@ -36,18 +36,18 @@ def painel():
     if "user" not in session:  # Se utilizador não tiver ligado
         return redirect(url_for("login"))
 
+    vds_id = []
     if request.method == "POST":
-        vds_id = []
         if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
             for i in utilizador.UTILIZADORES_ATIVOS:
                 if i.id == session["user"]:
                     i.iniciaVideo(0)
+            return redirect(url_for("painel")) # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
+    elif request.method == "GET":
         for i in utilizador.UTILIZADORES_ATIVOS:
             if i.id == session["user"]:
                 vds_id = i.videos
         return render_template("painel.html", vds_id=vds_id)
-    elif request.method == "GET":
-        return render_template("painel.html")
 
 
 @app.route('/vd<string:feed>')
