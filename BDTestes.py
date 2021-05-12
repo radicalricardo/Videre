@@ -1,6 +1,7 @@
 from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text, create_engine, MetaData, Table, Column, Integer, String, ForeignKey
+import psycopg2
 from sqlalchemy.orm import Session, registry, relationship
 
 engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/Videre', echo=False, future=True)
@@ -95,6 +96,16 @@ def dummyInsert(tabela, values):
         conn.commit()
 
 
-dummyInsert("object", ["mandioca"])
+#dummyInsert("object", ["mandioca"])
 print("-//-")
 dummySelect("object", "*")
+
+drawing = open("poop.jpg", "rb")
+drawingBin = psycopg2.Binary(drawing.read())
+statement = text(r"INSERT INTO FRAMES (frame, timestamp, userid) VALUES (" + str(drawingBin) + ",'1999-01-08 04:05:06', 1)")
+with engine.connect() as conn:
+    conn.execute(statement)
+    conn.commit()
+    result = conn.execute(text(f"select * from frames"))
+    for row in result:
+        print(row)
