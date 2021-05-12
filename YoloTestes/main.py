@@ -99,13 +99,14 @@ class Camara:
                 w = caixa[2]
                 h = caixa[3]
                 label = str(classes[class_ids[i]])
+                print(classes[class_ids[i]] + " " + str(round(confidences[i], 2)))
                 cv2.rectangle(frame, (x, y), (x + w, y + h), CoresCaixas[class_ids[i]], 2)
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), font, 1, (0, 0, 0), 2)
 
             # FrameRate
             fps = str(round(1.0 / (time.time() - tempo_incial)))
             cv2.putText(frame, "FPS:" + fps, (10, 50), font, 2, (0, 0, 0), 1)
-
+            
             self.frameatual = frame
             cv2.imshow("JANELA" + str(self.id), self.frameatual)
 
@@ -114,7 +115,7 @@ class Camara:
 
 
 listac = []
-for i in range(0, 3):
+for i in range(0, 1):
     c = Camara(i, 0)
     listac.append(c)
     threading.Thread(target=c.transmite).start()

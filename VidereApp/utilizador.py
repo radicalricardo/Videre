@@ -1,5 +1,6 @@
 import random
 import threading
+import time
 import uuid
 import cv2
 import numpy as np
@@ -35,6 +36,8 @@ class Camara:
         self.imagem = cv2.VideoCapture(0, lnk)
         self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
         self.framecurrente = None
+        self.tempoInicial = time.time() # Tempo inicial da contagem para guardar a proxima frame da BD
+        self.tempoPassado = 0
 
         # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
         if cv2.cuda.getCudaEnabledDeviceCount() > 0:
@@ -114,3 +117,11 @@ class Camara:
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             self.framecurrente = frame
+
+            # Guarda a imagem na Base Dados
+            if self.tempoPassado > 5:
+                self.tempoInicial = time.time()
+                self.tempoPassado = 0
+                print("GRAVOU NA BD")
+            else:
+                self.tempoPassado = time.time() - self.tempoInicial
