@@ -100,7 +100,7 @@ def dummyInsert(tabela, values):
 print("-//-")
 dummySelect("object", "*")
 
-drawing = open("poop.jpg", "rb")
+drawing = open("photo.jpg", "rb")
 drawingBin = psycopg2.Binary(drawing.read())
 statement = text(r"INSERT INTO FRAMES (frame, timestamp, userid) VALUES (" + str(drawingBin) + ",'1999-01-08 04:05:06', 1)")
 with engine.connect() as conn:
