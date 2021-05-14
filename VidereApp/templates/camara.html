@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
     <meta charset="UTF-8">
     <title>Videre</title>
 </head>
 <body>
-     <h3 class="mt-5">Streaming é o PRESENTE</h3>
-     <img src="vd{{ vds_id }}" width="100%">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8  offset-lg-2">
+            <h3 class="mt-5">Camara Nome</h3>
+            <img src="vd{{ vd_id }}" width="100%">
+        </div>
+
+        <div>
+            <p>Brilho</p>
+            <input type="range" min="1" max="100" value="50" class="slider" id="s1">
+            <br>
+            <p>Contraste</p>
+            <input type="range" min="1" max="100" value="50" class="slider" id="s2">
+        </div>
+    </div>
+</div>
 </body>
 </html>

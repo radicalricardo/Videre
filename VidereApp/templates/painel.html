@@ -33,18 +33,23 @@
         </nav>
 
     <section>
-       <form method="post">
-                <input type="submit" name="novacmr" value="Nova Camara">
-       </form>
+
         <div class="container-fluid d-flex justify-content-center" style="padding-top: 2%;">
             <div class="row d-flex justify-content-center" id="grelhaPainel">
 
                 {% for i in vds_id %}
                 <div class="card cartaCamara">
-                    <img id="tumb" src="tb{{ i.id }}">
-                    <div class="card-body cartaTituloCamara"> <h4 class="card-title">CMR</h4></div>
+                    <img id="tumb" src="tb{{ i.id }}" onclick="window.open('cm{{i.id}}', '_blank');">
+                    <div class="card-body cartaTituloCamara"> <h4 class="card-title">Nome CMR</h4></div>
                 </div>
                 {% endfor %}
+
+                <div class="card cartaCamara">
+                    <form method="post">
+                        <input id="bntnc" type="submit" name="novacmr" value="">
+                        <div class="card-body cartaTituloCamara"> <h4 class="card-title">Nova Câmara</h4></div>
+                    </form>
+                </div>
 
             </div>
         </div>

@@ -33,7 +33,7 @@ class Utilizador:
 class Camara:
     def __init__(self, lnk):
         self.id = str(uuid.uuid1()).replace("-", "")
-        self.imagem = cv2.VideoCapture(0, lnk)
+        self.imagem = cv2.VideoCapture(lnk, 0)
         self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
         self.framecurrente = None
         self.tempoInicial = time.time() # Tempo inicial da contagem para guardar a proxima frame da BD

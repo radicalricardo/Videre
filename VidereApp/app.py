@@ -41,7 +41,7 @@ def painel():
         if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
             for i in utilizador.UTILIZADORES_ATIVOS:
                 if i.id == session["user"]:
-                    i.iniciaVideo(0)
+                    i.iniciaVideo("video.mp4")
             return redirect(url_for("painel")) # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
     elif request.method == "GET":
         for i in utilizador.UTILIZADORES_ATIVOS:
@@ -65,16 +65,16 @@ def transmitirTumbNail(feed):
     if "user" in session:
         tb = utilizador.obtemUser(session["user"], feed).obtemTumbnail()
         if tb is None:  # Se não houver frames disponiveis, retorna uma imagem comum de loading
-            return redirect(url_for('static', filename='img/eyetumb.png'))
+            return redirect(url_for('static', filename='img/eyetumb.gif'))
         else:
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
 
 
-@app.route('/camara')
-def janelaCamara():
-    pass
+@app.route('/cm<string:feed>')
+def janelaCamara(feed):
+    return render_template("camara.html", vd_id=feed)
 
 
 @app.route('/sucesso')
