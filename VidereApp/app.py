@@ -23,8 +23,7 @@ def login():
 
         # PARA TESTES
         u = utilizador.Utilizador(user)
-        utilizador.UTILIZADORES_ATIVOS.append(u)
-        print(utilizador.UTILIZADORES_ATIVOS)
+        utilizador.UTILIZADORES_ATIVOS[user] = u
 
         return redirect(url_for("painel"))
     else:
@@ -39,22 +38,20 @@ def painel():
     vds_id = []
     if request.method == "POST":
         if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
-            for i in utilizador.UTILIZADORES_ATIVOS:
-                if i.id == session["user"]:
-                    i.iniciaVideo("video.mp4")
+            if session["user"] in utilizador.UTILIZADORES_ATIVOS:
+                utilizador.UTILIZADORES_ATIVOS[session["user"]].iniciaVideo("video.mp4")
             return redirect(url_for("painel")) # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
     elif request.method == "GET":
-        for i in utilizador.UTILIZADORES_ATIVOS:
-            if i.id == session["user"]:
-                vds_id = i.videos
-        return render_template("painel.html", vds_id=vds_id)
+        if session["user"] in utilizador.UTILIZADORES_ATIVOS:
+            vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user"]).videos.keys()
+        return render_template("painel.html", vds_id=list(vds_id))
 
 
 @app.route('/vd<string:feed>')
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user" in session:
-        return Response(utilizador.obtemUser(session["user"], feed).obtemFrame(),
+        return Response(utilizador.obtemCrm(session["user"], feed).obtemFrame(), # tornar isto livre de procura de sessions
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
@@ -63,7 +60,7 @@ def transmitirImagem(feed):
 @app.route('/tb<string:feed>')  # Obtem Tumbnail
 def transmitirTumbNail(feed):
     if "user" in session:
-        tb = utilizador.obtemUser(session["user"], feed).obtemTumbnail()
+        tb = utilizador.obtemCrm(session["user"], feed).obtemTumbnail()
         if tb is None:  # Se não houver frames disponiveis, retorna uma imagem comum de loading
             return redirect(url_for('static', filename='img/eyetumb.gif'))
         else:

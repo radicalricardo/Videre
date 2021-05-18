@@ -6,33 +6,32 @@ import cv2
 import numpy as np
 import dataset
 
-UTILIZADORES_ATIVOS = []  # Lista de mantem todos os utilizadores em processo no servidor (simula BD de momento)
+UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no servidor
 
 
-# Uso de testes apenas, extremamente lento em uso de mundo real
-def obtemUser(nome, vid):  # Função temporaria para obter um utilizador com camara em processo com id do video
-    for i in UTILIZADORES_ATIVOS:
-        if i.id == nome:
-            for n in i.videos:
-                if n.id == vid:
-                    return n
+def obtemCrm(nome, vid): # Obtem dados do utilizador, usado para obter url da camara e tumbnail, obter objeto da camara e video
+    print(UTILIZADORES_ATIVOS.get(nome).videos)
+    if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).videos:
+        print(UTILIZADORES_ATIVOS.get(nome).videos.get(vid))
+        return UTILIZADORES_ATIVOS.get(nome).videos.get(vid)
 
 
 class Utilizador:
     def __init__(self, id_u):
         self.id = id_u
-        self.videos = []
+        self.videos = {}
 
     def iniciaVideo(self, lnk):
-        vd = Camara(lnk)
-        self.videos.append(vd)
-        threading.Thread(target=vd.processa).start()
+        vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
+        cmr = Camara(lnk, vid)
+        self.videos[vid] = cmr
+        threading.Thread(target=cmr.processa).start()
         # threading.Thread(target=corre).start()
 
 
 class Camara:
-    def __init__(self, lnk):
-        self.id = str(uuid.uuid1()).replace("-", "")
+    def __init__(self, lnk, vid):
+        self.id = vid
         self.imagem = cv2.VideoCapture(lnk, 0)
         self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
         self.framecurrente = None

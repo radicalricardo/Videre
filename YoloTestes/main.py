@@ -28,6 +28,7 @@ CoresCaixas = np.random.uniform(0, 255, size=(len(classes), 3))  # faz uma cor a
 font = cv2.FONT_HERSHEY_PLAIN
 
 
+
 class Camara:
     def __init__(self, id_c, lnk):
         self.id = id_c
@@ -99,7 +100,7 @@ class Camara:
                 w = caixa[2]
                 h = caixa[3]
                 label = str(classes[class_ids[i]])
-                print(classes[class_ids[i]] + " " + str(round(confidences[i], 2)))
+
                 cv2.rectangle(frame, (x, y), (x + w, y + h), CoresCaixas[class_ids[i]], 2)
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), font, 1, (0, 0, 0), 2)
 
@@ -120,8 +121,5 @@ for i in range(0, 1):
     listac.append(c)
     threading.Thread(target=c.transmite).start()
 
-
-while True:
-    print(c.frameatual)
 
 # cv2.destroyAllWindows()
