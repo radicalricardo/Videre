@@ -1,9 +1,12 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, MetaData
 import flask
 import bcrypt
 import time
 
 engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/Videre', echo=False, future=True)
+
+videreMETA = MetaData()
+videreMETA.reflect(bind=engine)
 
 
 # UTILIZADOR
@@ -29,21 +32,38 @@ def verificaUtilizador(username, password):
 # FRAMES
 
 
-def guardaFrame(frame, userid, timestamp):
+def guardaFrame(frame, userid, timestamp, objects_found):
+    """
+
+    :type objects_found: [{"object_id": int, "confianca": double, "topLeft":[x,y], "bottomRight":[w,z]}, ... ]
+    """
     frameName = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
     framePath = f"frames/{frameName}"
-    newFrame = open(framePath + ".jpg", "x")
+    newFrame = open(framePath + ".txt", "x")
     newFrame.write(frame)
     with engine.connect() as con:
-        con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
-                         f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{frameName}')"))
+        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
+                         f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{frameName}') RETURNING id")).fetchone()
         con.commit()
 
+        """
+        videreMETA.tables["objects_found"].insert()
+        con.execute(videreMETA.tables["objects_found"].insert(),
+                    objects_found)
+        con.commit()
+        """
+        for object in objects_found:
+            topLeft = object.get("topLeft")
+            bottomRight = object.get("bottomRight")
+            stmt = "INSERT INTO objects_found VALUES (" + str(frameID[0]) + ", " + str(object.get("object_id")) + ", " + str(object.get("confianca")) + ", '{" + str(topLeft[0]) + ", " + str(topLeft[1]) + "}', '{" + str(bottomRight[0]) + ", " + str(bottomRight[1]) + "}')"
+            #statement = text("INSERT INTO objects_found VALUES (%d, %d, %f, '{{%d, %d}}', '{{%d, %d}}')".format(frameID[0], object.get("object_id"), object.get("confianca"), topLeft[0],topLeft[1], bottomRight[0], bottomRight[1]))
+            statement = text(stmt)
+            con.execute(statement)
+            con.commit()
 
-# OBJECT_FOUND
 
 
-def guardaObjectos(frameid, objectid, caixa: list, confianca):      # tenho de pensar se fica incluido no #frames ou não
-    pass
+
+
 
 
