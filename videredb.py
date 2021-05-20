@@ -39,7 +39,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     """
     frameName = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
     framePath = f"frames/{frameName}"
-    newFrame = open(framePath + ".txt", "x")
+    newFrame = open(framePath + ".jpg", "x")
     newFrame.write(frame)
     with engine.connect() as con:
         frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
@@ -62,6 +62,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
             con.commit()
 
 
+#inserirUtilizador("FreeDom", "123")
 
 
 
