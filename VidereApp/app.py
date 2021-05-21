@@ -2,6 +2,7 @@ import io
 
 from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file
 import utilizador
+import videredb
 
 app = Flask(__name__)
 app.static_folder = 'static'
@@ -20,12 +21,21 @@ def login():
         print(request)
         user = request.form["userNome"]
         session["user"] = user
+        passworduser = request.form["userSenha"]
 
         # PARA TESTES
         u = utilizador.Utilizador(user)
         utilizador.UTILIZADORES_ATIVOS[user] = u
 
-        return redirect(url_for("painel"))
+
+        if videredb.verificaUtilizador(user, passworduser):
+            u = utilizador.Utilizador(user)
+            utilizador.UTILIZADORES_ATIVOS[user] = u
+            return redirect(url_for("painel"))
+        else:
+            return render_template("login.html")    # solução temporária mas funciona
+
+    #return redirect(url_for("painel"))
     else:
         return render_template("login.html")
 
