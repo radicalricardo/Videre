@@ -7,6 +7,7 @@
     <title>Videre</title>
 </head>
 <body>
+
     <div class="container" style="padding-top: 2%;">
         <form id="caixaDeLogin" method="post">
             <div class="form-group">
@@ -19,7 +20,18 @@
                 <input name="userSenha" type="password" class="form-control">
                 <br>
 
-                 <p><input type="submit" value="Entrar"></p>
+                <p><input type="submit" class="btn btn-primary" value="Entrar"></p>
+
+                {% with msg = get_flashed_messages() %}
+                    {% if msg %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for m in msg %}
+                                {{ m }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
             </div>
         </form>
     </div>

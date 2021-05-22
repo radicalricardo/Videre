@@ -1,6 +1,4 @@
-import io
-
-from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file
+from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash
 import utilizador
 import videredb
 
@@ -18,26 +16,19 @@ app.secret_key = "mdkifk093hrc0384"
 @app.route('/', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        print(request)
         user = request.form["userNome"]
-        session["user"] = user
         passworduser = request.form["userSenha"]
 
-        # PARA TESTES
-        u = utilizador.Utilizador(user)
-        utilizador.UTILIZADORES_ATIVOS[user] = u
-
-
         if videredb.verificaUtilizador(user, passworduser):
-            u = utilizador.Utilizador(user)
+            u = utilizador.Utilizador(user) # Mover estas duas linhas para outro lado, utilizador só deverá iniciar um objeto de si proprio quando existir pelo menos um processo
             utilizador.UTILIZADORES_ATIVOS[user] = u
+            session["user"] = user
             return redirect(url_for("painel"))
         else:
-            return render_template("login.html")    # solução temporária mas funciona
+            flash("Credenciais inválidas")
+            return redirect(url_for("login"))
 
-    #return redirect(url_for("painel"))
-    else:
-        return render_template("login.html")
+    return render_template("login.html") # Se for GET
 
 
 @app.route('/painel', methods=["POST", "GET"])  # Painel de controlo do utilizador
@@ -50,7 +41,7 @@ def painel():
         if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
             if session["user"] in utilizador.UTILIZADORES_ATIVOS:
                 utilizador.UTILIZADORES_ATIVOS[session["user"]].iniciaVideo("video.mp4")
-            return redirect(url_for("painel")) # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
+            return redirect(url_for("painel"))  # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
     elif request.method == "GET":
         if session["user"] in utilizador.UTILIZADORES_ATIVOS:
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user"]).videos.keys()
@@ -61,7 +52,8 @@ def painel():
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user" in session:
-        return Response(utilizador.obtemCrm(session["user"], feed).obtemFrame(), # tornar isto livre de procura de sessions
+        return Response(utilizador.obtemCrm(session["user"], feed).obtemFrame(),
+                        # tornar isto livre de procura de sessions
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
