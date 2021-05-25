@@ -23,7 +23,7 @@ def verificaUtilizador(username, password):
     with engine.connect() as con:
         result = con.execute(text(f"SELECT username, password "
                                   f"FROM utilizadores WHERE username = '{username}'")).fetchone()
-        if result != None and bcrypt.checkpw(password.encode(), result[1].encode()):    # tb verifica se existe username
+        if result and bcrypt.checkpw(password.encode(), result[1].encode()):  # tb verifica se existe username
             return True
         else:
             return False
@@ -43,7 +43,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     newFrame.write(frame)
     with engine.connect() as con:
         frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
-                         f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{frameName}') RETURNING id")).fetchone()
+                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{frameName}') RETURNING id")).fetchone()
         con.commit()
 
         """
@@ -55,16 +55,12 @@ def guardaFrame(frame, userid, timestamp, objects_found):
         for object in objects_found:
             topLeft = object.get("topLeft")
             bottomRight = object.get("bottomRight")
-            stmt = "INSERT INTO objects_found VALUES (" + str(frameID[0]) + ", " + str(object.get("object_id")) + ", " + str(object.get("confianca")) + ", '{" + str(topLeft[0]) + ", " + str(topLeft[1]) + "}', '{" + str(bottomRight[0]) + ", " + str(bottomRight[1]) + "}')"
-            #statement = text("INSERT INTO objects_found VALUES (%d, %d, %f, '{{%d, %d}}', '{{%d, %d}}')".format(frameID[0], object.get("object_id"), object.get("confianca"), topLeft[0],topLeft[1], bottomRight[0], bottomRight[1]))
+            stmt = "INSERT INTO objects_found VALUES (" + str(frameID[0]) + ", " + str(
+                object.get("object_id")) + ", " + str(object.get("confianca")) + ", '{" + str(topLeft[0]) + ", " + str(
+                topLeft[1]) + "}', '{" + str(bottomRight[0]) + ", " + str(bottomRight[1]) + "}')"
+            # statement = text("INSERT INTO objects_found VALUES (%d, %d, %f, '{{%d, %d}}', '{{%d, %d}}')".format(frameID[0], object.get("object_id"), object.get("confianca"), topLeft[0],topLeft[1], bottomRight[0], bottomRight[1]))
             statement = text(stmt)
             con.execute(statement)
             con.commit()
 
-
-#inserirUtilizador("FreeDom", "123")
-
-
-
-
-
+# inserirUtilizador("FreeDom", "123")

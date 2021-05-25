@@ -1,17 +1,18 @@
 from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash
 import utilizador
 import videredb
+from camara import camara_pagina
 
 app = Flask(__name__)
+app.register_blueprint(camara_pagina)
 app.static_folder = 'static'
 app.secret_key = "mdkifk093hrc0384"
 
 
 # CAMARAS ESTÃO TODAS COM THREAD
-# TODO: RESTRUTAR FICHEIROS E PASTAS DO PROJETO PARA O NORMAL DO FLASK
 # TODO: CRIAR UM FICHEIRO DE CONFIG.PY COM VARS GLOBAIS DE TODAS AS CONFIGURAÇOES DO SITE (ACESSOS A BDS ECT)
-# TODO: FICHEIRO INIT
 # TODO: MOVER FUNÇÕES DE PROCESSAMENTO DE IMAGEM E DA CAMARA PARA UM FICHEIRO DEDICADO
+# TODO: ACABAR A PAGINA DA CAMARA
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -20,7 +21,8 @@ def login():
         passworduser = request.form["userSenha"]
 
         if videredb.verificaUtilizador(user, passworduser):
-            u = utilizador.Utilizador(user) # Mover estas duas linhas para outro lado, utilizador só deverá iniciar um objeto de si proprio quando existir pelo menos um processo
+            # Mover estas duas linhas para outro lado, utilizador só deverá iniciar um objeto de si proprio quando existir pelo menos um processo
+            u = utilizador.Utilizador(user)
             utilizador.UTILIZADORES_ATIVOS[user] = u
             session["user"] = user
             return redirect(url_for("painel"))
@@ -28,7 +30,7 @@ def login():
             flash("Credenciais inválidas")
             return redirect(url_for("login"))
 
-    return render_template("login.html") # Se for GET
+    return render_template("login.html")  # Se for GET
 
 
 @app.route('/painel', methods=["POST", "GET"])  # Painel de controlo do utilizador
@@ -53,7 +55,6 @@ def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user" in session:
         return Response(utilizador.obtemCrm(session["user"], feed).obtemFrame(),
-                        # tornar isto livre de procura de sessions
                         mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
@@ -69,11 +70,6 @@ def transmitirTumbNail(feed):
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
-
-
-@app.route('/cm<string:feed>')
-def janelaCamara(feed):
-    return render_template("camara.html", vd_id=feed)
 
 
 @app.route('/sucesso')

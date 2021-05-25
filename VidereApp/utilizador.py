@@ -10,9 +10,7 @@ UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no
 
 
 def obtemCrm(nome, vid): # Obtem dados do utilizador, usado para obter url da camara e tumbnail, obter objeto da camara e video
-    print(UTILIZADORES_ATIVOS.get(nome).videos)
     if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).videos:
-        print(UTILIZADORES_ATIVOS.get(nome).videos.get(vid))
         return UTILIZADORES_ATIVOS.get(nome).videos.get(vid)
 
 

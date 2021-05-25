@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
     <meta charset="UTF-8">
     <title>Videre</title>
 </head>
@@ -16,7 +17,10 @@
 
         <div>
             <p>Brilho</p>
-            <input type="range" min="1" max="100" value="50" class="slider" id="s1">
+
+            <input type="range" min="1" max="100" value="50" class="slider" id="s1" name="brilho">
+            <input id="enviar" type="button" value="submit">
+
             <br>
             <p>Contraste</p>
             <input type="range" min="1" max="100" value="50" class="slider" id="s2">
@@ -24,4 +28,18 @@
     </div>
 </div>
 </body>
+
+<script>
+    $(document).on("click","#enviar", function() {
+         let valor = document.getElementById("s1").value
+         fetch(window.location.pathname, {
+               headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+               method: "POST",
+               body: JSON.stringify({ valor: valor }),
+          }).then(async (resposta) => {
+               console.log(resposta.status)
+          });
+    })
+</script>
+
 </html>
