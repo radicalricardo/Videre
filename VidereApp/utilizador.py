@@ -9,7 +9,7 @@ import dataset
 UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no servidor
 
 
-def obtemCrm(nome, vid): # Obtem dados do utilizador, usado para obter url da camara e tumbnail, obter objeto da camara e video
+def obtemCrm(nome, vid): # Obtem dados do utilizador, usado para obter url da camara e thumbnail, obter objeto da camara e video
     if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).videos:
         return UTILIZADORES_ATIVOS.get(nome).videos.get(vid)
 
@@ -51,7 +51,7 @@ class Camara:
         while True:
             yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
 
-    def obtemTumbnail(self):
+    def obtemThumbnail(self):
         if self.framecurrente is None:
             return None
         else:

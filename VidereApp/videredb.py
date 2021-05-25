@@ -27,8 +27,15 @@ def verificaUtilizador(username, password):
             return True
         else:
             return False
-
-
+'''
+def verificaCriador(username, link):
+    with engine.connect() as con:
+        result = con.execute(text()).fetchone()
+    if result:
+        return True
+    else:
+        return False
+'''
 # FRAMES
 
 

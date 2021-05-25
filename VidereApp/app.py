@@ -60,10 +60,10 @@ def transmitirImagem(feed):
         return redirect(url_for("login"))
 
 
-@app.route('/tb<string:feed>')  # Obtem Tumbnail
-def transmitirTumbNail(feed):
+@app.route('/tb<string:feed>')  # Obtem thumbnail
+def transmitirthumbnail(feed):
     if "user" in session:
-        tb = utilizador.obtemCrm(session["user"], feed).obtemTumbnail()
+        tb = utilizador.obtemCrm(session["user"], feed).obtemthumbnail()
         if tb is None:  # Se não houver frames disponiveis, retorna uma imagem comum de loading
             return redirect(url_for('static', filename='img/eyetumb.gif'))
         else:
