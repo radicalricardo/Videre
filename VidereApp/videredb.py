@@ -21,12 +21,18 @@ def inserirUtilizador(username, password):
 
 def verificaUtilizador(username, password):
     with engine.connect() as con:
-        result = con.execute(text(f"SELECT username, password "
+        result = con.execute(text(f"SELECT id, username, password "
                                   f"FROM utilizadores WHERE username = '{username}'")).fetchone()
-        if result and bcrypt.checkpw(password.encode(), result[1].encode()):  # tb verifica se existe username
-            return True
+        if result and bcrypt.checkpw(password.encode(), result[2].encode()):  # tb verifica se existe username
+            return result[0]
         else:
-            return False
+            return None
+
+
+# STREAM URLS
+
+#def inserirStream()
+
 '''
 def verificaCriador(username, link):
     with engine.connect() as con:
