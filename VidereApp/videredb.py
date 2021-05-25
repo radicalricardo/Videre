@@ -3,6 +3,8 @@ import flask
 import bcrypt
 import time
 
+# TODO: Inserir frames com execute many
+
 engine = create_engine('postgresql+psycopg2://postgres:admin@localhost:5432/Videre', echo=False, future=True)
 
 videreMETA = MetaData()
@@ -31,19 +33,39 @@ def verificaUtilizador(username, password):
 
 # STREAM URLS
 
-#def inserirStream()
-
-'''
-def verificaCriador(username, link):
+def inserirStream(user_id, stream_link , videre_url):
     with engine.connect() as con:
-        result = con.execute(text()).fetchone()
-    if result:
-        return True
-    else:
-        return False
-'''
-# FRAMES
+        con.execute(text(f"INSERT INTO stream_urls (user_id, stream_link, videre_url) "
+                                  f"VALUES ({user_id}, '{stream_link}', '{videre_url}')"))
+        con.commit()
 
+
+def verificaCriador(user_id, videre_url):
+    with engine.connect() as con:
+        result = con.execute(text(f"SELECT user_id, videre_url FROM stream_urls "
+                                  f"WHERE videre_url = '{videre_url}' AND user_id = '{user_id}'")).fetchone()
+        if result:
+            return True
+        else:
+            return False
+
+
+def deleteStreamURL(videre_url):
+    with engine.connect() as con:
+        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}'"))
+        con.commit()
+
+
+def buscaURLs(user_id):
+    with engine.connect() as con:
+        URLs = []
+        result = con.execute(text(f"SELECT stream_link, videre_url FROM stream_urls WHERE user_id = {user_id}"))
+        for row in result:
+            URLs.append(row[1])
+        return URLs
+
+
+# FRAMES
 
 def guardaFrame(frame, userid, timestamp, objects_found):
     """
