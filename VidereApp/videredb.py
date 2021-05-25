@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine, text, MetaData
 import flask
+import config
 import bcrypt
 import time
 
 # TODO: Inserir frames com execute many
 
-engine = create_engine('postgresql+psycopg2://postgres:admin@localhost:5432/Videre', echo=False, future=True)
+engine = create_engine(config.database, echo=False, future=True)
 
 videreMETA = MetaData()
 videreMETA.reflect(bind=engine)
