@@ -20,11 +20,13 @@ def login():
         user = request.form["userNome"]
         passworduser = request.form["userSenha"]
 
-        if videredb.verificaUtilizador(user, passworduser):
+        user_id = videredb.verificaUtilizador(user, passworduser)
+        if user_id is not None:
             # Mover estas duas linhas para outro lado, utilizador só deverá iniciar um objeto de si proprio quando existir pelo menos um processo
             u = utilizador.Utilizador(user)
             utilizador.UTILIZADORES_ATIVOS[user] = u
             session["user"] = user
+            session["id"] = user_id
             return redirect(url_for("painel"))
         else:
             flash("Credenciais inválidas")
