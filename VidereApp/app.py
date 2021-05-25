@@ -26,7 +26,7 @@ def login():
             u = utilizador.Utilizador(user)
             utilizador.UTILIZADORES_ATIVOS[user] = u
             session["user"] = user
-            session["id"] = user_id
+            session["user_id"] = user_id
             return redirect(url_for("painel"))
         else:
             flash("Credenciais inválidas")
@@ -65,7 +65,7 @@ def transmitirImagem(feed):
 @app.route('/tb<string:feed>')  # Obtem thumbnail
 def transmitirthumbnail(feed):
     if "user" in session:
-        tb = utilizador.obtemCrm(session["user"], feed).obtemthumbnail()
+        tb = utilizador.obtemCrm(session["user"], feed).obtemThumbnail()
         if tb is None:  # Se não houver frames disponiveis, retorna uma imagem comum de loading
             return redirect(url_for('static', filename='img/eyetumb.gif'))
         else:
