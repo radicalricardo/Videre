@@ -1,4 +1,5 @@
 from app import app as VidereApp
+import config
 
 if __name__ == "__main__":
-    VidereApp.run(port=5000, debug=True)
+    VidereApp.run(port=config.port, debug=config.debugFlag)
