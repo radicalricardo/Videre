@@ -79,5 +79,6 @@ def sucessoPainel():
 
 @app.route('/terminarsessao')
 def desligar():
-    session.pop("user", None)
+    session.clear()
+    # session.pop("user", None)
     return redirect(url_for("login"))
