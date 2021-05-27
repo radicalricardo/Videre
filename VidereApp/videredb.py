@@ -72,6 +72,7 @@ def buscaURLs(user_id):
 
 def guardaFrame(frame, userid, timestamp, objects_found):
     """
+    
     :type objects_found: [{"object_id": int, "confianca": double, "topLeft":[x,y], "bottomRight":[w,z]}, ... ]
     """
     nomeFrame = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"

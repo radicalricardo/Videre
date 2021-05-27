@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine, text
 
 engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/Videre', echo=False, future=True)
-names = open("VidereApp/yolo/coco.names", "r")
+names = open("coco.names", "r")
 with engine.connect() as con:
     for i in names:
         i = i[:-1]
