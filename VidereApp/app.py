@@ -11,8 +11,6 @@ app.secret_key = "mdkifk093hrc0384"
 
 
 # CAMARAS ESTÃO TODAS COM THREAD
-# TODO: CRIAR UM FICHEIRO DE CONFIG.PY COM VARS GLOBAIS DE TODAS AS CONFIGURAÇOES DO SITE (ACESSOS A BDS ECT)
-# TODO: MOVER FUNÇÕES DE PROCESSAMENTO DE IMAGEM E DA CAMARA PARA UM FICHEIRO DEDICADO
 # TODO: ACABAR A PAGINA DA CAMARA
 # TODO: ADAPTAR À ALTERAÇÃO DO DATASET.CLASSES
 
@@ -90,5 +88,6 @@ def sucessoPainel():
 
 @app.route('/terminarsessao')
 def desligar():
-    session.pop("user", None)
+    session.clear()
+    # session.pop("user", None)
     return redirect(url_for("login"))

@@ -5,6 +5,7 @@ import uuid
 import cv2
 import numpy as np
 import dataset
+import config
 
 UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no servidor
 
@@ -31,7 +32,7 @@ class Camara:
     def __init__(self, lnk, vid):
         self.id = vid
         self.imagem = cv2.VideoCapture(lnk, 0)
-        self.net = cv2.dnn.readNet("yolo/yolov3.cfg", "yolo/yolov3.weights")
+        self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
         self.framecurrente = None
         self.tempoInicial = time.time() # Tempo inicial da contagem para guardar a proxima frame da BD
         self.tempoPassado = 0
