@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response, request, redirect, url_for, 
 import utilizador
 import videredb
 from camara import camara_pagina
+import dataset
 
 app = Flask(__name__)
 app.register_blueprint(camara_pagina)
@@ -13,6 +14,7 @@ app.secret_key = "mdkifk093hrc0384"
 # TODO: CRIAR UM FICHEIRO DE CONFIG.PY COM VARS GLOBAIS DE TODAS AS CONFIGURAÇOES DO SITE (ACESSOS A BDS ECT)
 # TODO: MOVER FUNÇÕES DE PROCESSAMENTO DE IMAGEM E DA CAMARA PARA UM FICHEIRO DEDICADO
 # TODO: ACABAR A PAGINA DA CAMARA
+# TODO: ADAPTAR À ALTERAÇÃO DO DATASET.CLASSES
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -50,6 +52,13 @@ def painel():
         if session["user"] in utilizador.UTILIZADORES_ATIVOS:
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user"]).videos.keys()
         return render_template("painel.html", vds_id=list(vds_id))
+
+
+@app.route('/galeria', methods=["POST", "GET"]) #obtem a galeria
+def galeria():
+    if request.method == "POST":
+        pass
+    return render_template("galeria.html", classes=list(dataset.classes.values()))   # Se for GET
 
 
 @app.route('/vd<string:feed>')

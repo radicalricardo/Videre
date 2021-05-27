@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
-    <title>Painel Videre</title>
+    <title>Videre</title>
 </head>
 <body>
     <!-- Barra de navegação -->
@@ -22,7 +22,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a id="bnt_grl" class="nav-link">Galeria</a>
+                    <a id="bnt_grl" class="nav-link" href="{{url_for('galeria')}}">Galeria</a>
                 </li>
                 <li class="nav-item">
                     <a id="bnt_desligar" class="nav-link" href="{{url_for('desligar')}}">Sair</a>
