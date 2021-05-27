@@ -33,7 +33,7 @@ class Camara:
     def __init__(self, id_c, lnk):
         self.id = id_c
         self.imagem = cv2.VideoCapture(id_c, lnk)
-        self.net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")  # Pior Performance, Melhor resultado
+        self.net = cv2.dnn.readNet("yolov4.cfg", "yolov4.weights")  # Pior Performance, Melhor resultado
         self.frameatual = None
 
         # Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas

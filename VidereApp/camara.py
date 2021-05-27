@@ -7,7 +7,7 @@ camara_pagina = Blueprint('camara', __name__, template_folder='templates')
 
 @camara_pagina.route('/cm<string:feed>', methods=["POST", "GET"])
 def janelaCamara(feed):
-    if "user" in app.session:
+    if "user_id" in app.session:
         if request.method == "POST":
             r = request.json
             v = r['valor']

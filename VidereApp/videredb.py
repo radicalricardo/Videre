@@ -1,3 +1,5 @@
+import cv2
+import numpy
 from sqlalchemy import create_engine, text, MetaData
 import flask
 import config
@@ -70,16 +72,18 @@ def buscaURLs(user_id):
 
 def guardaFrame(frame, userid, timestamp, objects_found):
     """
-
     :type objects_found: [{"object_id": int, "confianca": double, "topLeft":[x,y], "bottomRight":[w,z]}, ... ]
     """
-    frameName = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
-    framePath = f"frames/{frameName}"
-    newFrame = open(framePath + ".jpg", "x")
-    newFrame.write(frame)
+    nomeFrame = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
+    caminhoFrame = f"frames/{nomeFrame}.png"
+    img = cv2.imdecode(numpy.fromstring(frame, numpy.uint8), cv2.IMREAD_UNCHANGED)
+    # newFrame = open(framePath + ".jpg", "x")
+    # newFrame.write(frame)
+    cv2.imwrite(caminhoFrame, frame)
+
     with engine.connect() as con:
         frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
-                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{frameName}') RETURNING id")).fetchone()
+                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeFrame}') RETURNING id")).fetchone()
         con.commit()
 
         """

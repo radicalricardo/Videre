@@ -1,4 +1,3 @@
-import random
 import threading
 import time
 import uuid
@@ -6,11 +5,14 @@ import cv2
 import numpy as np
 import dataset
 import config
+import videredb
+import app as main
 
 UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no servidor
 
 
-def obtemCrm(nome, vid): # Obtem dados do utilizador, usado para obter url da camara e thumbnail, obter objeto da camara e video
+# Obtem dados do utilizador, usado para obter url da camara e thumbnail, obter objeto da camara e video
+def obtemCrm(nome, vid):
     if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).videos:
         return UTILIZADORES_ATIVOS.get(nome).videos.get(vid)
 
@@ -20,21 +22,22 @@ class Utilizador:
         self.id = id_u
         self.videos = {}
 
-    def iniciaVideo(self, lnk):
+    def IniciaCamara(self, lnk):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
-        cmr = Camara(lnk, vid)
+        cmr = Camara(lnk, vid, self.id)
         self.videos[vid] = cmr
         threading.Thread(target=cmr.processa).start()
         # threading.Thread(target=corre).start()
 
 
 class Camara:
-    def __init__(self, lnk, vid):
+    def __init__(self, lnk, vid, id_user):
         self.id = vid
+        self.id_user = id_user
         self.imagem = cv2.VideoCapture(lnk, 0)
         self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
         self.framecurrente = None
-        self.tempoInicial = time.time() # Tempo inicial da contagem para guardar a proxima frame da BD
+        self.tempoInicial = time.time()  # Tempo inicial da contagem para guardar a proxima frame da BD
         self.tempoPassado = 0
 
         # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
@@ -99,27 +102,38 @@ class Camara:
 
             indexes = cv2.dnn.NMSBoxes(caixas, confidences, 0.5, 0.4)
 
+            objetos_captuados_frame = []
             for i in indexes:
+                objeto_no_frame = {}
                 i = i[0]
                 caixa = caixas[i]
                 x = caixa[0]
                 y = caixa[1]
                 w = caixa[2]
                 h = caixa[3]
+                objeto_no_frame["object_id"] = class_ids[i]
+                objeto_no_frame["confianca"] = confidences[i]
+                objeto_no_frame["topLeft"] = [x, y]
+                objeto_no_frame["bottomRight"] = [w, h]
+                objetos_captuados_frame.append(objeto_no_frame)
                 label = str(dataset.classes[class_ids[i]])
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
                             (0, 0, 0), 2)
 
             # Converte para jpg
+            v = frame
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             self.framecurrente = frame
 
             # Guarda a imagem na Base Dados
             if self.tempoPassado > 5:
-                self.tempoInicial = time.time()
+                if len(indexes) > 0:
+                    self.tempoInicial = time.time()
+                    print(self.id)
+                    videredb.guardaFrame(v, self.id_user, time.time(), objetos_captuados_frame)
+                    print("GRAVOU NA BD")
                 self.tempoPassado = 0
-                print("GRAVOU NA BD")
             else:
                 self.tempoPassado = time.time() - self.tempoInicial
