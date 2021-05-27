@@ -1,7 +1,7 @@
 
 from sqlalchemy import create_engine, text
 
-engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/Videre', echo=False, future=True)
+engine = create_engine('postgresql://postgres:admin@localhost:5432/Videre', echo=False, future=True)
 names = open("coco.names", "r")
 with engine.connect() as con:
     for i in names:
