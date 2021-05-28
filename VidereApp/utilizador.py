@@ -122,7 +122,6 @@ class Camara:
                             (0, 0, 0), 2)
 
             # Converte para jpg
-            v = frame
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             self.framecurrente = frame
@@ -132,7 +131,7 @@ class Camara:
                 if len(indexes) > 0:
                     self.tempoInicial = time.time()
                     print(self.id)
-                    videredb.guardaFrame(v, self.id_user, time.time(), objetos_captuados_frame)
+                    videredb.guardaFrame(frame, self.id_user, time.time(), objetos_captuados_frame)
                     print("GRAVOU NA BD")
                 self.tempoPassado = 0
             else:

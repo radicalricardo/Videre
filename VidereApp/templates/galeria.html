@@ -49,6 +49,10 @@
 
 
             <div class="col-md-8 container-fluid d-flex justify-content-center"> <!-- main area -->
+                 {%for i in fotos %}
+                    {{i}}
+                    <br>
+                 {% endfor %}
                 <div class="card cartaCamara">
                     <form method="post">
                         <input id="bntnc" type="submit" name="novacmr" value="">

@@ -68,6 +68,12 @@ def buscaURLs(user_id):
         return URLs
 
 
+def obtemFrames(user_id):
+    with engine.connect() as con:
+        resultado = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
+        return resultado
+
+
 # FRAMES
 
 def guardaFrame(frame, userid, timestamp, objects_found):
@@ -78,9 +84,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     nomeFrame = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
     caminhoFrame = f"frames/{nomeFrame}.png"
     img = cv2.imdecode(numpy.fromstring(frame, numpy.uint8), cv2.IMREAD_UNCHANGED)
-    # newFrame = open(framePath + ".jpg", "x")
-    # newFrame.write(frame)
-    cv2.imwrite(caminhoFrame, frame)
+    cv2.imwrite(caminhoFrame, img)
 
     with engine.connect() as con:
         frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
