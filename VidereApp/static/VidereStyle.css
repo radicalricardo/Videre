@@ -75,10 +75,6 @@ body{
 }
 
 
-
-
-
-
 .slidecontainer {
   width: 100%;
 }
@@ -114,4 +110,37 @@ body{
   height: 25px;
   background: #04AA6D;
   cursor: pointer;
+}
+
+
+/* Galeria */
+
+#barra-pesquisa {
+margin-left: -250px;
+left: 250px;
+width: 250px;
+background: #CCC;
+position: fixed;
+height: 100%;
+overflow-y: auto;
+z-index: 1000;
+transition: all 0.4s ease 0s;
+}
+
+@media (max-width:767px) {
+    #barra-pesquisa {
+        margin-left: 0;
+        left: 0;
+        width: 0;
+        background: #CCC;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+}
+.divFiltros {
+    height:300px;
+    overflow-y:scroll
 }

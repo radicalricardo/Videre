@@ -1,7 +1,7 @@
 from flask import request, Response, Blueprint, render_template, url_for
 from werkzeug.utils import redirect
-
 import app
+
 camara_pagina = Blueprint('camara', __name__, template_folder='templates')
 
 
