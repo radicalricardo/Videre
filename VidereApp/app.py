@@ -6,10 +6,12 @@ from flask_session import Session
 import utilizador
 import videredb
 from camara import camara_pagina
+from galeria import galeria_pagina
 import dataset
 
 app = Flask(__name__)
 app.register_blueprint(camara_pagina)
+app.register_blueprint(galeria_pagina)
 app.static_folder = 'static'
 app.secret_key = "mdkxfk093hrc0384"
 
@@ -55,13 +57,13 @@ def painel():
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).videos.keys()
         return render_template("painel.html", vds_id=list(vds_id))
 
-
+'''
 @app.route('/galeria', methods=["POST", "GET"])  # obtem a galeria
 def galeria():
     if request.method == "POST":
         pass
     return render_template("galeria.html", classes=list(dataset.classes.values()))  # Se for GET
-
+'''
 
 @app.route('/vd<string:feed>')
 def transmitirImagem(feed):
