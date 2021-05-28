@@ -32,13 +32,12 @@
 
         </div>
     </nav>
-    <div class="container-fluid">
 
-        <div class="row">
-
-            <div class="col-md-2" id="barra-pesquisa"  style="background-color: coral;"> <!-- sidebar/navbar -->
+    <div id="wrapper">
+    <div id="sidebar-wrapper">
+         <div style="background-color: coral;"> <!-- sidebar/navbar -->
                 <h1>Filtros</h1>
-                    <div class="divFiltros" >
+                    <div class="scrollit" >
                         {%for i in classes %}
                             <input type="checkbox" class="filtro" id="{{i}}" name="{{i}}" value="{{i}}" checked>
                             <label for="{{i}}">{{i}}</label><br>
@@ -47,9 +46,13 @@
                 <h1>Filtros</h1>
                 asdaw
             </div>
-
-
-            <div class="col-md-8 container-fluid d-flex justify-content-center"> <!-- main area -->
+    </div>
+        
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 container-fluid d-flex justify-content-center"> <!-- main area -->
                 <div class="card cartaCamara">
                     <form method="post">
                         <input id="bntnc" type="submit" name="novacmr" value="">
@@ -57,10 +60,14 @@
                     </form>
                 </div>
             </div>
-
-
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+
+
 
 </body>
 <script>
