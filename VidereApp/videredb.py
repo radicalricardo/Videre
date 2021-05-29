@@ -68,10 +68,7 @@ def buscaURLs(user_id):
         return URLs
 
 
-def obtemFrames(user_id):
-    with engine.connect() as con:
-        resultado = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
-        return [lista[0] for lista in resultado.fetchall()]
+
 
 
 # FRAMES
@@ -107,5 +104,12 @@ def guardaFrame(frame, userid, timestamp, objects_found):
             statement = text(stmt)
             con.execute(statement)
             con.commit()
+
+
+def obtemFrames(user_id):
+    with engine.connect() as con:
+        resultado = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
+        return [lista[0] for lista in resultado.fetchall()]
+
 
 # inserirUtilizador("FreeDom", "123")
