@@ -65,10 +65,10 @@
 </body>
 <script>
     $(document).on("click",".filtro", function() {
-        if (document.getElementById(this.id).checked == true) {
-            console.log(document.getElementById(this.id).value);
+        if (this.checked == true) {
+            console.log(this.value);
         } else {
-            console.log("not " + document.getElementById(this.id).value);
+            console.log("not " + this.value);
         }
     })
 </script>
