@@ -36,10 +36,10 @@ def verificaUtilizador(username, password):
 
 # STREAM URLS
 
-def inserirStream(user_id, stream_link , videre_url):
+def inserirStream(user_id, stream_link, videre_url):
     with engine.connect() as con:
         con.execute(text(f"INSERT INTO stream_urls (user_id, stream_link, videre_url) "
-                                  f"VALUES ({user_id}, '{stream_link}', '{videre_url}')"))
+                         f"VALUES ({user_id}, '{stream_link}', '{videre_url}')"))
         con.commit()
 
 
@@ -71,7 +71,7 @@ def buscaURLs(user_id):
 def obtemFrames(user_id):
     with engine.connect() as con:
         resultado = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
-        return resultado
+        return [lista[0] for lista in resultado.fetchall()]
 
 
 # FRAMES

@@ -48,16 +48,13 @@
             </div>
 
 
-            <div class="col-md-8 container-fluid d-flex justify-content-center"> <!-- main area -->
-                 {%for i in fotos %}
-                    {{i}}
-                    <br>
-                 {% endfor %}
-                <div class="card cartaCamara">
-                    <form method="post">
-                        <input id="bntnc" type="submit" name="novacmr" value="">
-                        <div class="card-body cartaTituloCamara"> <h4 class="card-title">Nova Câmara</h4></div>
-                    </form>
+            <div class="col-md-8 container-fluid d-flex justify-content-left" id="bloco-fotos"> <!-- main area -->
+                <div class="row d-flex justify-content-center">
+                     {%for i in fotos %}
+                        <div class="card">
+                             <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
+                        </div>
+                     {% endfor %}
                 </div>
             </div>
 
