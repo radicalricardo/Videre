@@ -13,6 +13,12 @@ engine = create_engine(config.database, echo=False, future=True)
 videreMETA = MetaData()
 videreMETA.reflect(bind=engine)
 
+# CRUD
+
+def selectTabela(tabela):
+    with engine.connect() as con:
+        return con.execute(text(f"SELECT * FROM {tabela}"))
+
 
 # UTILIZADOR
 
