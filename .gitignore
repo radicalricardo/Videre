@@ -2,6 +2,6 @@ YoloTestes/yolov3.weights
 VidereApp/yolo/yolov3.weights
 YoloTestes/.idea
 VidereApp/.idea
-VidereApp/__pycache__
+VidereApp/__pycache__/
 venv
-frames
+VidereApp/frames

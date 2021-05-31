@@ -20,6 +20,6 @@ def janelaGaleria():
 
 @galeria_pagina.route("/foto/<img>")
 def obtemFrameGaleria(img):
-    if "user_id" in main.session:
+    if "user_id" in main.session: # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR
         return send_from_directory("Frames", img + ".png")
     return redirect(url_for("login"))

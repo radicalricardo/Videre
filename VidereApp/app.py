@@ -5,18 +5,24 @@ import videredb
 from camara import camara_pagina
 from galeria import galeria_pagina
 from admin import admin_pagina
+from novaCamara import novaCamara_pagina
 
 app = Flask(__name__)
 app.register_blueprint(camara_pagina)
 app.register_blueprint(galeria_pagina)
 app.register_blueprint(admin_pagina)
+app.register_blueprint(novaCamara_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
 
-# CAMARAS ESTÃO TODAS COM THREAD
 # TODO: ACABAR A PAGINA DA CAMARA
 # TODO: ADAPTAR À ALTERAÇÃO DO DATASET.CLASSES
+# TODO: Galeria ainda inacanada, HTML COM BUGS DEIXAR PARA BRUNO
+# TODO: NAVBAR BUGADA QUANDO ENCOLHE, Á MESMO BUE TEMPO, DEIXAR PARA BRUNO
+# TODO: DAR UMA COR DIFERENTE A CADA QUADRADO
+# TODO: PAGINA DE CRIAR CAMARAS EM PROGRESSO
+
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -47,9 +53,7 @@ def painel():
     vds_id = []
     if request.method == "POST":
         if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
-            if session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
-                utilizador.UTILIZADORES_ATIVOS[session["user_id"]].IniciaCamara("video.mp4")
-            return redirect(url_for("painel"))  # Post/Redirect/Get https://en.wikipedia.org/wiki/Post/Redirect/Get
+            return redirect(url_for("novaCamara.novaCamaraStream"))
     elif request.method == "GET":
         if session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).videos.keys()
