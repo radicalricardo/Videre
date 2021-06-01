@@ -17,9 +17,10 @@ def novaCamaraStream():
             if "novacmr" in request.form:
                 if main.session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
                     linkCamara = request.form["linkCamara"].strip()
+                    nomeCamara = request.form["nomeCamara"].strip()
                     if linkCamara == "TESTE": linkCamara = "video.mp4" # USADO PARA TESTES
 
-                    utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].IniciaCamara(linkCamara)
+                    utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].CriaCamara(linkCamara, nomeCamara)
                 return redirect(url_for("painel"))
         else:
             return render_template("novaCamara.html", classes=list(dataset.classes.values()))

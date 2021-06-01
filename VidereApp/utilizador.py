@@ -22,7 +22,7 @@ class Utilizador:
         self.id = id_u
         self.videos = {}
 
-    def IniciaCamara(self, lnk):
+    def CriaCamara(self, lnk, nome):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id)
         self.videos[vid] = cmr
@@ -31,7 +31,8 @@ class Utilizador:
 
 
 class Camara:
-    def __init__(self, lnk, vid, id_user):
+    def __init__(self, lnk, vid, id_user, c_nome):
+        self.nome = c_nome
         self.id = vid
         self.id_user = id_user
         self.imagem = cv2.VideoCapture(lnk, 0)
