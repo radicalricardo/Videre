@@ -30,10 +30,10 @@ font = cv2.FONT_HERSHEY_PLAIN
 
 
 class Camara:
-    def __init__(self, id_c, lnk):
-        self.id = id_c
-        self.imagem = cv2.VideoCapture(id_c, lnk)
-        self.net = cv2.dnn.readNet("yolov4.cfg", "yolov4.weights")  # Pior Performance, Melhor resultado
+    def __init__(self, lnk):
+        self.id = 50
+        self.imagem = cv2.VideoCapture(lnk, 0)
+        self.net = cv2.dnn.readNet("yolov3.cfg", "yolov3.weights")  # Pior Performance, Melhor resultado
         self.frameatual = None
 
         # Inicia CUDA, se utilizadoe não tiver, estas linhas são ignoradas
@@ -49,7 +49,7 @@ class Camara:
 
             ativo, frame = self.imagem.read()  # Capta imagem OpenCV
             if not ativo:  # Se for falso é porque deixou de receber imagem
-                break
+                continue
 
             layer_names = self.net.getLayerNames()
             outputlayers = [layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
@@ -116,10 +116,9 @@ class Camara:
 
 
 listac = []
-for i in range(0, 1):
-    c = Camara(i, 0)
-    listac.append(c)
-    threading.Thread(target=c.transmite).start()
+c = Camara("http://77.243.103.105:8081/mjpg/video.mjpg")
+listac.append(c)
+threading.Thread(target=c.transmite).start()
 
 
 # cv2.destroyAllWindows()

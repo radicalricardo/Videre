@@ -34,13 +34,26 @@
     </nav>
 
     <div class="container">
-
-        <p>Nova Camara</p>
-
         <form method="post">
-            <input id="novaCmrBnt" type="submit" name="novacmr" value="Criar">
-        </form>
+            <div class="form-group">
+                <h1>Nova Camara</h1>
+                <p>Para correr o video de teste é escrever TESTE</p>
+                <p>Link:</p>
+                <input name="linkCamara" type="text" class="form-control">
 
+                <h2>Filtro</h2>
+                    <div class="divFiltros">
+                    {%for i in classes %}
+                        <input type="checkbox" id="{{i}}" name="{{i}}" value="{{i}}" checked>
+                        <label for="{{i}}">{{i}}</label><br>
+                    {% endfor %}
+                </div>
+
+                <br>
+                <input id="novaCmrBnt" type="submit" name="novacmr" value="Criar">
+
+            </div>
+        </form>
     </div>
 
 </body>

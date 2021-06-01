@@ -27,8 +27,8 @@ app.secret_key = config.chaveSession
 @app.route('/', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        user_nome = request.form["userNome"]
-        passworduser = request.form["userSenha"]
+        user_nome = request.form["userNome"].strip()
+        passworduser = request.form["userSenha"].strip()
 
         user_id = videredb.verificaUtilizador(user_nome, passworduser)
         if user_id is not None:
