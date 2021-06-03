@@ -22,16 +22,16 @@ class Utilizador:
         self.id = id_u
         self.videos = {}
 
-    def CriaCamara(self, lnk, nome):
+    def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
-        cmr = Camara(lnk, vid, self.id)
+        cmr = Camara(lnk, vid, self.id, nome, filtros)
         self.videos[vid] = cmr
         threading.Thread(target=cmr.processa).start()
-        # threading.Thread(target=corre).start()
 
 
 class Camara:
-    def __init__(self, lnk, vid, id_user, c_nome):
+    def __init__(self, lnk, vid, id_user, c_nome, filtros):
+        self.filtros = filtros
         self.nome = c_nome
         self.id = vid
         self.id_user = id_user
@@ -83,17 +83,21 @@ class Camara:
             confidences = []  # Grau de confiança sobre a imagem
             caixas = []
             for p in processados:
-                for ObjetosApanhados in p:
-                    pontuacoes = ObjetosApanhados[5:]
+                for ObjetoApanhado in p:
+                    pontuacoes = ObjetoApanhado[5:]
                     class_id = np.argmax(pontuacoes)
+
+                    if class_id not in self.filtros: # Este objeto detetado não está presente nos filtros para detetar
+                        continue
+
                     certeza = pontuacoes[class_id]
 
                     if certeza > 0.5:
                         # Otem posição (eu não percebo a magia negra que o net.forward faz, mas as posições das coisas estão ai)
-                        centroX = int(ObjetosApanhados[0] * comprimento)
-                        centroY = int(ObjetosApanhados[1] * altura)
-                        c = int(ObjetosApanhados[2] * comprimento)
-                        a = int(ObjetosApanhados[3] * altura)
+                        centroX = int(ObjetoApanhado[0] * comprimento)
+                        centroY = int(ObjetoApanhado[1] * altura)
+                        c = int(ObjetoApanhado[2] * comprimento)
+                        a = int(ObjetoApanhado[3] * altura)
                         x = int(centroX - c / 2)
                         y = int(centroY - a / 2)
 

@@ -18,11 +18,16 @@ def novaCamaraStream():
                 if main.session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
                     linkCamara = request.form["linkCamara"].strip()
                     nomeCamara = request.form["nomeCamara"].strip()
-                    if linkCamara == "TESTE": linkCamara = "video.mp4" # USADO PARA TESTES
+                    if linkCamara == "TESTE": linkCamara = "video.mp4"  # USADO PARA TESTES
 
-                    utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].CriaCamara(linkCamara, nomeCamara)
+                    filtroObjetos = []
+                    for i in dataset.classes.keys():
+                        if request.form.get(str(i)) == "on":
+                            filtroObjetos.append(i)
+
+                    utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].CriaCamara(linkCamara, nomeCamara, filtroObjetos)
                 return redirect(url_for("painel"))
         else:
-            return render_template("novaCamara.html", classes=list(dataset.classes.values()))
+            return render_template("novaCamara.html", classes=dataset.classes)
 
     return redirect(url_for("login"))

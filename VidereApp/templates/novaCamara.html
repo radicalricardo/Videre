@@ -45,11 +45,12 @@
                 <p>Link:</p>
                 <input name="linkCamara" type="text" class="form-control">
 
+                <input id="selecTudo" type="submit" value="Selecionar Tudo">
                 <h2>Filtro</h2>
                     <div class="divFiltros">
-                    {%for i in classes %}
-                        <input type="checkbox" id="{{i}}" name="{{i}}" value="{{i}}" checked>
-                        <label for="{{i}}">{{i}}</label><br>
+                    {% for chave, valor in classes.items() %}
+                        <input type="checkbox" id="{{chave}}" name="{{chave}}">
+                        <label for="{{chave}}">{{valor}}</label><br>
                     {% endfor %}
                 </div>
 
