@@ -37,11 +37,11 @@
         <div class="container-fluid d-flex justify-content-center" style="padding-top: 2%;">
             <div class="row d-flex justify-content-center" id="grelhaPainel">
 
-                {% for i in vds_id %}
-                <div class="card cartaCamara">
-                    <img id="tumb" src="tb{{i}}" onclick="window.open('cm{{i}}', '_blank');">
-                    <div class="card-body cartaTituloCamara"> <h4 class="card-title">Nome CMR</h4></div>
-                </div>
+                {% for chave, valor in vds_id.items() %}
+                    <div class="card cartaCamara">
+                        <img id="tumb" src="tb{{valor}}" onclick="window.open('cm{{valor}}', '_blank');">
+                        <div class="card-body cartaTituloCamara"> <h4 class="card-title">{{chave}}</h4></div>
+                    </div>
                 {% endfor %}
 
                 <div class="card cartaCamara">

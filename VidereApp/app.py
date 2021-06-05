@@ -16,8 +16,8 @@ app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
 
+# TODO: VIDEOS E IMAGENS NÃO TEM FORMATO IGUAL, OU SEJA SE UM VIDEO TIVER UMA RESOLUÇÃO GRANDE A PAGINA FICA PARTIDA, É NECESSARIO FORMULAR UMA TAMANHO IGUAL PARA TODAS
 # TODO: ACABAR A PAGINA DA CAMARA
-# TODO: ADAPTAR À ALTERAÇÃO DO DATASET.CLASSES
 # TODO: Galeria ainda inacanada, HTML COM BUGS DEIXAR PARA BRUNO
 # TODO: NAVBAR BUGADA QUANDO ENCOLHE, Á MESMO BUE TEMPO, DEIXAR PARA BRUNO
 # TODO: DAR UMA COR DIFERENTE A CADA QUADRADO AO DETETAR
@@ -55,8 +55,8 @@ def painel():
             return redirect(url_for("novaCamara.novaCamaraStream"))
     elif request.method == "GET":
         if session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
-            vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).videos.keys()
-        return render_template("painel.html", vds_id=list(vds_id))
+            vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).obtemCamarasLigacao()
+        return render_template("painel.html", vds_id=vds_id)
 
 
 @app.route('/vd<string:feed>')

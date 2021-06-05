@@ -13,20 +13,26 @@ UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no
 
 # Obtem dados do utilizador, usado para obter url da camara e thumbnail, obter objeto da camara e video
 def obtemCrm(nome, vid):
-    if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).videos:
-        return UTILIZADORES_ATIVOS.get(nome).videos.get(vid)
+    if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).camaras:
+        return UTILIZADORES_ATIVOS.get(nome).camaras.get(vid)
 
 
 class Utilizador:
     def __init__(self, id_u):
         self.id = id_u
-        self.videos = {}
+        self.camaras = {}
 
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id, nome, filtros)
-        self.videos[vid] = cmr
+        self.camaras[vid] = cmr
         threading.Thread(target=cmr.processa).start()
+
+    def obtemCamarasLigacao(self):
+        cmrs = {}
+        for i in self.camaras:
+            cmrs[self.camaras[i].nome] = i
+        return cmrs
 
 
 class Camara:
