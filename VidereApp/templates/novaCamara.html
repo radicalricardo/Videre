@@ -35,31 +35,69 @@
 
     <div class="container">
         <form method="post">
+
             <div class="form-group">
+
                 <h1>Nova Camara</h1>
-                <p>Para correr o video de teste é escrever TESTE</p>
+                <div class="row">
+                    <div class="col-xs-12 col-md-8">
+                        <div class="mt-4 col-md-12">
+                            <p>Para correr o video de teste é escrever TESTE</p>
+                            Nome
+                            <input maxlength="16" size="16" name="nomeCamara" type="text" class="form-control">
+                            <br>
+                            Link
+                            <input name="linkCamara" type="text" class="form-control">
 
-                <p>Nome:</p>
-                <input name="nomeCamara" type="text" class="form-control">
+                            <br>
+                            <input class="btn btn-primary" id="novaCmrBnt" type="submit" name="novacmr" value="Criar">
+                        </div>
+                    </div>
 
-                <p>Link:</p>
-                <input name="linkCamara" type="text" class="form-control">
+                    <div class="col-xs-6 col-md-4">
+                        <h2>Filtro</h2>
+                        <section>
+                            <input id="selecTudo" class="btn btn-primary" type="button" value="Selecionar Tudo">
+                            <input style="margin: 10px" id="removeTudo" class="btn btn-primary" type="button" value="Remover Tudo">
+                        </section>
 
-                <input id="selecTudo" type="submit" value="Selecionar Tudo">
-                <h2>Filtro</h2>
-                    <div class="divFiltros">
-                    {% for chave, valor in classes.items() %}
-                        <input type="checkbox" id="{{chave}}" name="{{chave}}">
-                        <label for="{{chave}}">{{valor}}</label><br>
-                    {% endfor %}
+                        <div style="padding: 10px" class="border border-primary rounded divFiltros">
+                        {% for chave, valor in classes.items() %}
+                            <input type="checkbox" id="{{chave}}" name="{{chave}}">
+                            <label for="{{chave}}">{{valor}}</label><br>
+                        {% endfor %}
+                        </div>
+                    </div>
+
                 </div>
 
-                <br>
-                <input id="novaCmrBnt" type="submit" name="novacmr" value="Criar">
+                 {% with msg = get_flashed_messages() %}
+                    {% if msg %}
+                    {% for m in msg %}
+                        <div style="margin: 10px" class="alert alert-danger" role="alert">
+                            {{ m }}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
             </div>
         </form>
     </div>
 
 </body>
+<script>
+$('#selecTudo').click(function(event) {
+    $(':checkbox').each(function() {
+        this.checked = true;
+    });
+});
+
+$('#removeTudo').click(function(event) {
+    $(':checkbox').each(function() {
+        this.checked = false;
+    });
+});
+</script>
+
 </html>

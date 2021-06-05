@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, url_for
+from flask import Blueprint, request, render_template, url_for, flash
 from werkzeug.utils import redirect
 
 import app as main
@@ -24,6 +24,18 @@ def novaCamaraStream():
                     for i in dataset.classes.keys():
                         if request.form.get(str(i)) == "on":
                             filtroObjetos.append(i)
+
+                    erros = 0
+                    if not linkCamara:
+                        flash("Link da câmara vazio. É necessário inserir um.")
+                        erros += 1
+                    if not nomeCamara:
+                        flash("Nome da câmara vazio. É necessário inserir um.")
+                        erros += 1
+                    if len(filtroObjetos) == 0:
+                        flash("Não há nenhum objeto selecionado para instruir a detectação.")
+                        erros += 1
+                    if erros > 0: return redirect(url_for("novaCamara.novaCamaraStream"))
 
                     utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].CriaCamara(linkCamara, nomeCamara, filtroObjetos)
                 return redirect(url_for("painel"))
