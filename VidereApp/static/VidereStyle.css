@@ -121,37 +121,82 @@ body{
 
 /* Galeria */
 
-#barra-pesquisa {
-margin-left: -250px;
-left: 250px;
-width: 250px;
-background: #CCC;
-position: fixed;
-height: 100%;
-overflow-y: auto;
-z-index: 1000;
-transition: all 0.4s ease 0s;
-
-}
-
-@media (max-width:767px) {
-    #barra-pesquisa {
-        margin-left: 0;
-        left: 0;
-        width: 0;
-        background: #CCC;
-        position: relative;
-        height: 100%;
-        width: 100%;
-        overflow-y: auto;
-        z-index: 1000;
-    }
-}
 .divFiltros {
     height:300px;
     overflow-y:scroll
 }
 
-#bloco-fotos {
-    margin-right: auto;
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-right: 250px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  right: 250px;
+  width: 0;
+  height: 100%;
+  margin-right: -250px;
+  overflow-y: auto;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: 0px;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-right: 250px;
+  }
+  #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
 }

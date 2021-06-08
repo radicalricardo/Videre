@@ -12,7 +12,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white sticky-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler btn btn-primary" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -32,26 +32,40 @@
             </li>
           </ul>
 
+
         </div>
+
+
+        <button id="menu-toggle" class="btn btn-primary" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+
     </nav>
     <div class="container-fluid">
 
         <div class="row">
 
-            <div class="col-md-2" id="barra-pesquisa"  style="background-color: coral;"> <!-- sidebar/navbar -->
-                <h1>Filtros</h1>
-                    <div class="divFiltros" >
-                        {%for i in classes %}
-                            <input type="checkbox" class="filtro" id="{{i}}" name="{{i}}" value="{{i}}" checked>
-                            <label for="{{i}}">{{i}}</label><br>
-                        {% endfor %}
+            <div id="wrapper" class="toggled"> <!-- sidebar/navbar -->
+
+                <div id="sidebar-wrapper" class="bg-primary text-white">
+                    <div style="padding: 5px;">
+                    <h1>Filtros</h1>
+                        <div class="divFiltros" >
+                            {%for i in classes %}
+                                <input type="checkbox" class="filtro" id="{{i}}" name="{{i}}" value="{{i}}" checked>
+                                <label for="{{i}}">{{i}}</label><br>
+                            {% endfor %}
+                        </div>
+                    <h1>Coisas</h1>
+                    asdawssssssss
+                    sdsadasd
+                    asd
                     </div>
-                <h1>Filtros</h1>
-                asdaw
-            </div>
+                </div>
 
 
-            <div class="col-md-8 container-fluid d-flex justify-content-left" id="bloco-fotos"> <!-- main area -->
+            <div class="container-fluid d-flex" id="bloco-fotos"> <!-- main area -->
                 <div class="row d-flex justify-content-center">
                      {%for i in fotos %}
                         <div class="card">
@@ -61,7 +75,7 @@
                 </div>
             </div>
 
-
+        </div>
         </div>
     </div>
 
@@ -74,5 +88,21 @@
             console.log("not " + this.value);
         }
     })
+
+     $(function(){
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+
+            $(window).resize(function(e) {
+              if($(window).width()<=768){
+                $("#wrapper").removeClass("toggled");
+              }else{
+                $("#wrapper").addClass("toggled");
+              }
+            });
+          });
+
 </script>
 </html>
