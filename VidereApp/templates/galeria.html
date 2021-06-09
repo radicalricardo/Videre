@@ -69,7 +69,9 @@
                 <div class="row d-flex justify-content-center">
                      {%for i in fotos %}
                         <div class="card">
-                             <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
+                             <a href="/verimagem/{{i}}">
+                                <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
+                             </a>
                         </div>
                      {% endfor %}
                 </div>

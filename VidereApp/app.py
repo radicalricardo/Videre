@@ -20,9 +20,8 @@ app.secret_key = config.chaveSession
 # TODO: ACABAR A PAGINA DA CAMARA
 # TODO: GALERIA FALTA FILTROS DAR
 # TODO: DAR UMA COR DIFERENTE A CADA QUADRADO AO DETETAR E TEXTO DE DETETAR
-# TODO: FAZER PAGINA PARA VER IMAGENS DA GALERIA NO SEU TAMANHO NORMAL
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS (EM PREPARAÇÃO)
-
+# TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -80,6 +79,7 @@ def transmitirthumbnail(feed):
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
+
 
 
 @app.route('/sucesso')
