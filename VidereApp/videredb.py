@@ -118,4 +118,4 @@ def obtemFrames(user_id):
         return [lista[0] for lista in resultado.fetchall()]
 
 
-# inserirUtilizador("FreeDom", "123")
+# inserirUtilizador("Teste", "123")

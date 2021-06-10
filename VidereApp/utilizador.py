@@ -1,3 +1,4 @@
+import random
 import threading
 import time
 import uuid
@@ -24,7 +25,7 @@ class Utilizador:
 
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
-        cmr = Camara(lnk, vid, self.id, nome, filtros)
+        cmr = Camara(0, vid, self.id, nome, filtros)
         self.camaras[vid] = cmr
         threading.Thread(target=cmr.processa).start()
 
@@ -128,9 +129,10 @@ class Camara:
                 objeto_no_frame["bottomRight"] = [w, h]
                 objetos_captuados_frame.append(objeto_no_frame)
                 label = str(dataset.classes[class_ids[i]])
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cor = dataset.classes_cores[class_ids[i]]
+                cv2.rectangle(frame, (x, y), (x + w, y + h), cor, 2)
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
-                            (0, 0, 0), 2)
+                            cor, 2)
 
             # Converte para jpg
             _, buffer = cv2.imencode('.jpg', frame)
