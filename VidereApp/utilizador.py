@@ -25,7 +25,7 @@ class Utilizador:
 
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
-        cmr = Camara(0, vid, self.id, nome, filtros)
+        cmr = Camara(lnk, vid, self.id, nome, filtros)
         self.camaras[vid] = cmr
         threading.Thread(target=cmr.processa).start()
 
