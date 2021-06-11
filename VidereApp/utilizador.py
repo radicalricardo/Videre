@@ -75,6 +75,8 @@ class Camara:
     def processa(self):
         while True:
             ativo, frame = self.imagem.read()
+            tamanho = frame.shape
+
             if not ativo: break
 
             layer_names = self.net.getLayerNames()
@@ -131,8 +133,22 @@ class Camara:
                 label = str(dataset.classes[class_ids[i]])
                 cor = dataset.classes_cores[class_ids[i]]
                 cv2.rectangle(frame, (x, y), (x + w, y + h), cor, 2)
+
+                # Impede que texto fique fora do ecrã
+                if y < 40: # se o X estiver 40 pixeis perto do topo da imagem
+                    y += 45 # Baixa 45 pixeis
+                if x < 5: x += 5
+
+                if x + (len(label)+5)*15 > tamanho[1]: # Impede que o texto saia para o lado da imagem
+                    x -= (len(label)+5)*15
+
+                # Faz um texto em baixo que serve como contorno
+                cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x - 1, y - 10),
+                            cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2, lineType=cv2.LINE_AA)
+
+                # Nome do objeto, texto de cima
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
-                            cor, 2)
+                            cor, 1, lineType=cv2.LINE_AA)
 
             # Converte para jpg
             _, buffer = cv2.imencode('.jpg', frame)
