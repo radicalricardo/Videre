@@ -62,8 +62,12 @@ def painel():
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user_id" in session:
-        return Response(utilizador.obtemCrm(session["user_id"], feed).obtemFrame(),
-                        mimetype='multipart/x-mixed-replace; boundary=frame')
+        img = utilizador.obtemCrm(session["user_id"], feed).obtemFrame()
+        print(img)
+        if img is None: # Isto não estã a funcionar corretamente
+            return redirect(url_for('static', filename='img/eyetumb.gif'))
+        else:
+            return Response(img, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
 
@@ -78,7 +82,6 @@ def transmitirthumbnail(feed):
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
-
 
 
 @app.route('/sucesso')

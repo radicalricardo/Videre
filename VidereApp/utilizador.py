@@ -48,6 +48,10 @@ class Camara:
         self.tempoInicial = time.time()  # Tempo inicial da contagem para guardar a proxima frame da BD
         self.tempoPassado = 0
 
+        self.retoques = True
+        self.brilho = 0
+        self.contraste = 0
+
         # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
         if cv2.cuda.getCudaEnabledDeviceCount() > 0:
             self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -61,6 +65,8 @@ class Camara:
 
     def obtemFrame(self):
         while True:
+            if self.framecurrente is None:
+                return None
             yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
 
     def obtemThumbnail(self):
@@ -75,9 +81,17 @@ class Camara:
     def processa(self):
         while True:
             ativo, frame = self.imagem.read()
-            tamanho = frame.shape
-
             if not ativo: break
+
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            h, s, v = cv2.split(hsv)
+            lim = 255 - self.brilho
+            v[v > lim] = 255
+            v[v <= lim] += self.brilho
+            final_hsv = cv2.merge((h, s, v))
+            frame = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+
+            tamanho = frame.shape
 
             layer_names = self.net.getLayerNames()
             outputlayers = [layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
@@ -96,7 +110,7 @@ class Camara:
                     pontuacoes = ObjetoApanhado[5:]
                     class_id = np.argmax(pontuacoes)
 
-                    if class_id not in self.filtros: # Este objeto detetado não está presente nos filtros para detetar
+                    if class_id not in self.filtros:  # Este objeto detetado não está presente nos filtros para detetar
                         continue
 
                     certeza = pontuacoes[class_id]
@@ -135,12 +149,12 @@ class Camara:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), cor, 2)
 
                 # Impede que texto fique fora do ecrã
-                if y < 40: # se o X estiver 40 pixeis perto do topo da imagem
-                    y += 45 # Baixa 45 pixeis
+                if y < 40:  # se o X estiver 40 pixeis perto do topo da imagem
+                    y += 45  # Baixa 45 pixeis
                 if x < 5: x += 5
 
-                if x + (len(label)+5)*15 > tamanho[1]: # Impede que o texto saia para o lado da imagem
-                    x -= (len(label)+5)*15
+                if x + (len(label) + 5) * 15 > tamanho[1]:  # Impede que o texto saia para o lado da imagem
+                    x -= (len(label) + 5) * 15
 
                 # Faz um texto em baixo que serve como contorno
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x - 1, y - 10),
@@ -154,6 +168,7 @@ class Camara:
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             self.framecurrente = frame
+            # print("Brilho = " + self.brilho)
 
             # Guarda a imagem na Base Dados
             if self.tempoPassado > 5:

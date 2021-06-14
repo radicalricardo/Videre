@@ -14,16 +14,13 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8  offset-lg-2">
-            <h3 class="mt-5">Camara Nome</h3>
-            <img src="vd{{ vd_id }}" width="100%">
+            <h3 class="mt-5">{{camara_nome}}</h3>
+            <img src="vd{{ vd_id }}" width="75%">
         </div>
 
         <div>
             <p>Brilho</p>
-
             <input type="range" min="1" max="100" value="50" class="slider" id="s1" name="brilho">
-            <input id="enviar" type="button" value="submit">
-
             <br>
             <p>Contraste</p>
             <input type="range" min="1" max="100" value="50" class="slider" id="s2">
@@ -33,7 +30,7 @@
 </body>
 
 <script>
-    $(document).on("click","#enviar", function() {
+    $(document).on("click","#s1", function() {
          let valor = document.getElementById("s1").value
          fetch(window.location.pathname, {
                headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
