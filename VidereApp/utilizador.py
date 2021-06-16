@@ -13,9 +13,9 @@ UTILIZADORES_ATIVOS = {}  # Lista de mantem todos os utilizadores em processo no
 
 
 # Obtem dados do utilizador, usado para obter url da camara e thumbnail, obter objeto da camara e video
-def obtemCrm(nome, vid):
-    if nome in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(nome).camaras:
-        return UTILIZADORES_ATIVOS.get(nome).camaras.get(vid)
+def obtemCrm(user, vid):
+    if user in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(user).camaras:
+        return UTILIZADORES_ATIVOS.get(user).camaras.get(vid)
 
 
 def ObtemExistenciaCmr(nome, nomeCmr):
@@ -24,6 +24,13 @@ def ObtemExistenciaCmr(nome, nomeCmr):
         if nomeCmr == i.nome:
             return True
     return False
+
+
+def ApagaCamara(user, vid):
+    if user in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(user).camaras:
+        UTILIZADORES_ATIVOS.get(user).camaras.get(vid).imagem.release()
+        d = UTILIZADORES_ATIVOS.get(user)
+        del d.camaras[vid]
 
 
 class Utilizador:
@@ -89,6 +96,7 @@ class Camara:
 
     def processa(self):
         while True:
+            print("Proc")
             ativo, frame = self.imagem.read()
             if not ativo: break
 
