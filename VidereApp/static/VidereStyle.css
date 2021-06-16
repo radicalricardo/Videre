@@ -119,6 +119,30 @@ body{
 }
 
 
+
+.image-background {
+  display: table;
+  position: relative;
+}
+
+.image-container {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.video {
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
+
+
 /* Galeria */
 
 .divFiltros {

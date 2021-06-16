@@ -1,6 +1,7 @@
 from flask import request, Response, Blueprint, render_template, url_for, session
 from werkzeug.utils import redirect
 import app
+import dataset
 import utilizador
 
 camara_pagina = Blueprint('camara', __name__, template_folder='templates')
@@ -25,5 +26,5 @@ def janelaCamara(feed):
         else:
             # Obtem Dados
             cmr = utilizador.obtemCrm(session["user_id"], feed)
-            return render_template("camara.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho, contraste=cmr.contraste)
+            return render_template("camara.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho, contraste=cmr.contraste, classes=dataset.classes)
     return redirect(url_for("login"))

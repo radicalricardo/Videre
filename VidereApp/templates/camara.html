@@ -11,21 +11,36 @@
     <title>Videre</title>
 </head>
 <body>
-<div class="container">
+<div class="container justify-content-center" style="padding-top: 2%;">
     <div class="row">
-        <div class="col-lg-8  offset-lg-2">
-            <h3 class="mt-5">{{camara_nome}}</h3>
-            <img src="vd{{ vd_id }}" width="75%">
+
+        <div class="col-sm">
+            <h3>{{camara_nome}}</h3>
+            <div class="image-background">
+              <div class="image-container">
+                <img class="video" src="vd{{ vd_id }}" alt="" />
+              </div>
+            </div>
         </div>
 
-        <div>
-            <p>Brilho: <b id="valorB"></b></p>
+        <div class="col-sm" style="padding: 10px;">
+            <p>Brilho: <b id="valorB"> {{brilho}} </b></p>
             <input type="range" min="-100" max="100" value="{{brilho}}" class="slider" id="s1">
             <br>
-            <p>Contraste: <b id="valorC"></b></p>
+            <p>Contraste: <b id="valorC"> {{contraste}}</b></p>
             <input type="range" min="-100" max="100" value="{{contraste}}" class="slider" id="s2">
+            <br>
+            <br>
+            <div style="padding: 10px" class="border border-primary rounded divFiltros">
+                {% for chave, valor in classes.items() %}
+                    <input type="checkbox" id="{{chave}}" name="{{chave}}">
+                    <label for="{{chave}}">{{valor}}</label><br>
+                {% endfor %}
+            </div>
+            <br>
+            <button>Apagar</button>
         </div>
-        <button>Apagar</button>
+
     </div>
 </div>
 </body>
