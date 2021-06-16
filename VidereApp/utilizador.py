@@ -18,15 +18,24 @@ def obtemCrm(nome, vid):
         return UTILIZADORES_ATIVOS.get(nome).camaras.get(vid)
 
 
+def ObtemExistenciaCmr(nome, nomeCmr):
+    v = UTILIZADORES_ATIVOS.get(nome).camaras.values()
+    for i in v:
+        if nomeCmr == i.nome:
+            return True
+    return False
+
+
 class Utilizador:
     def __init__(self, id_u):
         self.id = id_u
-        self.camaras = {}
+        self.camaras = {}  # vid: objeto
 
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id, nome, filtros)
         self.camaras[vid] = cmr
+        # print(self.camaras)
         threading.Thread(target=cmr.processa).start()
 
     def obtemCamarasLigacao(self):
@@ -83,13 +92,11 @@ class Camara:
             ativo, frame = self.imagem.read()
             if not ativo: break
 
-            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            h, s, v = cv2.split(hsv)
-            lim = 255 - self.brilho
-            v[v > lim] = 255
-            v[v <= lim] += self.brilho
-            final_hsv = cv2.merge((h, s, v))
-            frame = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+            # Ajusta imagem
+            img = np.int16(frame)
+            img = img * (self.contraste / 127 + 1) - self.contraste + self.brilho
+            img = np.clip(img, 0, 255)
+            frame = np.uint8(img)
 
             tamanho = frame.shape
 

@@ -11,15 +11,19 @@ def janelaCamara(feed):
     if "user_id" in app.session:
         if request.method == "POST":
             r = request.json
-            v = r['valor']
-            print(v)
-            brilho = round(int(v) * 255 / 100)
-            utilizador.obtemCrm(session["user_id"], feed).brilho = brilho
+
+            if r['tipo'] == "b":
+                per = r['valor']
+                brilho = round(int(per) * 255 / 100)
+                utilizador.obtemCrm(session["user_id"], feed).brilho = brilho
+            else:
+                per = r['valor']
+                contraste = round(int(per) * 255 / 100)
+                utilizador.obtemCrm(session["user_id"], feed).contraste = contraste
 
             return Response(status=200)
         else:
-            # Obtem Nome da Transmissão
-            nome = utilizador.obtemCrm(session["user_id"], feed).nome
-
-            return render_template("camara.html", vd_id=feed, camara_nome=nome)
+            # Obtem Dados
+            cmr = utilizador.obtemCrm(session["user_id"], feed)
+            return render_template("camara.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho, contraste=cmr.contraste)
     return redirect(url_for("login"))

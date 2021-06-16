@@ -19,12 +19,13 @@
         </div>
 
         <div>
-            <p>Brilho</p>
-            <input type="range" min="1" max="100" value="50" class="slider" id="s1" name="brilho">
+            <p>Brilho: <b id="valorB"></b></p>
+            <input type="range" min="-100" max="100" value="{{brilho}}" class="slider" id="s1">
             <br>
-            <p>Contraste</p>
-            <input type="range" min="1" max="100" value="50" class="slider" id="s2">
+            <p>Contraste: <b id="valorC"></b></p>
+            <input type="range" min="-100" max="100" value="{{contraste}}" class="slider" id="s2">
         </div>
+        <button>Apagar</button>
     </div>
 </div>
 </body>
@@ -32,10 +33,25 @@
 <script>
     $(document).on("click","#s1", function() {
          let valor = document.getElementById("s1").value
+         document.getElementById("valorB").innerHTML = valor
+
          fetch(window.location.pathname, {
                headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                method: "POST",
-               body: JSON.stringify({ valor: valor }),
+               body: JSON.stringify({ valor: valor, tipo: "b" }),
+          }).then(async (resposta) => {
+               console.log(resposta.status)
+          });
+    })
+
+     $(document).on("click","#s2", function() {
+         let valor = document.getElementById("s2").value
+         document.getElementById("valorC").innerHTML = valor
+
+         fetch(window.location.pathname, {
+               headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+               method: "POST",
+               body: JSON.stringify({ valor: valor, tipo: "c" }),
           }).then(async (resposta) => {
                console.log(resposta.status)
           });

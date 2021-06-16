@@ -35,6 +35,9 @@ def novaCamaraStream():
                     if len(filtroObjetos) == 0:
                         flash("Não há nenhum objeto selecionado para instruir a detectação.")
                         erros += 1
+                    if utilizador.ObtemExistenciaCmr(main.session["user_id"], nomeCamara):
+                        flash("Já existe uma câmara com este nome.")
+                        erros += 1
                     if erros > 0: return redirect(url_for("novaCamara.novaCamaraStream"))
 
                     utilizador.UTILIZADORES_ATIVOS[main.session["user_id"]].CriaCamara(linkCamara, nomeCamara, filtroObjetos)
