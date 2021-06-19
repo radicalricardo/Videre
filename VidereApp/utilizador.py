@@ -113,7 +113,7 @@ class Camara:
 
             altura = frame.shape[0]
             comprimento = frame.shape[1]
-            blob = cv2.dnn.blobFromImage(frame, 1 / 255, (128, 128), [0, 0, 0], True, crop=False)
+            blob = cv2.dnn.blobFromImage(frame, 1 / 255, (128, 128), swapRB=True, crop=False)
             self.net.setInput(blob)
             processados = self.net.forward(outputlayers)
 
@@ -131,7 +131,7 @@ class Camara:
                     certeza = pontuacoes[class_id]
 
                     if certeza > 0.5:
-                        # Otem posição (eu não percebo a magia negra que o net.forward faz, mas as posições das coisas estão ai)
+                        # Obtem posição (eu não percebo a magia negra que o net.forward faz, mas as posições das coisas estão ai)
                         centroX = int(ObjetoApanhado[0] * comprimento)
                         centroY = int(ObjetoApanhado[1] * altura)
                         c = int(ObjetoApanhado[2] * comprimento)

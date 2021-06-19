@@ -11,6 +11,36 @@
     <title>Videre</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white sticky-top">
+        <button class="navbar-toggler btn btn-primary" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand">Videre</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item">
+                <a id="bnt_cmrs" class="nav-link active" href="{{url_for('painel')}}">Câmaras</a>
+            </li>
+
+              <li class="nav-item">
+                <a id="bnt_fic" class="nav-link" href="{{url_for('galeria.janelaGaleria')}}">Carregar</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="bnt_grl" class="nav-link" href="{{url_for('galeria.janelaGaleria')}}">Galeria</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="bnt_desligar" class="nav-link" href="{{url_for('desligar')}}">Sair</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+
+
+
 <div class="container justify-content-center" style="padding-top: 2%;">
     <div class="row">
 
