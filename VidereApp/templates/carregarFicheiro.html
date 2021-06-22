@@ -2,9 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Videre</title>
 </head>
 <body>
+     <!-- Barra de navegação -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a id="bnt_cmrs" class="nav-link">Câmaras</a>
+                </li>
+                   <li class="nav-item">
+                    <a id="bnt_fic" class="nav-link active" href="{{url_for('carregaFicheiro.carregaFicheiros')}}">Carregar</a>
+                </li>
+                <li class="nav-item">
+                    <a id="bnt_grl" class="nav-link" href="{{url_for('galeria.janelaGaleria')}}">Galeria</a>
+                </li>
+                <li class="nav-item">
+                    <a id="bnt_desligar" class="nav-link" href="{{url_for('desligar')}}">Sair</a>
+                </li>
+
+              </ul>
+
+            </div>
+        </nav>
+
+     <section>
+
+        <div class="container" style="padding-top: 2%;">
+             <h1>Processar um ficheiro</h1>
+            <div class="" style="padding-top: 1%;">
+
+                <div>
+                    <form method=post class="form-group" enctype=multipart/form-data>
+                        <input type=file style="width: 100%" name=file>
+                        <label class="">Escolha um PNG, JPG, JPEG e MP4</label>
+                        <div class="mt-3">
+                            <button onclick="carregar();" class="btn btn-primary" type="submit">Carregar</button>
+                        </div>
+                    </form>
+
+                      <div id="espera" style="display: none;">
+                         A processar . . .
+                      </div>
+                </div>
+            </div>
+
+        </div>
+
+     </section>
+
+<script>
+    function carregar() {
+        document.getElementById("espera").style.display = "block";
+    }
+</script>
 </body>
 </html>
