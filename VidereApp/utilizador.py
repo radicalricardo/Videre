@@ -3,6 +3,7 @@ import threading
 import time
 import uuid
 import cv2
+import numpy
 import numpy as np
 from flask import send_from_directory
 
@@ -44,8 +45,13 @@ class Utilizador:
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id, nome, filtros)
         self.camaras[vid] = cmr
-        # print(self.camaras)
         threading.Thread(target=cmr.processa).start()
+
+    def CriaProcessoImagem(self, imagem, filtros):
+        img = Imagem(self.id, filtros, imagem)
+        nome = img.processar()
+        return nome
+        # threading.Thread(target=img.processar).start()
 
     def obtemCamarasLigacao(self):
         cmrs = {}
@@ -199,10 +205,11 @@ class Camara:
 
 
 class Imagem:
-    def __init__(self, id_user, filtros):
+    def __init__(self, id_user, filtros, imagem):
         self.filtros = filtros
         self.id_user = id_user
-        self.imagem = cv2.VideoCapture(0, 0)
+        # self.imagem = cv2.VideoCapture(0, 0)
+        self.imagem = imagem
         self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
 
         # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
@@ -214,7 +221,7 @@ class Imagem:
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     def processar(self):
-        ativo, frame = self.imagem.read()
+        frame = self.imagem
         tamanho = frame.shape
         layer_names = self.net.getLayerNames()
         outputlayers = [layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
@@ -293,4 +300,4 @@ class Imagem:
         tempo = time.time()
         nomeFrame = f"{self.id_user}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(tempo))}"
         videredb.guardaFrame(frame, self.id_user, tempo, objetos_captuados_frame)
-        return send_from_directory("Frames", nomeFrame + ".png")
+        return nomeFrame
