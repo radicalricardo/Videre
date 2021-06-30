@@ -23,7 +23,7 @@ SET row_security = off;
 -- Name: Videre; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE "Videre" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'Portuguese_Brazil.1252';
+CREATE DATABASE "Videre" WITH TEMPLATE = template0 ENCODING = 'UTF8';
 
 
 ALTER DATABASE "Videre" OWNER TO postgres;
