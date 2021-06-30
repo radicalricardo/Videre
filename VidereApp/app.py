@@ -18,7 +18,6 @@ app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
 
-# TODO: QUANDO O UTILIZADOR DESLIGA A CONTA E VOLTA A LIGAR O PAINEL NÃO É RESTAURADO
 # TODO: BOTÃO DE APAGAR CAMARA POR ALGUMA RAZÃO NÃO LEVA O UTILIZADOR PARA FORA DA PAGINA
 # TODO: GALERIA FALTA FILTROS DAR
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
@@ -34,9 +33,9 @@ def login():
 
         user_id = videredb.verificaUtilizador(user_nome, passworduser)
         if user_id is not None:
-            # Mover estas duas linhas para outro lado, utilizador só deverá iniciar um objeto de si proprio quando existir pelo menos um processo
-            u = utilizador.Utilizador(user_id)
-            utilizador.UTILIZADORES_ATIVOS[user_id] = u
+            if user_id not in utilizador.UTILIZADORES_ATIVOS:
+                u = utilizador.Utilizador(user_id)
+                utilizador.UTILIZADORES_ATIVOS[user_id] = u
             session["user_nome"] = user_nome
             session["user_id"] = user_id
             return redirect(url_for("painel"))
@@ -58,7 +57,9 @@ def painel():
             return redirect(url_for("novaCamara.novaCamaraStream"))
     elif request.method == "GET":
         if session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
+            print(session["user_id"])
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).obtemCamarasLigacao()
+            print(vds_id)
         return render_template("painel.html", vds_id=vds_id)
 
 
