@@ -13,6 +13,11 @@ camara_pagina = Blueprint('camara', __name__, template_folder='templates')
 def janelaCamara(feed):
     if "user_id" in app.session:
         if request.method == "POST":
+
+            if "apagarCmr" in request.form:
+                utilizador.ApagaCamara(session["user_id"], feed)
+                return redirect(url_for("painel"))
+
             r = request.json
 
             if r['tipo'] == "b":
@@ -26,14 +31,12 @@ def janelaCamara(feed):
             elif r['tipo'] == "f":
                 filtros_selecionados = r['valor']
                 utilizador.obtemCrm(session["user_id"], feed).filtros = list(map(int, filtros_selecionados))
-            elif r['tipo'] == "a": # Apaga Video
-                utilizador.ApagaCamara(session["user_id"], feed)
-                redirect(url_for("painel"))
 
             return Response(status=200)
-        else:
+        elif request.method == "GET":
             # Obtem Dados
             cmr = utilizador.obtemCrm(session["user_id"], feed)
+
             return render_template("camara.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho,
                                    contraste=cmr.contraste, classes=dataset.classes,
                                    selecionados=json.dumps(cmr.filtros))

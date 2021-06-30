@@ -32,6 +32,7 @@ def ObtemExistenciaCmr(nome, nomeCmr):
 def ApagaCamara(user, vid):
     if user in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(user).camaras:
         UTILIZADORES_ATIVOS.get(user).camaras.get(vid).imagem.release()
+        UTILIZADORES_ATIVOS.get(user).camaras.get(vid).thread.join()
         d = UTILIZADORES_ATIVOS.get(user)
         del d.camaras[vid]
 
@@ -44,9 +45,10 @@ class Utilizador:
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id, nome, filtros)
+        t = threading.Thread(target=cmr.processa)
+        cmr.thread = t
         self.camaras[vid] = cmr
-        threading.Thread(target=cmr.processa).start()
-        # cmr.processa()
+        t.start()
 
     def CriaProcessoImagem(self, imagem, filtros):
         img = Imagem(self.id, filtros, imagem)
@@ -72,6 +74,7 @@ class Camara:
         self.framecurrente = None
         self.tempoInicial = time.time()  # Tempo inicial da contagem para guardar a proxima frame da BD
         self.tempoPassado = 0
+        self.thread = None
 
         self.retoques = True
         self.brilho = 0
@@ -85,13 +88,10 @@ class Camara:
             self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_DEFAULT)
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-    def terminaVideo(self):
-        pass
-
     def obtemFrame(self):
         while True:
             if self.framecurrente is None:
-                img = cv2.imread("static\img\espera.png") # Caso o frame não esteja disponivel então mete uma imagem de espera
+                img = cv2.imread("static\img\espera.png")  # Caso o frame não esteja disponivel então mete uma imagem de espera
                 _, buffer = cv2.imencode('.jpg', img)
                 frame = buffer.tobytes()
                 yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
@@ -196,7 +196,7 @@ class Camara:
                             cor, 1, lineType=cv2.LINE_AA)
 
             # Converte para jpg
-            self.framecurrente = frame # Esta var precisa de estar antes do codigo debaixo para ser funcional no firefox
+            self.framecurrente = frame  # Esta var precisa de estar antes do codigo debaixo para ser funcional no firefox
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             # self.framecurrente = frame

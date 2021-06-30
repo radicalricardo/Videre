@@ -70,8 +70,9 @@
             </div>
 
             <br>
-             <p><input id="apagarCmr" type="submit" class="btn btn-primary" value="Apagar"></p>
-
+            <form method="post">
+             <p><input name="apagarCmr" type="submit" class="btn btn-primary" value="Apagar"></p>
+            </form>
         </div>
 
     </div>
@@ -105,15 +106,7 @@
           });
     })
 
-    $(document).on("click","#apagarCmr", function() {
-         fetch(window.location.pathname, {
-               headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-               method: "POST",
-               body: JSON.stringify({tipo: "a" }),
-          }).then(async (resposta) => {
-               console.log(resposta.status)
-          });
-    })
+
 
     $(document).on( "click", "input[type='checkbox']", function() {
         var lista = []

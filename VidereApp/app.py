@@ -18,7 +18,6 @@ app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
 
-# TODO: BOTÃO DE APAGAR CAMARA POR ALGUMA RAZÃO NÃO LEVA O UTILIZADOR PARA FORA DA PAGINA
 # TODO: GALERIA FALTA FILTROS DAR
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
@@ -53,13 +52,12 @@ def painel():
 
     vds_id = []
     if request.method == "POST":
-        if "novacmr" in request.form:  # Inicia um novo video (Apenas de testes de momento)
+        if "novacmr" in request.form:  # Inicia um nova camara
             return redirect(url_for("novaCamara.novaCamaraStream"))
+
     elif request.method == "GET":
         if session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
-            print(session["user_id"])
             vds_id = utilizador.UTILIZADORES_ATIVOS.get(session["user_id"]).obtemCamarasLigacao()
-            print(vds_id)
         return render_template("painel.html", vds_id=vds_id)
 
 
