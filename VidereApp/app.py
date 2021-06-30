@@ -17,12 +17,14 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
-
+# TODO: PROBLEMA NO FIREFOX, TEM ALGO RELACIONADO COMO A MANEIRA SE MANDA FRAMES
+# TODO: QUANDO O UTILIZADOR DESLIGA A CONTA E VOLTA A LIGAR O PAINEL NÃO É RESTAURADO
 # TODO: BOTÃO DE APAGAR CAMARA POR ALGUMA RAZÃO NÃO LEVA O UTILIZADOR PARA FORA DA PAGINA
 # TODO: GALERIA FALTA FILTROS DAR
-# TODO: PAGINA DE MANDAR IMAGENS E VIDEOS
+# TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
 # TODO: COLOCAR FICHEIROS DO BOOTSRAP E JQUEY E OUTROS QUE É PRECISO, COMO FICHEIRO OFFLINE EM TODOS OS HTMLSs
+
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -65,11 +67,7 @@ def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user_id" in session:
         img = utilizador.obtemCrm(session["user_id"], feed).obtemFrame()
-        print(img)
-        if img is None: # Isto não estã a funcionar corretamente
-            return redirect(url_for('static', filename='img/eyetumb.gif'))
-        else:
-            return Response(img, mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(img, mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
 

@@ -5,7 +5,7 @@ import uuid
 import cv2
 import numpy
 import numpy as np
-from flask import send_from_directory
+from flask import send_from_directory, url_for
 
 import dataset
 import config
@@ -90,7 +90,10 @@ class Camara:
     def obtemFrame(self):
         while True:
             if self.framecurrente is None:
-                return None
+                img = cv2.imread("static\img\espera.png") # Caso o frame não esteja disponivel então mete uma imagem de espera
+                _, buffer = cv2.imencode('.jpg', img)
+                frame = buffer.tobytes()
+                self.framecurrente = frame
             yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
 
     def obtemThumbnail(self):
