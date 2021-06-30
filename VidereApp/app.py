@@ -17,7 +17,7 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
-# TODO: PROBLEMA NO FIREFOX, TEM ALGO RELACIONADO COMO A MANEIRA SE MANDA FRAMES
+
 # TODO: QUANDO O UTILIZADOR DESLIGA A CONTA E VOLTA A LIGAR O PAINEL NÃO É RESTAURADO
 # TODO: BOTÃO DE APAGAR CAMARA POR ALGUMA RAZÃO NÃO LEVA O UTILIZADOR PARA FORA DA PAGINA
 # TODO: GALERIA FALTA FILTROS DAR
@@ -66,8 +66,8 @@ def painel():
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user_id" in session:
-        img = utilizador.obtemCrm(session["user_id"], feed).obtemFrame()
-        return Response(img, mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(utilizador.obtemCrm(session["user_id"], feed).obtemFrame(),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
         return redirect(url_for("login"))
 

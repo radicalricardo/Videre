@@ -46,6 +46,7 @@ class Utilizador:
         cmr = Camara(lnk, vid, self.id, nome, filtros)
         self.camaras[vid] = cmr
         threading.Thread(target=cmr.processa).start()
+        # cmr.processa()
 
     def CriaProcessoImagem(self, imagem, filtros):
         img = Imagem(self.id, filtros, imagem)
@@ -93,14 +94,19 @@ class Camara:
                 img = cv2.imread("static\img\espera.png") # Caso o frame não esteja disponivel então mete uma imagem de espera
                 _, buffer = cv2.imencode('.jpg', img)
                 frame = buffer.tobytes()
-                self.framecurrente = frame
-            yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
+                yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
+            else:
+                _, buffer = cv2.imencode('.jpg', self.framecurrente)
+                frame = buffer.tobytes()
+            yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
 
     def obtemThumbnail(self):
         if self.framecurrente is None:
             return None
         else:
-            return b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + self.framecurrente + b'\r\n'
+            _, buffer = cv2.imencode('.jpg', self.framecurrente)
+            frame = buffer.tobytes()
+            return b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
 
     def __del__(self):
         self.imagem.release()
@@ -190,10 +196,10 @@ class Camara:
                             cor, 1, lineType=cv2.LINE_AA)
 
             # Converte para jpg
+            self.framecurrente = frame # Esta var precisa de estar antes do codigo debaixo para ser funcional no firefox
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-            self.framecurrente = frame
-            # print("Brilho = " + self.brilho)
+            # self.framecurrente = frame
 
             # Guarda a imagem na Base Dados
             if self.tempoPassado > 5:
