@@ -17,7 +17,7 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
-
+# TODO: PAGINA SOBRE PRECISA DE VERIFICAR SE USER ESTA EM LOGIN PARA MUDAR A BARRA
 # TODO: GALERIA FALTA FILTROS DAR
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
@@ -86,6 +86,11 @@ def transmitirthumbnail(feed):
 @app.route('/sucesso')
 def sucessoPainel():
     return redirect(url_for("painel"))
+
+
+@app.route('/sobre')
+def sobre():
+    return render_template("sobre.html")
 
 
 @app.route('/terminarsessao')

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Videre</title>
+</head>
+<body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('login')}}">Login</a>
+                </li>
+                   <li class="nav-item">
+                    <a class="nav-link active" href="{{url_for('sobre')}}">Sobre</a>
+                </li>
+              </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div id="sobre">
+                <h1>Desenvolvido Por:</h1>
+                <hr>
+                <h2>Bruno Silva</h2>
+                <p>30003696</p>
+
+                <h2>Diogo Mendes</h2>
+                <p>30003865</p>
+
+                <h2>Reinaldo Coelho</h2>
+                <p>30003670</p>
+
+                <h2>Ricardo Cardoso</h2>
+                <p>30002299</p>
+                <img class="ual-logo" src="static/img/ual.png" alt="Italian Trulli">
+                <p>2021</p>
+            </div>
+        </div>
+</body>
+</html>

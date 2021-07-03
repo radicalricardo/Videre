@@ -11,6 +11,24 @@
     <title>Videre</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{url_for('login')}}">Login</a>
+                </li>
+                   <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
+                </li>
+              </ul>
+            </div>
+        </nav>
+
+
 
     <div class="container" style="padding-top: 2%;">
         <form id="caixaDeLogin" method="post">

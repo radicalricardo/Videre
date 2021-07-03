@@ -1,3 +1,8 @@
+#sobre {
+    padding-top: 2%;
+
+}
+
 #caixaDeLogin {
 	color: white;
 
@@ -15,20 +20,24 @@
 	border-radius: 10px;
 	padding: 80px;
 
-    filter: drop-shadow(0px 8px 6px rgba(39, 61, 82, 0.161));
+    filter: drop-shadow(15px 15px 12px rgba(39, 61, 82, 0.161));
 	padding-bottom: 2%;
 }
 
-#logo {
-  left: 50%;
-	transform: translate(-50%, 0);
-  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
-  position: absolute;
-  width: 227px;
-  height: 138px;
-  top: -67px;
+.ual-logo {
+    padding-top: 10px;
+    filter: drop-shadow(10px 10px 6px rgba(30, 144, 255, 0.161));
+}
 
-  overflow: visible;
+#logo {
+    left: 50%;
+    transform: translate(-50%, 0);
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+    position: absolute;
+    width: 227px;
+    height: 138px;
+    top: -67px;
+    overflow: visible;
 }
 
 body{
