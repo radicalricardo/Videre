@@ -13,6 +13,7 @@ engine = create_engine(config.database, echo=False, future=True)
 videreMETA = MetaData()
 videreMETA.reflect(bind=engine)
 
+
 # CRUD
 
 def selectTabela(tabela):
@@ -74,9 +75,6 @@ def buscaURLs(user_id):
         return URLs
 
 
-
-
-
 # FRAMES
 
 def guardaFrame(frame, userid, timestamp, objects_found):
@@ -116,6 +114,5 @@ def obtemFrames(user_id):
     with engine.connect() as con:
         resultado = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
         return [lista[0] for lista in resultado.fetchall()]
-
 
 # inserirUtilizador("Teste", "123")
