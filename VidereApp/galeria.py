@@ -13,7 +13,8 @@ def janelaGaleria():
         if request.method == "POST":
             pass
         fotos = videredb.obtemFrames(main.session["user_id"])
-        return render_template("galeria.html", classes=list(dataset.classes.values()), fotos=list(fotos))
+
+        return render_template("galeria.html", classes=list(dataset.classes.values()), fotos=fotos)
 
     return redirect(url_for("login"))
 

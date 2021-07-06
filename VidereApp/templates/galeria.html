@@ -68,7 +68,7 @@
             <div class="container-fluid d-flex" id="bloco-fotos"> <!-- main area -->
                 <div class="row d-flex justify-content-center">
                      {%for i in fotos %}
-                        <div class="card">
+                        <div class="card {{ fotos[i] }}">
                              <a href="/verimagem/{{i}}">
                                 <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
                              </a>
@@ -85,9 +85,15 @@
 <script>
     $(document).on("click",".filtro", function() {
         if (this.checked == true) {
-            console.log(this.value);
+           var filtro = document.getElementsByClassName(this.value);
+            for (var i = 0; i < filtro.length; i ++) {
+                filtro[i].style.display = 'block';
+            }
         } else {
-            console.log("not " + this.value);
+            var filtro = document.getElementsByClassName(this.value);
+            for (var i = 0; i < filtro.length; i ++) {
+                filtro[i].style.display = 'none';
+            }
         }
     })
 
