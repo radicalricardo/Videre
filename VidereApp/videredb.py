@@ -113,12 +113,11 @@ def guardaFrame(frame, userid, timestamp, objects_found):
 
 def obtemFrames(user_id):
     with engine.connect() as con:
-        # imagens = con.execute(text(f"SELECT frame_path FROM frames WHERE user_id = {user_id}"))
         objetos = con.execute(text(f"SELECT object_id, frame_path FROM frames  inner join objects_found  on frames.id = objects_found.frame_id where user_id = {user_id}"))
         fotos = {}
         for row in objetos:
             if row[1] in fotos:
-                if row[0] in fotos[row[1]]: continue
+                if dataset.classes[row[0]] in fotos[row[1]]: continue
                 fotos[row[1]].append(dataset.classes[row[0]])
             else:
                 fotos[row[1]] = []
@@ -127,6 +126,5 @@ def obtemFrames(user_id):
         for i in fotos:
             fotos[i] = " ".join(str(v) for v in fotos[i])
         return fotos
-        # return [lista[0] for lista in imagens.fetchall()]
 
 # inserirUtilizador("Teste", "123")
