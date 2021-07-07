@@ -5,17 +5,19 @@ from werkzeug.utils import redirect
 import app
 import dataset
 import utilizador
+from videredb import deleteStreamURL, verificaCriador
 
 camara_pagina = Blueprint('camara', __name__, template_folder='templates')
 
 
 @camara_pagina.route('/cm<string:feed>', methods=["POST", "GET"])
 def janelaCamara(feed):
-    if "user_id" in app.session:
+    if "user_id" in app.session and verificaCriador(session["user_id"], feed): # Verifica se o Uitilizador é dono da stream e pode a ver
         if request.method == "POST":
 
             if "apagarCmr" in request.form:
                 utilizador.ApagaCamara(session["user_id"], feed)
+                deleteStreamURL(feed)
                 return redirect(url_for("painel"))
 
             r = request.json

@@ -89,6 +89,14 @@ def painel():
         return render_template("painel.html", vds_id=vds_id)
 
 
+@app.route('/pg<string:feed>')
+def progressoProcessoVideo(feed):
+    if "user_id" in session:
+        return Response(utilizador.obtemVideo(session["user_id"], feed).progresso())
+    else:
+        return redirect(url_for("login"))
+
+
 @app.route('/vd<string:feed>')
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
