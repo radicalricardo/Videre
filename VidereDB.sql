@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-05-28 15:02:37
+-- Started on 2021-07-07 14:02:21
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,6 +18,7 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+DROP DATABASE "Videre";
 --
 -- TOC entry 3028 (class 1262 OID 107264)
 -- Name: Videre; Type: DATABASE; Schema: -; Owner: postgres
@@ -149,7 +150,8 @@ ALTER TABLE public.object ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public.utilizadores (
     id integer NOT NULL,
     username character varying NOT NULL,
-    password character varying NOT NULL
+    password character varying NOT NULL,
+    admin boolean
 );
 
 
@@ -319,7 +321,7 @@ ALTER TABLE ONLY public.stream_urls
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-05-28 15:02:39
+-- Completed on 2021-07-07 14:02:22
 
 --
 -- PostgreSQL database dump complete
