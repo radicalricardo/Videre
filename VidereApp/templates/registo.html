@@ -19,10 +19,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{url_for('login')}}">Login</a>
+                    <a class="nav-link" href="{{url_for('login')}}">Login</a>
                 </li>
                    <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('registo')}}">Registar</a>
+                    <a class="nav-link active" href="{{url_for('registo')}}">Registar</a>
                 </li>
                    <li class="nav-item">
                     <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
@@ -34,18 +34,15 @@
 
 
     <div class="container" style="padding-top: 2%;">
-        <form id="caixaDeLogin" method="post">
-            <div class="form-group">
-                <img src="static/img/eye.png" id="logo">
-                <h2 class="text-center">Login</h2>
-                <label>Utilizador</label> <br>
-                <input name="userNome" type="text" class="form-control">
+        <form method="post">
+            <div class="form-group" id="caixaDeRegisto">
+                <label id="lb_user">Nome de utilizador</label> <br>
+                <input type="text" class="form-control" name="nomeUser">
                 <br>
-                <label>Senha</label> <br>
-                <input name="userSenha" type="password" class="form-control">
+                <label id="lb_senha">Senha</label> <br>
+                <input type="password" class="form-control" name="senhaUser">
                 <br>
-
-                <p><input type="submit" class="btn btn-primary" value="Entrar"></p>
+                <input type="submit" value="Registar" class="btn btn-primary mb-2">
 
                 {% with msg = get_flashed_messages() %}
                     {% if msg %}

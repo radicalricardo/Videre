@@ -42,6 +42,16 @@ def verificaUtilizador(username, password):
             return None
 
 
+def verificaDisponibilidadeUser(user):
+    with engine.connect() as con:
+        result = con.execute(text(f"SELECT username "
+                                  f"FROM utilizadores WHERE username = '{user}'")).fetchone()
+        if not result:
+            return True
+        else:
+            return False
+
+
 # STREAM URLS
 
 def inserirStream(user_id, stream_link, videre_url):
@@ -113,7 +123,8 @@ def guardaFrame(frame, userid, timestamp, objects_found):
 
 def obtemFrames(user_id):
     with engine.connect() as con:
-        objetos = con.execute(text(f"SELECT object_id, frame_path FROM frames  inner join objects_found  on frames.id = objects_found.frame_id where user_id = {user_id}"))
+        objetos = con.execute(text(
+            f"SELECT object_id, frame_path FROM frames  inner join objects_found  on frames.id = objects_found.frame_id where user_id = {user_id}"))
         fotos = {}
         for row in objetos:
             if row[1] in fotos:

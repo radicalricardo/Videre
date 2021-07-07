@@ -3,6 +3,22 @@
 
 }
 
+#caixaDeRegisto {
+	background-color: rgba(0, 123, 255, 0.61);
+	color: white;
+	padding-bottom: 2%;
+	margin: 0px auto;
+	padding: 30px;
+	border-radius: 20px;
+	width: 400px;
+
+	/*Centra */
+	left: 50%;
+	transform: translate(-50%, 0);
+
+	position: fixed;
+}
+
 #caixaDeLogin {
 	color: white;
 

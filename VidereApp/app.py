@@ -17,6 +17,7 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
+
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
 
@@ -43,6 +44,33 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")  # Se for GET
+
+
+@app.route('/registo', methods=["POST", "GET"])
+def registo():
+    if "user_id" not in session:
+        if request.method == "POST":
+            user_nome = request.form["nomeUser"].strip()
+            senha = request.form["senhaUser"].strip()
+
+            if not len(user_nome) > 0:
+                flash("Nome de utilizador está vazio.")
+                return redirect(url_for("registo"))
+
+            if not videredb.verificaDisponibilidadeUser(user_nome):
+                flash("Este utilizador já existe")
+                return redirect(url_for("registo"))
+
+            if not len(senha) > 5:
+                flash("A senha precisa de ter mais que 5 caracteres.")
+                return redirect(url_for("registo"))
+
+            videredb.inserirUtilizador(user_nome, senha)
+            return redirect(url_for("login"))
+        else:
+            return render_template("registo.html")
+    else:
+        return redirect(url_for("painel"))
 
 
 @app.route('/painel', methods=["POST", "GET"])  # Painel de controlo do utilizador
