@@ -47,8 +47,9 @@
 
                 <div>
                     <form method=post class="form-group" enctype=multipart/form-data>
-                        <input type=file style="width: 100%" name=file>
-                        <label class="">Escolha um PNG, JPG, JPEG e MP4</label>
+                        <input type=file style="width: 100%" name=file onchange="altera(event);">
+                        <label class="">Escolha um PNG, JPG, JPEG ou MP4</label>
+                        <img class="verfoto" id="inputImg" src="#" alt="">
                         <div class="mt-3">
                             <button onclick="carregar();" class="btn btn-primary" type="submit">Carregar</button>
                         </div>
@@ -67,6 +68,19 @@
 <script>
     function carregar() {
         document.getElementById("espera").style.display = "block";
+    }
+
+    function altera(event) {
+        const file = event.target.files[0];
+        var output = document.getElementById("inputImg");
+        if(file) {
+            output.src = URL.createObjectURL(file);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src);
+            }
+        } else {
+            output.src = "#";
+        }
     }
 </script>
 </body>
