@@ -38,7 +38,8 @@ def carregaFicheiros():
                 vid = str(uuid.uuid1()).replace("-", "")  # Gera um nome para o ficheiro que vai servir como ID
                 file.save(os.path.join(vid + ".mp4"))
                 utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoVideo(vid, [0, 1, 2])
-                return render_template("videoResultado.html", feed=vid)
+                # return render_template("videoResultado.html", feed=vid)
+                return redirect("/video" + vid)
         else:
             return render_template("carregarFicheiro.html")
     else:

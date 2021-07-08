@@ -20,8 +20,10 @@ app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
 
-# TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE SER ACABADA E PROCESSAMENTO DE VIDEO COLOCADO
-# TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY)
+# TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE TER ESCOLHA DE FILTROS
+# TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY) [TALVEZ NÃO SE FAÇA]
+# TODO: TABELA DOS VIDEOS TEM UMA COLUNA DO MEIO NÃO NECESSARIA
+# TODO: OBJETO DE VIDEO PROCESSADO TERMINA THREAD MAS O OBJETO NÃO É APAGADO PORQUE NÃO HÁ OUTRA MANEIRA DE MOMENTO MELHOR PARA OBTER AS URLS GERADAS
 
 
 @app.route('/', methods=["POST", "GET"])
@@ -94,11 +96,17 @@ def painel():
 @app.route('/pg<string:feed>')
 def progressoProcessoVideo(feed):
     if "user_id" in session:
-        try:
-            dado = utilizador.obtemVideo(session["user_id"], feed).progresso()
-            return json.dumps({'progresso': dado}), 200, {'ContentType': 'application/json'}
-        except:
-            return json.dumps({'progresso': -1}), 404, {'ContentType': 'application/json'}
+        dado = utilizador.obtemVideo(session["user_id"], feed).progresso()
+        urls = utilizador.obtemVideo(session["user_id"], feed).urlsImagens
+        return json.dumps({'progresso': dado, 'urls': urls}), 200, {'ContentType': 'application/json'}
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route('/video<string:feed>')
+def VideoPaginaProcesso(feed):
+    if "user_id" in session:
+        return render_template("videoResultado.html", feed=feed)
 
     else:
         return redirect(url_for("login"))

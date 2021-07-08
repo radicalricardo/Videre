@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
 
-    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <meta charset="UTF-8">
     <title>Videre</title>
 </head>
 <body>
@@ -52,8 +52,11 @@
                         <div>
                             <button onclick="carregar();" class="btn btn-primary" type="submit">Carregar</button>
                         </div>
+
                         <img class="verfoto" id="inputImg" src="#" alt="">
                         <video class="video" id="inputVideo" src="#"></video>
+
+
 
                     </form>
 

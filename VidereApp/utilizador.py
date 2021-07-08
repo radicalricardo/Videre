@@ -328,6 +328,7 @@ class Video:
         self.video_id = video
         self.frameNumero = 0
         self.imagem = cv2.VideoCapture(video+".mp4", 0)
+        self.frameTotais = int(self.imagem.get(cv2.CAP_PROP_FRAME_COUNT))
         self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
 
         self.urlsImagens = []
@@ -345,8 +346,7 @@ class Video:
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     def progresso(self):
-        frames = int(self.imagem.get(cv2.CAP_PROP_FRAME_COUNT))
-        p = round((self.frameNumero/frames) * 100)
+        p = round((self.frameNumero/self.frameTotais) * 100)
         return str(p)
 
     def processa(self):
@@ -357,7 +357,7 @@ class Video:
             if not ativo: # Termina Processo quando não existe mais frames
                 self.imagem.release()
                 d = UTILIZADORES_ATIVOS.get(self.id_user)
-                del d.videos[self.video_id]
+                # del d.videos[self.video_id]
                 os.remove(os.path.join(self.video_id + ".mp4"))
                 break
 
@@ -437,10 +437,12 @@ class Video:
             # Guarda a imagem na Base Dados
             _, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
-            if self.tempoPassado > 5:
+            if self.tempoPassado > 3:
                 if len(indexes) > 0:
                     self.tempoInicial = time.time()
                     print("GUARDA")
+                    nomeFrame = f"{self.id_user}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(time.time()))}"
+                    self.urlsImagens.append(nomeFrame)
                     videredb.guardaFrame(frame, self.id_user, time.time(), objetos_captuados_frame)
                 self.tempoPassado = 0
             else:
