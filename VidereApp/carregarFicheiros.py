@@ -39,8 +39,6 @@ def carregaFicheiros():
                 file.save(os.path.join(vid + ".mp4"))
                 utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoVideo(vid, [0, 1, 2])
                 return render_template("videoResultado.html", feed=vid)
-
-
         else:
             return render_template("carregarFicheiro.html")
     else:

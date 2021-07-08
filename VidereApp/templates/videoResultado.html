@@ -2,12 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <title>Title</title>
 </head>
 <body>
-<iframe  src="pg{{ feed }}"></iframe>
+<p id="dado"></p>
 </body>
 <script>
+    var interval = setInterval(update_progress, 1000);
+    function update_progress() {
+         fetch('/pg{{ feed }}', {
+               headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+               method: "GET",
+          }).then(async (resposta) => {
+               const conta = await resposta.json();
+               console.log(conta)
 
+               if (resposta.status == 404 || resposta.status == 302) {
+                   clearInterval(interval);
+               }
+          }).catch((error) => {
+            console.log(error)
+          });
+
+    }
 </script>
 </html>

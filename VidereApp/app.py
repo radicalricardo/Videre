@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash
 import config
 import utilizador
@@ -92,7 +94,12 @@ def painel():
 @app.route('/pg<string:feed>')
 def progressoProcessoVideo(feed):
     if "user_id" in session:
-        return Response(utilizador.obtemVideo(session["user_id"], feed).progresso())
+        try:
+            dado = utilizador.obtemVideo(session["user_id"], feed).progresso()
+            return json.dumps({'progresso': dado}), 200, {'ContentType': 'application/json'}
+        except:
+            return json.dumps({'progresso': -1}), 404, {'ContentType': 'application/json'}
+
     else:
         return redirect(url_for("login"))
 
