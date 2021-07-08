@@ -19,7 +19,6 @@ def obtemCrm(user, vid):
 
 
 def obtemVideo(user, vid):
-    print((UTILIZADORES_ATIVOS.get(user).videos.get(vid)).progresso())
     if user in UTILIZADORES_ATIVOS and vid in UTILIZADORES_ATIVOS.get(user).videos:
         return UTILIZADORES_ATIVOS.get(user).videos.get(vid)
 
@@ -347,7 +346,7 @@ class Video:
 
     def progresso(self):
         frames = int(self.imagem.get(cv2.CAP_PROP_FRAME_COUNT))
-        p = (self.frameNumero/frames) * 100
+        p = round((self.frameNumero/frames) * 100)
         return str(p)
 
     def processa(self):

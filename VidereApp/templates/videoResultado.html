@@ -11,23 +11,57 @@
     <title>Title</title>
 </head>
 <body>
-<p id="dado"></p>
+    <!-- Barra de navegação -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a id="bnt_cmrs" class="nav-link" href="{{url_for('painel')}}">Câmaras</a>
+                </li>
+                   <li class="nav-item">
+                    <a id="bnt_fic" class="nav-link active" href="{{url_for('carregaFicheiro.carregaFicheiros')}}">Carregar</a>
+                </li>
+                <li class="nav-item">
+                    <a id="bnt_grl" class="nav-link" href="{{url_for('galeria.janelaGaleria')}}">Galeria</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
+                </li>
+              </ul>
+                <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
+            </div>
+        </nav>
+
+
+    <div class="container" style="padding-top: 2%;">
+        <p>A Processar. . .</p>
+        <div class="progress">
+            <div id="barra" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
 </body>
 <script>
-    var interval = setInterval(update_progress, 1000);
-    function update_progress() {
+    var interval = setInterval(progresso, 1000);
+    function progresso() {
          fetch('/pg{{ feed }}', {
                headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                method: "GET",
           }).then(async (resposta) => {
-               const conta = await resposta.json();
-               console.log(conta)
-
+               const valor = await resposta.json();
+               $('.progress-bar').css('width', valor.progresso+'%').attr('aria-valuenow', valor.progresso);
                if (resposta.status == 404 || resposta.status == 302) {
+                   $('.progress-bar').css('width', 100+'%').attr('aria-valuenow', 100);
                    clearInterval(interval);
                }
           }).catch((error) => {
-            console.log(error)
+            clearInterval(interval);
           });
 
     }
