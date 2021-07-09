@@ -331,19 +331,13 @@ class Video:
         self.frameTotais = int(self.imagem.get(cv2.CAP_PROP_FRAME_COUNT))
         self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
 
-        frame_width = int(self.imagem.get(3))
-        frame_height = int(self.imagem.get(4))
-        # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        # self.out = cv2.VideoWriter("filename.mp4", fourcc, 20, frameSize=(frame_width, frame_height))
-
-        self.out = cv2.VideoWriter(self.video_id + '_Proc.mp4', cv2.VideoWriter_fourcc(*'DIVX'),
+        comprimento = int(self.imagem.get(3))
+        altura = int(self.imagem.get(4))
+        self.out = cv2.VideoWriter(config.pastaVideos + "/" + self.video_id + '_Proc.webm',
+                                   cv2.VideoWriter_fourcc(*'vp80'),
                                    self.imagem.get(cv2.CAP_PROP_FPS),
-                                   frameSize=(frame_width, frame_height))
+                                   frameSize=(comprimento, altura))
 
-        self.urlsImagens = []
-
-        self.tempoInicial = time.time()  # Tempo inicial da contagem para guardar a proxima frame da BD
-        self.tempoPassado = 0
         self.thread = None
 
         # Inicia CUDA, se utilizador não suportar, estas linhas são ignoradas
@@ -368,6 +362,7 @@ class Video:
                 d = UTILIZADORES_ATIVOS.get(self.id_user)
                 del d.videos[self.video_id]
                 os.remove(os.path.join(self.video_id + ".mp4"))
+                videredb.guardaVideo(self.id_user, self.video_id)
                 break
 
             tamanho = frame.shape

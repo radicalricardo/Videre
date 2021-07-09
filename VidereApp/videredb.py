@@ -143,31 +143,18 @@ def obtemFrames(user_id):
 
 # VIDEOS
 
-def guardaVideo(video, userid, timestamp, objects_found):
+def guardaVideo(userid, nomeVideo):
     """
+    :param nomeVideo:
     :type userid: int # id do utilizador na base de dados
-    :type objects_found: [{"object_id": int, "confianca": double, "topLeft":[x,y], "bottomRight":[w,z]}, ... ]
     """
-    nomeVideo = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
-    caminhoVideo = f"videos/{nomeVideo}.png"
-    img = cv2.imdecode(numpy.fromstring(video, numpy.uint8), cv2.IMREAD_UNCHANGED)
-    cv2.imwrite(caminhoVideo, img)
+    caminhoVideo = f"{config.pastaVideos}/{nomeVideo}.png"
 
     with engine.connect() as con:
-        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
-                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeVideo}', TRUE) RETURNING id")).fetchone()
+        con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
+                         f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.time()))}', {userid}, "
+                         f"'{nomeVideo}', TRUE) RETURNING id")).fetchone()
         con.commit()
-
-        for object in objects_found:
-            topLeft = object.get("topLeft")
-            bottomRight = object.get("bottomRight")
-            stmt = "INSERT INTO objects_found VALUES (" + str(frameID[0]) + ", " + str(
-                object.get("object_id")) + ", " + str(object.get("confianca")) + ", '{" + str(topLeft[0]) + ", " + str(
-                topLeft[1]) + "}', '{" + str(bottomRight[0]) + ", " + str(bottomRight[1]) + "}')"
-
-            statement = text(stmt)
-            con.execute(statement)
-            con.commit()
 
 
 def obtemVideo(user_id):

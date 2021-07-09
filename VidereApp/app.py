@@ -1,6 +1,7 @@
 import json
 
-from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash
+from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash, \
+    send_from_directory
 import config
 import utilizador
 import videredb
@@ -19,8 +20,8 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
-# TODO: NO RUN METER PARA CRIAR A PASTA VIDEOS E FRAMES, USAR AS VARIAVEIS DO CONFIG >>>>>> [URGENTE] <<<<<
-# TODO: METER TODOS AS PASTAS COM MAISCULAS EM MINUSCULAS E MUDAR NO CODIGO >>>>>> [URGENTE] <<<<< (Algumas já estão mas é preciso garantir que estão em todo o lado)
+
+# TODO: NO RUN METER PARA CRIAR A PASTA VIDEOS E FRAMES, USAR AS VARIAVEIS DO CONFIG, verificar se existe  >>>>>> [URGENTE] <<<<<
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE TER ESCOLHA DE FILTROS
 
 # TODO: ----- OPCIONAL -----
@@ -98,23 +99,36 @@ def painel():
 @app.route('/pg<string:feed>')
 def progressoProcessoVideo(feed):
     if "user_id" in session:
-        dado = utilizador.obtemVideo(session["user_id"], feed).progresso()
-        urls = utilizador.obtemVideo(session["user_id"], feed).urlsImagens
-        return json.dumps({'progresso': dado, 'urls': urls}), 200, {'ContentType': 'application/json'}
+        try:
+            dado = utilizador.obtemVideo(session["user_id"], feed).progresso()
+            return json.dumps({'progresso': dado}), 200, {'ContentType': 'application/json'}
+        except:
+            return json.dumps({'progresso': -1}), 200, {'ContentType': 'application/json'}
     else:
         return redirect(url_for("login"))
 
 
-@app.route('/video<string:feed>')
+# ==============================================================
+
+@app.route('/video<string:feed>')  # Pagina de resultado de video em ficheiro procesado
 def VideoPaginaProcesso(feed):
     if "user_id" in session:
         return render_template("videoResultado.html", feed=feed)
-
     else:
         return redirect(url_for("login"))
 
 
-@app.route('/vd<string:feed>')
+@app.route('/vdc<string:feed>')  # Video mp4 do ficheiro carregado processado
+def videoProcessadoResultado(feed):
+    if "user_id" in session:
+        return send_from_directory(config.pastaVideos, feed + '_Proc.webm')
+    else:
+        return redirect(url_for("login"))
+
+
+# ==============================================================
+
+@app.route('/vd<string:feed>')  # Video para transmissão das camaras
 def transmitirImagem(feed):
     # Obtem video de uma camara de um utilizador, de momento o video é privado
     if "user_id" in session:
