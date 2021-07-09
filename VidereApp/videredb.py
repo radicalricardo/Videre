@@ -99,7 +99,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     cv2.imwrite(caminhoFrame, img)
 
     with engine.connect() as con:
-        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
+        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
                                    f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeFrame}', FALSE) RETURNING id")).fetchone()
         con.commit()
 
@@ -126,7 +126,7 @@ def obtemFrames(user_id):
         objetos = con.execute(text(
             f"SELECT object_id, frame_path "
             f"FROM frames inner join objects_found on frames.id = objects_found.frame_id "
-            f"where user_id = {user_id} and video = FALSE"))
+            f"where user_id = {user_id} and video != TRUE"))
         fotos = {}
         for row in objetos:
             if row[1] in fotos:
@@ -153,7 +153,7 @@ def guardaVideo(video, userid, timestamp, objects_found):
     cv2.imwrite(caminhoVideo, img)
 
     with engine.connect() as con:
-        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
+        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
                                    f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeVideo}', TRUE) RETURNING id")).fetchone()
         con.commit()
 
