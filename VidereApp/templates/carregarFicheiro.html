@@ -54,7 +54,7 @@
                         </div>
 
                         <img class="verfoto" id="inputImg" src="#" alt="">
-                        <video class="video" id="inputVideo" src="#"></video>
+                        <video class="video" id="inputVideo" src="#" style="display: none"></video>
 
 
 
@@ -84,6 +84,7 @@
             if(tipo[0] == "image") {
                 video.src = "#";
                 video.removeAttribute("controls");
+                video.style.display = "none";
                 img.src = URL.createObjectURL(file);
                 img.onload = function() {
                     URL.revokeObjectURL(img.src);
@@ -91,6 +92,7 @@
             }
             if(tipo[0] == "video") {
                 img.src = "#";
+                video.style.display = "block";
                 video.src = URL.createObjectURL(file);
                 video.onload = function() {
                     URL.revokeObjectURL(video.src);
@@ -101,6 +103,7 @@
             img.src = "#";
             video.src = "#";
             video.removeAttribute("controls");
+            video.style.display = "none";
         }
     }
 </script>
