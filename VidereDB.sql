@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-07-07 14:02:21
+-- Started on 2021-07-09 16:17:29
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,7 +18,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE "Videre";
 --
 -- TOC entry 3028 (class 1262 OID 107264)
 -- Name: Videre; Type: DATABASE; Schema: -; Owner: postgres
@@ -64,7 +63,8 @@ CREATE TABLE public.frames (
     id integer NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     user_id integer NOT NULL,
-    frame_path character varying NOT NULL
+    frame_path character varying NOT NULL,
+    video boolean
 );
 
 
@@ -321,7 +321,7 @@ ALTER TABLE ONLY public.stream_urls
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-07-07 14:02:22
+-- Completed on 2021-07-09 16:17:29
 
 --
 -- PostgreSQL database dump complete
