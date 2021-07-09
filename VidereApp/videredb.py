@@ -94,7 +94,7 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     :type objects_found: [{"object_id": int, "confianca": double, "topLeft":[x,y], "bottomRight":[w,z]}, ... ]
     """
     nomeFrame = f"{userid}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(timestamp))}"
-    caminhoFrame = f"frames/{nomeFrame}.png"
+    caminhoFrame = f"{config.pastaFrames}/{nomeFrame}.png"
     img = cv2.imdecode(numpy.fromstring(frame, numpy.uint8), cv2.IMREAD_UNCHANGED)
     cv2.imwrite(caminhoFrame, img)
 
@@ -140,6 +140,7 @@ def obtemFrames(user_id):
             fotos[i] = " ".join(str(v) for v in fotos[i])
         return fotos
 
+
 # VIDEOS
 
 def guardaVideo(video, userid, timestamp, objects_found):
@@ -167,6 +168,7 @@ def guardaVideo(video, userid, timestamp, objects_found):
             statement = text(stmt)
             con.execute(statement)
             con.commit()
+
 
 def obtemVideo(user_id):
     with engine.connect() as con:

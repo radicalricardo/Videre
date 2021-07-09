@@ -327,9 +327,18 @@ class Video:
         self.id_user = id_user
         self.video_id = video
         self.frameNumero = 0
-        self.imagem = cv2.VideoCapture(video+".mp4", 0)
+        self.imagem = cv2.VideoCapture(video + ".mp4", 0)
         self.frameTotais = int(self.imagem.get(cv2.CAP_PROP_FRAME_COUNT))
         self.net = cv2.dnn.readNet(config.yoloPath, config.yoloPathWeights)
+
+        frame_width = int(self.imagem.get(3))
+        frame_height = int(self.imagem.get(4))
+        # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        # self.out = cv2.VideoWriter("filename.mp4", fourcc, 20, frameSize=(frame_width, frame_height))
+
+        self.out = cv2.VideoWriter(self.video_id + '_Proc.mp4', cv2.VideoWriter_fourcc(*'DIVX'),
+                                   self.imagem.get(cv2.CAP_PROP_FPS),
+                                   frameSize=(frame_width, frame_height))
 
         self.urlsImagens = []
 
@@ -346,7 +355,7 @@ class Video:
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
     def progresso(self):
-        p = round((self.frameNumero/self.frameTotais) * 100)
+        p = round((self.frameNumero / self.frameTotais) * 100)
         return str(p)
 
     def processa(self):
@@ -354,10 +363,10 @@ class Video:
             ativo, frame = self.imagem.read()
             self.frameNumero += 1
 
-            if not ativo: # Termina Processo quando não existe mais frames
+            if not ativo:  # Termina Processo quando não existe mais frames
                 self.imagem.release()
                 d = UTILIZADORES_ATIVOS.get(self.id_user)
-                # del d.videos[self.video_id]
+                del d.videos[self.video_id]
                 os.remove(os.path.join(self.video_id + ".mp4"))
                 break
 
@@ -434,16 +443,4 @@ class Video:
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
                             cor, 1, lineType=cv2.LINE_AA)
 
-            # Guarda a imagem na Base Dados
-            _, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            if self.tempoPassado > 3:
-                if len(indexes) > 0:
-                    self.tempoInicial = time.time()
-                    print("GUARDA")
-                    nomeFrame = f"{self.id_user}-{time.strftime('%Y%m%d_%H%M%S', time.gmtime(time.time()))}"
-                    self.urlsImagens.append(nomeFrame)
-                    videredb.guardaFrame(frame, self.id_user, time.time(), objetos_captuados_frame)
-                self.tempoPassado = 0
-            else:
-                self.tempoPassado = time.time() - self.tempoInicial
+            self.out.write(frame)

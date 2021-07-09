@@ -5,6 +5,10 @@ import os
 port = 5000
 debugFlag = True
 
+# Pastas
+pastaFrames = "frames"
+pastaVideos = "videos"
+
 # Parametros do yolo
 yoloPath = "yolo/yolov3.cfg"
 yoloPathWeights = "yolo/yolov3.weights"

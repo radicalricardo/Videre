@@ -1,6 +1,7 @@
 from flask import request, Blueprint, render_template, url_for, send_from_directory
 from werkzeug.utils import redirect
 import app as main
+import config
 import dataset
 import videredb
 
@@ -22,7 +23,7 @@ def janelaGaleria():
 @galeria_pagina.route("/foto/<img>")
 def obtemFrameGaleria(img):
     if "user_id" in main.session:  # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR
-        return send_from_directory("Frames", img + ".png")
+        return send_from_directory(config.pastaFrames, img + ".png")
     return redirect(url_for("login"))
 
 

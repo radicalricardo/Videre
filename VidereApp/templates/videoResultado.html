@@ -60,32 +60,6 @@
 <script>
     var interval = setInterval(progresso, 1000);
 
-    function mostraImagens(urls) {
-        let data = urls;
-        for (k in data) {
-
-            //Div principal da carta
-            div = document.createElement("div");
-            div.classList.add("card", "imagem_galeria")
-
-            //imagem <a>
-            divImg = document.createElement("a");
-            divImg.href = data[k];
-
-            //imagem
-            img = document.createElement("img");
-            img.classList.add("cartaFoto")
-            img.width = 240
-            img.height = 240
-            img.src = "foto/" + data[k]
-            divImg.appendChild(img);
-
-            div.appendChild(divImg);
-            document.getElementById('fotosresultado').appendChild(div);
-        }
-    }
-
-
     function progresso() {
          fetch('/pg{{ feed }}', {
                headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -94,10 +68,11 @@
                const valor = await resposta.json();
                $('.progress-bar').css('width', valor.progresso+'%').attr('aria-valuenow', valor.progresso);
                console.log(valor.progesso)
+
                if (valor.progresso == 100 || valor.progresso == -1 || valor.progresso > 100) {
                    $('.progress-bar').css('width', 100+'%').attr('aria-valuenow', 100);
                    $('#estado').text('Completo')
-                   mostraImagens(valor.urls)
+
                    clearInterval(interval);
                }
           }).catch((error) => {
