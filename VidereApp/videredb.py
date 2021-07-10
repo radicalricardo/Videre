@@ -99,8 +99,8 @@ def guardaFrame(frame, userid, timestamp, objects_found):
     cv2.imwrite(caminhoFrame, img)
 
     with engine.connect() as con:
-        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
-                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeFrame}', FALSE) RETURNING id")).fetchone()
+        frameID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path) "
+                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(timestamp))}', {userid}, '{nomeFrame}') RETURNING id")).fetchone()
         con.commit()
 
         """
@@ -126,7 +126,7 @@ def obtemFrames(user_id):
         objetos = con.execute(text(
             f"SELECT object_id, frame_path "
             f"FROM frames inner join objects_found on frames.id = objects_found.frame_id "
-            f"where user_id = {user_id} and video != TRUE"))
+            f"where user_id = {user_id}"))
         fotos = {}
         for row in objetos:
             if row[1] in fotos:
@@ -143,31 +143,36 @@ def obtemFrames(user_id):
 
 # VIDEOS
 
-def guardaVideo(userid, nomeVideo):
+def guardaVideo(nomeVideo, userid, objects_found):
     """
-    :param nomeVideo:
     :type userid: int # id do utilizador na base de dados
+    :type objects_found: lista com os números dos objectos detetados
     """
-    caminhoVideo = f"{config.pastaVideos}/{nomeVideo}.png"
 
     with engine.connect() as con:
-        con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
+        videoID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
                          f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.time()))}', {userid}, "
-                         f"'{nomeVideo}', TRUE) RETURNING id")).fetchone()
+                         f"'{nomeVideo}') RETURNING id")).fetchone()
         con.commit()
+
+        for object in objects_found:
+            statement = text(f"INSERT INTO objects_video VALUES ({videoID}, {object})")
+            con.execute(statement)
+            con.commit()
 
 
 def obtemVideo(user_id):
     with engine.connect() as con:
-        videos = con.execute(text(
-            f"SELECT frame_path "
-            f"FROM frames "
-            f"where user_id = {user_id} AND video = TRUE"))
-        videos_user = []
+        objetos = con.execute(text(
+            f"SELECT frame_path, object_id, timestamp "
+            f"FROM videos inner join objects_video on videos.id = objects_video.video_id "
+            f"where user_id = {user_id}"))
 
-        for row in videos:
+        videos_user = []
+        for row in objetos:
             videos_user.append(row[0])
 
         return videos_user
+
 
 # inserirUtilizador("Teste", "123")
