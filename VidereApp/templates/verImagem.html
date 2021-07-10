@@ -41,9 +41,15 @@
         </nav>
 
      <div class="container">
-        <h3>Capturada em: {{data}}</h3>
+        <h3 id="data">Capturada em:</h3>
         <img class="rounded mx-auto d-block verfoto" src="/foto/{{ img }}">
      </div>
 </body>
+<script>
+    var utcDate = '{{data}}';
+    var localDate = new Date(utcDate);
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
+    document.getElementById("data").innerHTML = localDate.toLocaleTimeString('pt-PT', options);
+</script>
 </html>
