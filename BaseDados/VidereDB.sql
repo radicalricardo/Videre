@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-07-09 16:17:29
+-- Started on 2021-07-10 01:57:28
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3028 (class 1262 OID 107264)
+-- TOC entry 3046 (class 1262 OID 107264)
 -- Name: Videre; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -42,8 +42,8 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3029 (class 0 OID 0)
--- Dependencies: 3028
+-- TOC entry 3047 (class 0 OID 0)
+-- Dependencies: 3046
 -- Name: DATABASE "Videre"; Type: COMMENT; Schema: -; Owner: postgres
 --
 
@@ -63,24 +63,23 @@ CREATE TABLE public.frames (
     id integer NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     user_id integer NOT NULL,
-    frame_path character varying NOT NULL,
-    video boolean
+    frame_path character varying NOT NULL
 );
 
 
 ALTER TABLE public.frames OWNER TO postgres;
 
 --
--- TOC entry 3030 (class 0 OID 0)
+-- TOC entry 3048 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: TABLE frames; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE public.frames IS 'Contem cada frame guardado, quando foi guardado, o objecto detetado, objecto detetado, e coordenadas do objecto.';
+COMMENT ON TABLE public.frames IS 'Contem cada frame guardado, quando foi guardado.';
 
 
 --
--- TOC entry 3031 (class 0 OID 0)
+-- TOC entry 3049 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: COLUMN frames.user_id; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -118,7 +117,7 @@ CREATE TABLE public.object (
 ALTER TABLE public.object OWNER TO postgres;
 
 --
--- TOC entry 3032 (class 0 OID 0)
+-- TOC entry 3050 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: TABLE object; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -158,7 +157,7 @@ CREATE TABLE public.utilizadores (
 ALTER TABLE public.utilizadores OWNER TO postgres;
 
 --
--- TOC entry 3033 (class 0 OID 0)
+-- TOC entry 3051 (class 0 OID 0)
 -- Dependencies: 203
 -- Name: TABLE utilizadores; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -200,13 +199,26 @@ CREATE TABLE public.objects_found (
 ALTER TABLE public.objects_found OWNER TO postgres;
 
 --
--- TOC entry 3034 (class 0 OID 0)
+-- TOC entry 3052 (class 0 OID 0)
 -- Dependencies: 206
 -- Name: TABLE objects_found; Type: COMMENT; Schema: public; Owner: postgres
 --
 
 COMMENT ON TABLE public.objects_found IS 'Representa todos os objecto encontrados em cada frame.';
 
+
+--
+-- TOC entry 210 (class 1259 OID 115870)
+-- Name: objects_video; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.objects_video (
+    video_id integer NOT NULL,
+    object_id integer NOT NULL
+);
+
+
+ALTER TABLE public.objects_video OWNER TO postgres;
 
 --
 -- TOC entry 207 (class 1259 OID 107476)
@@ -223,7 +235,37 @@ CREATE TABLE public.stream_urls (
 ALTER TABLE public.stream_urls OWNER TO postgres;
 
 --
--- TOC entry 2884 (class 2606 OID 107294)
+-- TOC entry 209 (class 1259 OID 115857)
+-- Name: videos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.videos (
+    id integer NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    frame_path character varying NOT NULL
+);
+
+
+ALTER TABLE public.videos OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 115855)
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.videos ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.videos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 2895 (class 2606 OID 107294)
 -- Name: frames Frames_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -232,7 +274,7 @@ ALTER TABLE ONLY public.frames
 
 
 --
--- TOC entry 2876 (class 2606 OID 107274)
+-- TOC entry 2887 (class 2606 OID 107274)
 -- Name: object Object_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -241,7 +283,7 @@ ALTER TABLE ONLY public.object
 
 
 --
--- TOC entry 2880 (class 2606 OID 107284)
+-- TOC entry 2891 (class 2606 OID 107284)
 -- Name: utilizadores User_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -250,7 +292,7 @@ ALTER TABLE ONLY public.utilizadores
 
 
 --
--- TOC entry 2886 (class 2606 OID 107451)
+-- TOC entry 2897 (class 2606 OID 107451)
 -- Name: objects_found objects_found_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -259,7 +301,16 @@ ALTER TABLE ONLY public.objects_found
 
 
 --
--- TOC entry 2888 (class 2606 OID 107483)
+-- TOC entry 2903 (class 2606 OID 115874)
+-- Name: objects_video objects_video_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.objects_video
+    ADD CONSTRAINT objects_video_pkey PRIMARY KEY (video_id, object_id);
+
+
+--
+-- TOC entry 2899 (class 2606 OID 107483)
 -- Name: stream_urls stream_urls_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -268,7 +319,7 @@ ALTER TABLE ONLY public.stream_urls
 
 
 --
--- TOC entry 2878 (class 2606 OID 107381)
+-- TOC entry 2889 (class 2606 OID 107381)
 -- Name: object unique_object; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -277,7 +328,7 @@ ALTER TABLE ONLY public.object
 
 
 --
--- TOC entry 2882 (class 2606 OID 107421)
+-- TOC entry 2893 (class 2606 OID 107421)
 -- Name: utilizadores unique_username; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -286,7 +337,16 @@ ALTER TABLE ONLY public.utilizadores
 
 
 --
--- TOC entry 2890 (class 2606 OID 107351)
+-- TOC entry 2901 (class 2606 OID 115864)
+-- Name: videos videos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.videos
+    ADD CONSTRAINT videos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2905 (class 2606 OID 107351)
 -- Name: objects_found frames_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -295,7 +355,7 @@ ALTER TABLE ONLY public.objects_found
 
 
 --
--- TOC entry 2891 (class 2606 OID 107356)
+-- TOC entry 2906 (class 2606 OID 107356)
 -- Name: objects_found object_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -304,7 +364,25 @@ ALTER TABLE ONLY public.objects_found
 
 
 --
--- TOC entry 2889 (class 2606 OID 107295)
+-- TOC entry 2910 (class 2606 OID 115880)
+-- Name: objects_video objects_video_object_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.objects_video
+    ADD CONSTRAINT objects_video_object_id_fkey FOREIGN KEY (object_id) REFERENCES public.object(id);
+
+
+--
+-- TOC entry 2909 (class 2606 OID 115875)
+-- Name: objects_video objects_video_video_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.objects_video
+    ADD CONSTRAINT objects_video_video_id_fkey FOREIGN KEY (video_id) REFERENCES public.videos(id);
+
+
+--
+-- TOC entry 2904 (class 2606 OID 107295)
 -- Name: frames user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -313,7 +391,7 @@ ALTER TABLE ONLY public.frames
 
 
 --
--- TOC entry 2892 (class 2606 OID 107484)
+-- TOC entry 2907 (class 2606 OID 107484)
 -- Name: stream_urls user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -321,7 +399,16 @@ ALTER TABLE ONLY public.stream_urls
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-07-09 16:17:29
+--
+-- TOC entry 2908 (class 2606 OID 115865)
+-- Name: videos videos_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.videos
+    ADD CONSTRAINT videos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
+
+
+-- Completed on 2021-07-10 01:57:28
 
 --
 -- PostgreSQL database dump complete
