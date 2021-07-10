@@ -150,13 +150,13 @@ def guardaVideo(nomeVideo, userid, objects_found):
     """
 
     with engine.connect() as con:
-        videoID = con.execute(text(f"INSERT INTO frames (timestamp, user_id, frame_path, video) "
-                         f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.time()))}', {userid}, "
-                         f"'{nomeVideo}') RETURNING id")).fetchone()
+        videoID = con.execute(text(f"INSERT INTO videos (timestamp, user_id, frame_path) "
+                                   f"VALUES ('{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time.time()))}', {userid}, "
+                                   f"'{nomeVideo}') RETURNING id")).fetchone()
         con.commit()
 
         for object in objects_found:
-            statement = text(f"INSERT INTO objects_video VALUES ({videoID}, {object})")
+            statement = text(f"INSERT INTO objects_video VALUES ({videoID[0]}, {object})")
             con.execute(statement)
             con.commit()
 
@@ -168,11 +168,18 @@ def obtemVideo(user_id):
             f"FROM videos inner join objects_video on videos.id = objects_video.video_id "
             f"where user_id = {user_id}"))
 
-        videos_user = []
+        videos_user = {}
         for row in objetos:
-            videos_user.append(row[0])
+            videos_user[row[0]] = dataset.classes[row[1]]
 
         return videos_user
 
 
-# inserirUtilizador("Teste", "123")
+def obtemDadaFrame(user_id, frame):
+    with engine.connect() as con:
+        data = con.execute(text(
+            f"SELECT timestamp "
+            f"FROM frames "
+            f"where user_id = {user_id} and frame_path= {frame}"))
+
+        return data

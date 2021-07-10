@@ -71,7 +71,7 @@
 
                         <div class="row d-flex justify-content-center">
                         {%for i in videos %}
-                            <div class="imagem_galeria card">
+                            <div class="imagem_galeria card {{ videos[i] }}">
                                 <a href="/vervideo/{{i}}">
                                     <video class="cartaFoto" width="240" height="240"  preload="metadata">
                                         <source src="/vdc{{i}}" type="video/mp4">

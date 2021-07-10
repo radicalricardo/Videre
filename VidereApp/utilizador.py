@@ -363,7 +363,8 @@ class Video:
                 d = UTILIZADORES_ATIVOS.get(self.id_user)
                 del d.videos[self.video_id]
                 os.remove(os.path.join(self.video_id + ".mp4"))
-                videredb.guardaVideo(self.id_user, self.video_id)
+                print(self.objetos)
+                videredb.guardaVideo(self.video_id, self.id_user, self.objetos)
                 break
 
             tamanho = frame.shape
@@ -390,7 +391,7 @@ class Video:
 
                     certeza = pontuacoes[class_id]
 
-                    if certeza > 0.5:
+                    if certeza > 0.7:
                         # Obtem posição (eu não percebo a magia negra que o net.forward faz, mas as posições das coisas estão ai)
                         centroX = int(ObjetoApanhado[0] * comprimento)
                         centroY = int(ObjetoApanhado[1] * altura)
@@ -403,7 +404,7 @@ class Video:
                         confidences.append(float(certeza))
                         class_ids.append(class_id)
 
-            indexes = cv2.dnn.NMSBoxes(caixas, confidences, 0.5, 0.4)
+            indexes = cv2.dnn.NMSBoxes(caixas, confidences, 0.7, 0.4)
 
             objetos_captuados_frame = []
             for i in indexes:
@@ -439,7 +440,7 @@ class Video:
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
                             cor, 1, lineType=cv2.LINE_AA)
 
-                if i not in self.objetos:
-                    self.objetos.append(i)
+                if class_ids[i] not in self.objetos:
+                    self.objetos.append(class_ids[i])
 
             self.out.write(frame)
