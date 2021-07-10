@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='VidereStyle.css') }}">
+
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <title>Videre</title>
+</head>
+<body>
+    <!-- Barra de navegação -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary text-white sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand">Videre</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a id="bnt_cmrs" class="nav-link" href="{{url_for('painel')}}">Câmaras</a>
+                </li>
+                   <li class="nav-item">
+                    <a id="bnt_fic" class="nav-link" href="{{url_for('carregaFicheiro.carregaFicheiros')}}">Carregar</a>
+                </li>
+                <li class="nav-item">
+                    <a id="bnt_grl" class="nav-link active" href="{{url_for('galeria.janelaGaleria')}}">Galeria</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
+                </li>
+              </ul>
+                <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
+            </div>
+        </nav>
+
+
+    <div class="container" style="padding-top: 2%;">
+        <br>
+        <video id="videoresultado" controls class="video" src="/vdc{{feed}}"></video>
+        <br>
+    </div>
+
+</body>
+</html>

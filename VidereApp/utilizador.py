@@ -324,6 +324,7 @@ class Imagem:
 class Video:
     def __init__(self, id_user, filtros, video):
         self.filtros = filtros
+        self.objetos = []
         self.id_user = id_user
         self.video_id = video
         self.frameNumero = 0
@@ -437,5 +438,8 @@ class Video:
                 # Nome do objeto, texto de cima
                 cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
                             cor, 1, lineType=cv2.LINE_AA)
+
+                if i not in self.objetos:
+                    self.objetos.append(i)
 
             self.out.write(frame)
