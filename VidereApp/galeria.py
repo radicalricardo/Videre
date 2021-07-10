@@ -39,6 +39,6 @@ def VideoGaleriaVer(feed):
 @galeria_pagina.route('/verimagem/<img>')
 def paginaVerImagem(img):
     if "user_id" in main.session:
-        # TODO: MANDAR DATA
-        return render_template("verImagem.html", img=img)
+        data = videredb.obtemDadaFrame(main.session["user_id"], img)
+        return render_template("verImagem.html", img=img, data=data)
     return redirect(url_for("login"))

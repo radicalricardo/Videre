@@ -20,7 +20,8 @@ app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
 app.secret_key = config.chaveSession
 
-# TODO: [BUG URGENTE] - ALGUMAS IMAGENS NÃO FUNCIONAM PORQUE TEM 4 CANAIS
+
+# TODO: CONVERTER DATA DAS FOTOS PARA LOCAL
 
 # TODO: ----- OPCIONAL -----
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY) [TALVEZ NÃO SE FAÇA]

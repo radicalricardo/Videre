@@ -40,6 +40,7 @@ def carregaFicheiros():
 
             if not file.filename.lower().endswith('mp4'):  # É uma imagem
                 frame = cv2.imdecode(numpy.frombuffer(request.files['file'].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
+                frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
                 link = utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoImagem(frame, filtroObjetos)
                 return redirect("/verimagem/" + link)
 

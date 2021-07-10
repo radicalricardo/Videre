@@ -188,6 +188,10 @@ def obtemDadaFrame(user_id, frame):
         data = con.execute(text(
             f"SELECT timestamp "
             f"FROM frames "
-            f"where user_id = {user_id} and frame_path= {frame}"))
+            f"where user_id = {user_id} and frame_path= '{frame}'"))
 
-        return data
+        dataframe = ""
+        for i in data:
+            dataframe = i[0]
+
+        return str(dataframe) + " UTC"
