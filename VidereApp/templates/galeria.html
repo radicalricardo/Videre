@@ -54,23 +54,54 @@
                             {% endfor %}
                         </div>
                     </div>
+
+                    <hr style="border: 1px solid white;">
+                    <div style="padding: 5px;">
+                        <input type="checkbox" id="verFotos" checked>
+                        <label for="verFotos">Ver Fotos</label><br>
+
+                        <input type="checkbox" id="verVideos" checked>
+                        <label for="verVideos">Ver Videos</label><br>
+                    </div>
                 </div>
 
+                <div id="videosTabela">
+                    <h3 style="padding: 10px;">Videos</h3>
+                        <div class="container-fluid d-flex" id="bloco-fotos">
 
-            <div class="container-fluid d-flex" id="bloco-fotos"> <!-- main area -->
-                <div class="row d-flex justify-content-center">
-                     {%for i in fotos %}
-                        <div class="imagem_galeria card {{ fotos[i] }}">
-                             <a href="/verimagem/{{i}}">
-                                <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
-                             </a>
+                        <div class="row d-flex justify-content-center">
+                        {%for i in videos %}
+                            <div class="imagem_galeria card">
+                                <a href="/vervideo/{{i}}">
+                                    <video class="cartaFoto" width="240" height="240"  preload="metadata">
+                                        <source src="/vdc{{i}}" type="video/mp4">
+                                    </video>
+                                </a>
+                            </div>
+                        {% endfor %}
                         </div>
-                     {% endfor %}
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        </div>
+                <hr>
+                <div id="imagemTabela">
+                    <h3 style="padding: 10px;">Imagens</h3>
+                    <div class="container-fluid d-flex" id="bloco-videos">
+
+                    <div class="row d-flex justify-content-center">
+                         {%for i in fotos %}
+                            <div class="imagem_galeria card {{ fotos[i] }}">
+                                 <a href="/verimagem/{{i}}">
+                                    <img class="cartaFoto" width="240" height="240" src="foto/{{i}}">
+                                 </a>
+                            </div>
+                         {% endfor %}
+                    </div>
+                    </div>
+
+                    </div>
+                    </div>
+                </div>
     </div>
 
 </body>
@@ -86,6 +117,22 @@
             for (var i = 0; i < filtro.length; i ++) {
                 filtro[i].style.display = 'none';
             }
+        }
+    })
+
+    $(document).on("click","#verFotos", function() {
+        if (this.checked == true) {
+           document.getElementById("imagemTabela").style.display = 'block';
+        } else {
+           document.getElementById("imagemTabela").style.display = 'none';
+        }
+    })
+
+     $(document).on("click","#verVideos", function() {
+        if (this.checked == true) {
+           document.getElementById("videosTabela").style.display = 'block';
+        } else {
+           document.getElementById("videosTabela").style.display = 'none';
         }
     })
 

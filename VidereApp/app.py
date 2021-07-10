@@ -23,6 +23,7 @@ app.secret_key = config.chaveSession
 
 # TODO: NO RUN METER PARA CRIAR A PASTA VIDEOS E FRAMES, USAR AS VARIAVEIS DO CONFIG, verificar se existe  >>>>>> [URGENTE] <<<<<
 # TODO: PAGINA DE MANDAR IMAGENS E VIDEOS PRECISA DE TER ESCOLHA DE FILTROS
+# TODO: A PAGINA DO VIDEO PROCESSADO NA GALERIA PRECISA DE SER UMA NOVA, PARA NÃO TER AQUELA BARRA NO TOPO DO PROGRESSO
 
 # TODO: ----- OPCIONAL -----
 # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR (MARCADO ONDE DEVE SER NA GALERIA.PY) [TALVEZ NÃO SE FAÇA]
@@ -121,7 +122,7 @@ def VideoPaginaProcesso(feed):
 @app.route('/vdc<string:feed>')  # Video mp4 do ficheiro carregado processado
 def videoProcessadoResultado(feed):
     if "user_id" in session:
-        return send_from_directory(config.pastaVideos, feed + '_Proc.webm')
+        return send_from_directory(config.pastaVideos, feed + '.webm')
     else:
         return redirect(url_for("login"))
 

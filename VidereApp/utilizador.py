@@ -333,7 +333,7 @@ class Video:
 
         comprimento = int(self.imagem.get(3))
         altura = int(self.imagem.get(4))
-        self.out = cv2.VideoWriter(config.pastaVideos + "/" + self.video_id + '_Proc.webm',
+        self.out = cv2.VideoWriter(config.pastaVideos + "/" + self.video_id + '.webm',
                                    cv2.VideoWriter_fourcc(*'vp80'),
                                    self.imagem.get(cv2.CAP_PROP_FPS),
                                    frameSize=(comprimento, altura))

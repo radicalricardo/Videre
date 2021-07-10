@@ -14,8 +14,8 @@ def janelaGaleria():
         if request.method == "POST":
             pass
         fotos = videredb.obtemFrames(main.session["user_id"])
-
-        return render_template("galeria.html", classes=list(dataset.classes.values()), fotos=fotos)
+        videos = videredb.obtemVideo(main.session["user_id"])
+        return render_template("galeria.html", classes=list(dataset.classes.values()), fotos=fotos, videos=videos)
 
     return redirect(url_for("login"))
 
@@ -25,6 +25,14 @@ def obtemFrameGaleria(img):
     if "user_id" in main.session:  # TODO: É PRECISO VERIFICAR SE A IMAGEM PERTENCE AO UTILIZADOR
         return send_from_directory(config.pastaFrames, img + ".png")
     return redirect(url_for("login"))
+
+
+@galeria_pagina.route('/vervideo/<string:feed>')  # Mostra Video da galaria
+def VideoGaleriaVer(feed):
+    if "user_id" in main.session:
+        return render_template("verVideo.html", feed=feed)
+    else:
+        return redirect(url_for("login"))
 
 
 @galeria_pagina.route('/verimagem/<img>')

@@ -159,11 +159,15 @@ def guardaVideo(userid, nomeVideo):
 
 def obtemVideo(user_id):
     with engine.connect() as con:
-        objetos = con.execute(text(
-            f"SELECT object_id, frame_path "
-            f"FROM frames  inner join objects_found on frames.id = objects_found.frame_id "
+        videos = con.execute(text(
+            f"SELECT frame_path "
+            f"FROM frames "
             f"where user_id = {user_id} AND video = TRUE"))
-        fotos = {}
-        for row in objetos:
-            fotos[row[1]].append()
+        videos_user = []
+
+        for row in videos:
+            videos_user.append(row[0])
+
+        return videos_user
+
 # inserirUtilizador("Teste", "123")
