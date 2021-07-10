@@ -15,7 +15,7 @@ carregarFicheiros_pagina = Blueprint('carregaFicheiro', __name__, template_folde
 @carregarFicheiros_pagina.route('/carregar', methods=["POST", "GET"])
 def carregaFicheiros():
     if "user_id" in session:
-
+        filtroObjetos = []
         if request.method == "POST":
             if 'file' not in request.files:
                 flash('Pedido feito não possui ficheiro.')
@@ -30,22 +30,21 @@ def carregaFicheiros():
                 flash('Formato do ficheiro não é suportado. Use apenas PNG, JPG, JPEG ou MP4')
                 return redirect(url_for("carregaFicheiro.carregaFicheiros"))
 
+            for i in dataset.classes.keys():
+                if request.form.get(str(i)) == "on":
+                    filtroObjetos.append(i)
+
+            if len(filtroObjetos) == 0:
+                flash("Não há nenhum filtro selecionado para iniciar a detectação.")
+                return redirect(url_for("carregaFicheiro.carregaFicheiros"))
+
             if not file.filename.lower().endswith('mp4'):  # É uma imagem
                 frame = cv2.imdecode(numpy.frombuffer(request.files['file'].read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
-                link = utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoImagem(frame, [0, 1, 2])
+                link = utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoImagem(frame, filtroObjetos)
                 return redirect("/verimagem/" + link)
-                # cv2.imwrite('Imagem.jpg', frame)
+
             else:  # É um video
                 vid = str(uuid.uuid1()).replace("-", "")  # Gera um nome para o ficheiro que vai servir como ID
-                filtroObjetos = []
-                for i in dataset.classes.keys():
-                    if request.form.get(str(i)) == "on":
-                        filtroObjetos.append(i)
-
-                if len(filtroObjetos) == 0:
-                    flash("Não há nenhum filtro selecionado para iniciar a detectação.")
-                    return redirect(url_for("carregaFicheiro.carregaFicheiros"))
-
                 file.save(os.path.join(vid + ".mp4"))
                 utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoVideo(vid, filtroObjetos)
                 return redirect("/video" + vid)
