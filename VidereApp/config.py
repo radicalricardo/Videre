@@ -1,6 +1,5 @@
 import os
 
-
 # Port e flag de debug da aplicação
 port = 5000
 debugFlag = True
@@ -19,3 +18,11 @@ database = 'postgresql+psycopg2://postgres:admin@localhost:5432/Videre'
 
 # Sessão
 chaveSession = os.urandom(24)
+
+
+def pastas():
+    if not os.path.exists(os.path.join("videos")):
+        os.makedirs(os.path.join("videos"))
+
+    if not os.path.exists(os.path.join("frames")):
+        os.makedirs(os.path.join("frames"))

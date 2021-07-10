@@ -44,28 +44,52 @@
         <div class="container" style="padding-top: 2%;">
              <h1>Processar um ficheiro</h1>
             <div class="" style="padding-top: 1%;">
+                 <div id="espera" style="display: none;">
+                         A processar . . .
+                      </div>
+                 <form method=post class="form-group" enctype=multipart/form-data>
+                 <div class="row">
+                    <div class="col-xs-12 col-md-8">
 
-                <div>
-                    <form method=post class="form-group" enctype=multipart/form-data>
                         <input id="input" type=file style="width: 100%" name=file onchange="altera(event);">
                         <label class="">Escolha um PNG, JPG, JPEG ou MP4</label>
                         <div>
-                            <button onclick="carregar();" class="btn btn-primary" type="submit">Carregar</button>
+                            <button onclick="carregar();" class="btn btn-primary" style="margin-bottom: 5px;" type="submit">Carregar</button>
                         </div>
 
                         <img class="verfoto" id="inputImg" src="#" alt="">
                         <video class="video" id="inputVideo" src="#" style="display: none"></video>
 
+                    </div>
+
+                     <div class="col-xs-6 col-md-4">
+                        <h2>Filtro</h2>
+                        <section>
+                            <input id="selecTudo" class="btn btn-primary" type="button" value="Selecionar Tudo">
+                            <input style="margin: 10px" id="removeTudo" class="btn btn-primary" type="button" value="Remover Tudo">
+                        </section>
+
+                        <div style="padding: 10px" class="border border-primary rounded divFiltros">
+                        {% for chave, valor in classes.items() %}
+                            <input type="checkbox" id="{{chave}}" name="{{chave}}">
+                            <label for="{{chave}}">{{valor}}</label><br>
+                        {% endfor %}
+                        </div>
+                    </div>
 
 
-                    </form>
-
-                      <div id="espera" style="display: none;">
-                         A processar . . .
-                      </div>
                 </div>
+                 </form>
             </div>
-
+            {% with msg = get_flashed_messages() %}
+                {% if msg %}
+                {% for m in msg %}
+                    <div style="margin: 10px" class="alert alert-danger" role="alert">
+                        {{ m }}
+                    </div>
+                {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
 
      </section>
@@ -106,6 +130,18 @@
             video.style.display = "none";
         }
     }
+
+    $('#selecTudo').click(function(event) {
+        $(':checkbox').each(function() {
+            this.checked = true;
+        });
+    });
+
+    $('#removeTudo').click(function(event) {
+        $(':checkbox').each(function() {
+            this.checked = false;
+        });
+    });
 </script>
 </body>
 </html>
