@@ -170,7 +170,15 @@ def obtemVideo(user_id):
 
         videos_user = {}
         for row in objetos:
-            videos_user[row[0]] = dataset.classes[row[1]]
+            if row[0] in videos_user:
+                if dataset.classes[row[1]] in videos_user[row[0]]: continue
+                videos_user[row[0]].append(dataset.classes[row[1]])
+            else:
+                videos_user[row[0]] = []
+                videos_user[row[0]].append(dataset.classes[row[1]])
+
+        for i in videos_user:
+            videos_user[i] = " ".join(str(v) for v in videos_user[i])
 
         return videos_user
 
