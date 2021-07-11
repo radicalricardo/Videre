@@ -141,6 +141,31 @@ def obtemFrames(user_id):
         return fotos
 
 
+def obtemDadaFrame(user_id, frame):
+    with engine.connect() as con:
+        data = con.execute(text(
+            f"SELECT timestamp "
+            f"FROM frames "
+            f"where user_id = {user_id} and frame_path= '{frame}'"))
+
+        dataframe = ""
+        for i in data:
+            dataframe = i[0]
+
+        return str(dataframe) + " UTC"
+
+
+def removeFrame(frame):
+    path = f"{config.pastaFrames}/{frame}.png"
+    if os.path.exists(path):
+        os.remove(path)
+    else:
+        return False
+    with engine.connect() as con:
+        id = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' RETURNING id"))
+        con.execute(text(f"DELETE FROM objects_found WHERE frame_id = {id[0]}"))
+    return True
+
 # VIDEOS
 
 def guardaVideo(nomeVideo, userid, objects_found):
@@ -183,15 +208,13 @@ def obtemVideo(user_id):
         return videos_user
 
 
-def obtemDadaFrame(user_id, frame):
+def removeVideo(video):
+    path = f"{config.pastaVideos}/{video}.webm"
+    if os.path.exists(path):
+        os.remove(path)
+    else:
+        return False
     with engine.connect() as con:
-        data = con.execute(text(
-            f"SELECT timestamp "
-            f"FROM frames "
-            f"where user_id = {user_id} and frame_path= '{frame}'"))
-
-        dataframe = ""
-        for i in data:
-            dataframe = i[0]
-
-        return str(dataframe) + " UTC"
+        id = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' RETURNING id"))
+        con.execute(text(f"DELETE FROM objects_video WHERE video_id = {id[0]}"))
+    return True
