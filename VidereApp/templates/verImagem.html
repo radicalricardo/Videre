@@ -43,15 +43,29 @@
         </nav>
 
      <div class="container">
-        <h3 id="data">Capturada em:</h3>
+
+         {% if dono == True %}
+          <h3 id="data">Capturada em:</h3>
+         {% else %}
+            <br>
+         {% endif %}
         <img class="rounded mx-auto d-block verfoto" src="/foto/{{ img }}">
+
+
+         {% if dono == True %}
+             <form method="post">
+                <input id="bntapagar" style="margin: 10px;" class="btn btn-danger" type="submit" name="apagaimg" value="Apagar">
+             </form>
+         {% endif %}
      </div>
 </body>
 <script>
+ {% if dono == True %}
     var utcDate = '{{data}}';
     var localDate = new Date(utcDate);
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
     document.getElementById("data").innerHTML = "Capturada em: " + localDate.toLocaleTimeString('pt-PT', options);
+    {% endif %}
 </script>
 </html>

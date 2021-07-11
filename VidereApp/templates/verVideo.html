@@ -46,6 +46,11 @@
         <br>
         <video id="videoresultado" controls class="video" src="/vdc{{feed}}"></video>
         <br>
+         {% if dono == True %}
+         <form method="post">
+            <input id="bntapagar" style="margin: 10px;" class="btn btn-danger" type="submit" name="apagavid" value="Apagar">
+        </form>
+        {% endif %}
     </div>
 
 </body>

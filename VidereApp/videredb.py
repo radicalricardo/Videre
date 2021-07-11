@@ -162,7 +162,6 @@ def obtemDadaFrame(user_id, frame):
 
 
 def removeFrame(frame, user_id):
-
     with engine.connect() as con:
         result = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}"))
         if not result:
@@ -174,6 +173,17 @@ def removeFrame(frame, user_id):
             return False
         con.commit()
     return True
+
+
+def seUserDonoFrame(frame, user_id):
+    with engine.connect() as con:
+        result = con.execute(
+            text(f"SELECT * FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}")).fetchone()
+        if not result:
+            return False
+        else:
+            return True
+
 
 # VIDEOS
 
@@ -219,7 +229,6 @@ def obtemVideo(user_id):
 
 
 def removeVideo(video, user_id):
-
     with engine.connect() as con:
         result = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id}"))
         if not result:
@@ -231,3 +240,13 @@ def removeVideo(video, user_id):
             return False
         con.commit()
     return True
+
+
+def seUserDonoVideo(frame, user_id):
+    with engine.connect() as con:
+        result = con.execute(
+            text(f"SELECT * FROM videos WHERE frame_path = '{frame}' and user_id = {user_id}")).fetchone()
+        if not result:
+            return False
+        else:
+            return True
