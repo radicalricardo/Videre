@@ -162,13 +162,16 @@ def obtemDadaFrame(user_id, frame):
 
 
 def removeFrame(frame, user_id):
-    path = f"{config.pastaFrames}/{frame}.png"
-    if os.path.exists(path):
-        os.remove(path)
-    else:
-        return False
+
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}"))
+        result = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}"))
+        if not result:
+            return False
+        path = f"{config.pastaFrames}/{frame}.png"
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            return False
         con.commit()
     return True
 
