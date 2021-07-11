@@ -74,7 +74,7 @@ def verificaCriador(user_id, videre_url):
 
 def deleteStreamURL(videre_url, user_id):
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}' and user_id = {user_id}"))
+        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}' and user_id = {user_id} RETURNING *")).fetchone()
         con.commit()
 
 
@@ -163,7 +163,7 @@ def obtemDadaFrame(user_id, frame):
 
 def removeFrame(frame, user_id):
     with engine.connect() as con:
-        result = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}"))
+        result = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id} RETURNING *")).fetchone()
         if not result:
             return False
         path = f"{config.pastaFrames}/{frame}.png"
@@ -230,7 +230,7 @@ def obtemVideo(user_id):
 
 def removeVideo(video, user_id):
     with engine.connect() as con:
-        result = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id}"))
+        result = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id} RETURNING *")).fetchone()
         if not result:
             return False
         path = f"{config.pastaVideos}/{video}.webm"
