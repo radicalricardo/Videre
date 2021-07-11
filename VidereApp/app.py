@@ -28,7 +28,7 @@ def login():
 
     if request.method == "POST":
         user_nome = request.form["userNome"].strip()
-        passworduser = request.form["userSenha"].strip()
+        passworduser = request.form["userSenha"]
 
         if " " in passworduser or " " in user_nome:
             flash("Credenciais inválidas")
@@ -54,7 +54,7 @@ def registo():
     if "user_id" not in session:
         if request.method == "POST":
             user_nome = request.form["nomeUser"].strip()
-            senha = request.form["senhaUser"].strip()
+            senha = request.form["senhaUser"]
 
             if not len(user_nome) > 0:
                 flash("Nome de utilizador está vazio.")
