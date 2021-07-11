@@ -5,6 +5,7 @@ import flask
 import config
 import bcrypt
 import time
+import os
 
 # TODO: Inserir frames com execute many
 import dataset
@@ -162,8 +163,8 @@ def removeFrame(frame):
     else:
         return False
     with engine.connect() as con:
-        id = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' RETURNING id"))
-        con.execute(text(f"DELETE FROM objects_found WHERE frame_id = {id[0]}"))
+        con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}'"))
+        con.commit()
     return True
 
 # VIDEOS
@@ -215,6 +216,6 @@ def removeVideo(video):
     else:
         return False
     with engine.connect() as con:
-        id = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' RETURNING id"))
-        con.execute(text(f"DELETE FROM objects_video WHERE video_id = {id[0]}"))
+        con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}'"))
+        con.commit()
     return True
