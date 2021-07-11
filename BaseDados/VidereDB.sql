@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-07-10 01:57:28
+-- Started on 2021-07-11 13:51:46
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -346,39 +346,39 @@ ALTER TABLE ONLY public.videos
 
 
 --
--- TOC entry 2905 (class 2606 OID 107351)
--- Name: objects_found frames_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2905 (class 2606 OID 115891)
+-- Name: objects_found objects_found_frame_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.objects_found
-    ADD CONSTRAINT frames_fk FOREIGN KEY (frame_id) REFERENCES public.frames(id);
+    ADD CONSTRAINT objects_found_frame_id_fkey FOREIGN KEY (frame_id) REFERENCES public.frames(id) ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 2906 (class 2606 OID 107356)
--- Name: objects_found object_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2906 (class 2606 OID 115896)
+-- Name: objects_found objects_found_object_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.objects_found
-    ADD CONSTRAINT object_fk FOREIGN KEY (object_id) REFERENCES public.object(id);
+    ADD CONSTRAINT objects_found_object_id_fkey FOREIGN KEY (object_id) REFERENCES public.object(id) ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 2910 (class 2606 OID 115880)
+-- TOC entry 2909 (class 2606 OID 115901)
 -- Name: objects_video objects_video_object_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.objects_video
-    ADD CONSTRAINT objects_video_object_id_fkey FOREIGN KEY (object_id) REFERENCES public.object(id);
+    ADD CONSTRAINT objects_video_object_id_fkey FOREIGN KEY (object_id) REFERENCES public.object(id) ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 2909 (class 2606 OID 115875)
+-- TOC entry 2910 (class 2606 OID 115906)
 -- Name: objects_video objects_video_video_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.objects_video
-    ADD CONSTRAINT objects_video_video_id_fkey FOREIGN KEY (video_id) REFERENCES public.videos(id);
+    ADD CONSTRAINT objects_video_video_id_fkey FOREIGN KEY (video_id) REFERENCES public.videos(id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -408,7 +408,7 @@ ALTER TABLE ONLY public.videos
     ADD CONSTRAINT videos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-07-10 01:57:28
+-- Completed on 2021-07-11 13:51:47
 
 --
 -- PostgreSQL database dump complete
