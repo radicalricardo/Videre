@@ -72,9 +72,9 @@ def verificaCriador(user_id, videre_url):
             return False
 
 
-def deleteStreamURL(videre_url):
+def deleteStreamURL(videre_url, user_id):
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}'"))
+        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}' and user_id = {user_id}"))
         con.commit()
 
 
@@ -128,18 +128,21 @@ def obtemFrames(user_id):
             f"SELECT object_id, frame_path "
             f"FROM frames inner join objects_found on frames.id = objects_found.frame_id "
             f"where user_id = {user_id}"))
-        fotos = {}
-        for row in objetos:
-            if row[1] in fotos:
-                if dataset.classes[row[0]] in fotos[row[1]]: continue
-                fotos[row[1]].append(dataset.classes[row[0]])
-            else:
-                fotos[row[1]] = []
-                fotos[row[1]].append(dataset.classes[row[0]])
+        if objetos:
+            fotos = {}
+            for row in objetos:
+                if row[1] in fotos:
+                    if dataset.classes[row[0]] in fotos[row[1]]: continue
+                    fotos[row[1]].append(dataset.classes[row[0]])
+                else:
+                    fotos[row[1]] = []
+                    fotos[row[1]].append(dataset.classes[row[0]])
 
-        for i in fotos:
-            fotos[i] = " ".join(str(v) for v in fotos[i])
-        return fotos
+            for i in fotos:
+                fotos[i] = " ".join(str(v) for v in fotos[i])
+            return fotos
+        else:
+            return None
 
 
 def obtemDadaFrame(user_id, frame):
@@ -148,26 +151,29 @@ def obtemDadaFrame(user_id, frame):
             f"SELECT timestamp "
             f"FROM frames "
             f"where user_id = {user_id} and frame_path= '{frame}'"))
+        if data:
+            dataframe = ""
+            for i in data:
+                dataframe = i[0]
 
-        dataframe = ""
-        for i in data:
-            dataframe = i[0]
-
-        return str(dataframe) + " UTC"
+            return str(dataframe) + " UTC"
+        else:
+            return None
 
 
-def removeFrame(frame):
+def removeFrame(frame, user_id):
     path = f"{config.pastaFrames}/{frame}.png"
     if os.path.exists(path):
         os.remove(path)
     else:
         return False
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}'"))
+        con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id}"))
         con.commit()
     return True
 
 # VIDEOS
+
 
 def guardaVideo(nomeVideo, userid, objects_found):
     """
@@ -209,13 +215,16 @@ def obtemVideo(user_id):
         return videos_user
 
 
-def removeVideo(video):
-    path = f"{config.pastaVideos}/{video}.webm"
-    if os.path.exists(path):
-        os.remove(path)
-    else:
-        return False
+def removeVideo(video, user_id):
+
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}'"))
+        result = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id}"))
+        if not result:
+            return False
+        path = f"{config.pastaVideos}/{video}.webm"
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            return False
         con.commit()
     return True
