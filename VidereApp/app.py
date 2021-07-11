@@ -28,7 +28,11 @@ def login():
 
     if request.method == "POST":
         user_nome = request.form["userNome"].strip()
-        passworduser = request.form["userSenha"]
+        passworduser = request.form["userSenha"].strip()
+
+        if " " in passworduser or " " in user_nome:
+            flash("Credenciais inválidas")
+            return redirect(url_for("login"))
 
         user_id = videredb.verificaUtilizador(user_nome, passworduser)
         if user_id is not None:
@@ -50,10 +54,18 @@ def registo():
     if "user_id" not in session:
         if request.method == "POST":
             user_nome = request.form["nomeUser"].strip()
-            senha = request.form["senhaUser"]
+            senha = request.form["senhaUser"].strip()
 
             if not len(user_nome) > 0:
                 flash("Nome de utilizador está vazio.")
+                return redirect(url_for("registo"))
+
+            if " " in senha:
+                flash("Uma senha não pode conter espaços em branco")
+                return redirect(url_for("registo"))
+
+            if " " in user_nome:
+                flash("Um nome não pode conter espaços em branco")
                 return redirect(url_for("registo"))
 
             if not videredb.verificaDisponibilidadeUser(user_nome):
