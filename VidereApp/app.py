@@ -28,7 +28,7 @@ def login():
 
     if request.method == "POST":
         user_nome = request.form["userNome"].strip()
-        passworduser = request.form["userSenha"].strip()
+        passworduser = request.form["userSenha"]
 
         user_id = videredb.verificaUtilizador(user_nome, passworduser)
         if user_id is not None:
@@ -50,7 +50,7 @@ def registo():
     if "user_id" not in session:
         if request.method == "POST":
             user_nome = request.form["nomeUser"].strip()
-            senha = request.form["senhaUser"].strip()
+            senha = request.form["senhaUser"]
 
             if not len(user_nome) > 0:
                 flash("Nome de utilizador está vazio.")
