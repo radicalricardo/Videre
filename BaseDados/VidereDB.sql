@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-07-11 13:51:46
+-- Started on 2021-07-12 18:20:28
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -149,8 +149,7 @@ ALTER TABLE public.object ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public.utilizadores (
     id integer NOT NULL,
     username character varying NOT NULL,
-    password character varying NOT NULL,
-    admin boolean
+    password character varying NOT NULL
 );
 
 
@@ -408,7 +407,7 @@ ALTER TABLE ONLY public.videos
     ADD CONSTRAINT videos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-07-11 13:51:47
+-- Completed on 2021-07-12 18:20:29
 
 --
 -- PostgreSQL database dump complete
