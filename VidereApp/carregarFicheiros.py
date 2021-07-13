@@ -16,6 +16,7 @@ carregarFicheiros_pagina = Blueprint('carregaFicheiro', __name__, template_folde
 def carregaFicheiros():
     if "user_id" in session:
         filtroObjetos = []
+
         if request.method == "POST":
             if 'file' not in request.files:
                 flash('Pedido feito não possui ficheiro.')
@@ -49,7 +50,8 @@ def carregaFicheiros():
                 file.save(os.path.join(vid + ".mp4"))
                 utilizador.UTILIZADORES_ATIVOS[session["user_id"]].CriaProcessoVideo(vid, filtroObjetos)
                 return redirect("/video" + vid)
-        else:
+
+        else: # GET
             return render_template("carregarFicheiro.html", classes=dataset.classes)
     else:
         return redirect(url_for("login"))
