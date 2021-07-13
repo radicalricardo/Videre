@@ -7,7 +7,6 @@ import utilizador
 import videredb
 from camara import camara_pagina
 from galeria import galeria_pagina
-from admin import admin_pagina
 from carregarFicheiros import carregarFicheiros_pagina
 from novaCamara import novaCamara_pagina
 
