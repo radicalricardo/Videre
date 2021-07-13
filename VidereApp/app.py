@@ -14,7 +14,6 @@ from novaCamara import novaCamara_pagina
 app = Flask(__name__)
 app.register_blueprint(camara_pagina)
 app.register_blueprint(galeria_pagina)
-app.register_blueprint(admin_pagina)
 app.register_blueprint(novaCamara_pagina)
 app.register_blueprint(carregarFicheiros_pagina)
 app.static_folder = 'static'
