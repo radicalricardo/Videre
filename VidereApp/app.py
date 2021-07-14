@@ -152,11 +152,6 @@ def transmitirthumbnail(feed):
         return redirect(url_for("login"))
 
 
-@app.route('/sucesso')
-def sucessoPainel():
-    return redirect(url_for("painel"))
-
-
 @app.route('/sobre')
 def sobre():
     if "user_id" in session:
@@ -170,3 +165,11 @@ def desligar():
     session.clear()
     # session.pop("user_id", None)
     return redirect(url_for("login"))
+
+
+@app.route('/usernome')
+def obtemNomeUser():
+    if "user_id" in session:
+        return session["user_nome"]
+    else:
+        return ""

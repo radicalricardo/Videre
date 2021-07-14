@@ -17,7 +17,7 @@ def janelaCamara(feed):
 
             if "apagarCmr" in request.form:
                 utilizador.ApagaCamara(session["user_id"], feed)
-                deleteStreamURL(feed)
+                deleteStreamURL(feed, session["user_id"])
                 return redirect(url_for("painel"))
 
             r = request.json
@@ -39,7 +39,7 @@ def janelaCamara(feed):
             # Obtem Dados
             cmr = utilizador.obtemCrm(session["user_id"], feed)
 
-            return render_template("camara.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho,
+            return render_template("camera.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho,
                                    contraste=cmr.contraste, classes=dataset.classes,
                                    selecionados=json.dumps(cmr.filtros))
     return redirect(url_for("login"))

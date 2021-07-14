@@ -18,7 +18,7 @@ def novaCamaraStream():
                 if main.session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
                     linkCamara = request.form["linkCamara"].strip()
                     nomeCamara = request.form["nomeCamara"].strip()
-                    if linkCamara == "TESTE": linkCamara = "video.mp4"  # USADO PARA TESTES
+                    # if linkCamara == "TESTE": linkCamara = "video.mp4"  # USADO PARA TESTES
 
                     filtroObjetos = []
                     for i in dataset.classes.keys():
@@ -27,16 +27,16 @@ def novaCamaraStream():
 
                     erros = 0
                     if not linkCamara:
-                        flash("Link da câmara vazio. É necessário inserir um.")
+                        flash("Link da câmera vazio. É necessário inserir um.")
                         erros += 1
                     if not nomeCamara:
-                        flash("Nome da câmara vazio. É necessário inserir um.")
+                        flash("Nome da câmera vazio. É necessário inserir um.")
                         erros += 1
                     if len(filtroObjetos) == 0:
                         flash("Não há nenhum objeto selecionado para instruir a detectação.")
                         erros += 1
                     if utilizador.ObtemExistenciaCmr(main.session["user_id"], nomeCamara):
-                        flash("Já existe uma câmara com este nome.")
+                        flash("Já existe uma câmera com este nome.")
                         erros += 1
                     if erros > 0: return redirect(url_for("novaCamara.novaCamaraStream"))
 

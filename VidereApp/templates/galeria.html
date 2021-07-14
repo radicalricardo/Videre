@@ -36,6 +36,7 @@
                     <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
                 </li>
               </ul>
+                 <b style="padding-right: 10px;" id="utilizador"></b>
                 <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
             </div>
         </nav>
@@ -108,6 +109,15 @@
 
 </body>
 <script>
+      fetch("/usernome", {
+       headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+       method: "GET",
+    }).then(async (resposta) => {
+       const valor = await resposta.text();
+       console.log(valor)
+       document.getElementById("utilizador").innerHTML = valor
+    });
+
     $(document).on("click",".filtro", function() {
         if (this.checked == true) {
            var filtro = document.getElementsByClassName(this.value);

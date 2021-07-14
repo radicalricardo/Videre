@@ -26,3 +26,4 @@ def pastas():
 
     if not os.path.exists(os.path.join("frames")):
         os.makedirs(os.path.join("frames"))
+

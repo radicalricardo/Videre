@@ -15,7 +15,6 @@ def janelaGaleria():
             pass
         fotos = videredb.obtemFrames(main.session["user_id"])
         videos = videredb.obtemVideo(main.session["user_id"])
-        print(videos)
         return render_template("galeria.html", classes=list(dataset.classes.values()), fotos=fotos, videos=videos)
 
     return redirect(url_for("login"))

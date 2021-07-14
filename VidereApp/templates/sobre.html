@@ -62,6 +62,7 @@
                             <a class="nav-link active" href="{{url_for('sobre')}}">Sobre</a>
                         </li>
                       </ul>
+                         <b style="padding-right: 10px;" id="utilizador"></b>
                         <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
                     </div>
              </nav>
@@ -82,9 +83,21 @@
 
                 <h2>Ricardo Cardoso</h2>
                 <p>30002299</p>
-                <img class="ual-logo" src="static/img/ual.png" alt="Italian Trulli">
+                <img class="ual-logo" src="static/img/ual.png">
                 <p>2021</p>
             </div>
         </div>
 </body>
+<script>
+    {% if barra == False %}
+           fetch("/usernome", {
+           headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+           method: "GET",
+        }).then(async (resposta) => {
+           const valor = await resposta.text();
+           console.log(valor)
+           document.getElementById("utilizador").innerHTML = valor
+        });
+    {% endif %}
+</script>
 </html>

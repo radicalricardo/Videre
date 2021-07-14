@@ -1,5 +1,3 @@
-import random
-
 import config
 
 classes = {}  # Classes de nomes dos objetos (id, nome)

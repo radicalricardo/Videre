@@ -38,6 +38,7 @@
                     <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
                 </li>
               </ul>
+                 <b style="padding-right: 10px;" id="utilizador"></b>
                 <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
             </div>
         </nav>
@@ -67,5 +68,14 @@
 
     document.getElementById("data").innerHTML = "Capturada em: " + localDate.toLocaleTimeString('pt-PT', options);
     {% endif %}
+
+    fetch("/usernome", {
+       headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+       method: "GET",
+    }).then(async (resposta) => {
+       const valor = await resposta.text();
+       console.log(valor)
+       document.getElementById("utilizador").innerHTML = valor
+    });
 </script>
 </html>

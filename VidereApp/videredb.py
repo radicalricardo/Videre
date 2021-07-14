@@ -55,10 +55,10 @@ def verificaDisponibilidadeUser(user):
 
 # STREAM URLS
 
-def inserirStream(user_id, stream_link, videre_url):
+def inserirStream(user_id, videre_url):
     with engine.connect() as con:
-        con.execute(text(f"INSERT INTO stream_urls (user_id, stream_link, videre_url) "
-                         f"VALUES ({user_id}, '{stream_link}', '{videre_url}')"))
+        con.execute(text(f"INSERT INTO stream_urls (user_id, videre_url) "
+                         f"VALUES ({user_id}, '{videre_url}')"))
         con.commit()
 
 
@@ -74,17 +74,15 @@ def verificaCriador(user_id, videre_url):
 
 def deleteStreamURL(videre_url, user_id):
     with engine.connect() as con:
-        con.execute(text(f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}' and user_id = {user_id} RETURNING *")).fetchone()
+        con.execute(text(
+            f"DELETE FROM stream_urls WHERE videre_url = '{videre_url}' and user_id = {user_id} RETURNING *")).fetchone()
         con.commit()
 
 
-def buscaURLs(user_id):
+def apagaTabelaStreams():
     with engine.connect() as con:
-        URLs = []
-        result = con.execute(text(f"SELECT stream_link, videre_url FROM stream_urls WHERE user_id = {user_id}"))
-        for row in result:
-            URLs.append(row[1])
-        return URLs
+        con.execute(text(f"DELETE FROM stream_urls"))
+        con.commit()
 
 
 # FRAMES
@@ -163,7 +161,8 @@ def obtemDadaFrame(user_id, frame):
 
 def removeFrame(frame, user_id):
     with engine.connect() as con:
-        result = con.execute(text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id} RETURNING *")).fetchone()
+        result = con.execute(
+            text(f"DELETE FROM frames WHERE frame_path = '{frame}' and user_id = {user_id} RETURNING *")).fetchone()
         if not result:
             return False
         path = f"{config.pastaFrames}/{frame}.png"
@@ -230,7 +229,8 @@ def obtemVideo(user_id):
 
 def removeVideo(video, user_id):
     with engine.connect() as con:
-        result = con.execute(text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id} RETURNING *")).fetchone()
+        result = con.execute(
+            text(f"DELETE FROM videos WHERE frame_path = '{video}' and user_id = {user_id} RETURNING *")).fetchone()
         if not result:
             return False
         path = f"{config.pastaVideos}/{video}.webm"

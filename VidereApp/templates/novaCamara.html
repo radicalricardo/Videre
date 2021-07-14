@@ -37,20 +37,20 @@
                     <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
                 </li>
               </ul>
+                 <b style="padding-right: 10px;" id="utilizador"></b>
                 <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
             </div>
         </nav>
 
-    <div class="container">
+    <div class="container" style="padding: 2%;">
         <form method="post">
 
             <div class="form-group">
 
-                <h1>Nova Camara</h1>
+                <h1>Nova Câmara</h1>
                 <div class="row">
                     <div class="col-xs-12 col-md-8">
                         <div class="mt-4 col-md-12">
-                            <p>Para correr o video de teste é escrever TESTE</p>
                             Nome
                             <input maxlength="16" size="16" name="nomeCamara" type="text" class="form-control">
                             <br>
@@ -106,6 +106,15 @@ $('#removeTudo').click(function(event) {
         this.checked = false;
     });
 });
+
+fetch("/usernome", {
+        headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        method: "GET",
+        }).then(async (resposta) => {
+            const valor = await resposta.text();
+            console.log(valor)
+            document.getElementById("utilizador").innerHTML = valor
+    });
 </script>
 
 </html>

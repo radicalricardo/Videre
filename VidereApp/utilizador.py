@@ -48,7 +48,7 @@ class Utilizador:
     def CriaCamara(self, lnk, nome, filtros):
         vid = str(uuid.uuid1()).replace("-", "")  # Gera o id do video que também é usado para url para aceder via web
         cmr = Camara(lnk, vid, self.id, nome, filtros)
-        videredb.inserirStream(self.id, "", vid)
+        videredb.inserirStream(self.id, vid)
         t = threading.Thread(target=cmr.processa)
         cmr.thread = t
         self.camaras[vid] = cmr
@@ -363,7 +363,6 @@ class Video:
                 d = UTILIZADORES_ATIVOS.get(self.id_user)
                 del d.videos[self.video_id]
                 os.remove(os.path.join(self.video_id + ".mp4"))
-                print(self.objetos)
                 videredb.guardaVideo(self.video_id, self.id_user, self.objetos)
                 break
 

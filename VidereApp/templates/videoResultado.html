@@ -24,7 +24,7 @@
               <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item">
-                    <a id="bnt_cmrs" class="nav-link" href="{{url_for('painel')}}">Câmaras</a>
+                    <a id="bnt_cmrs" class="nav-link" href="{{url_for('painel')}}">Câmarass</a>
                 </li>
                    <li class="nav-item">
                     <a id="bnt_fic" class="nav-link active" href="{{url_for('carregaFicheiro.carregaFicheiros')}}">Carregar</a>
@@ -37,6 +37,7 @@
                     <a class="nav-link" href="{{url_for('sobre')}}">Sobre</a>
                 </li>
               </ul>
+                 <b style="padding-right: 10px;" id="utilizador"></b>
                 <a id="bnt_desligar" class="btn btn-outline-light" href="{{url_for('desligar')}}">Sair</a>
             </div>
         </nav>
@@ -56,6 +57,15 @@
 
 </body>
 <script>
+    fetch("/usernome", {
+       headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+       method: "GET",
+    }).then(async (resposta) => {
+       const valor = await resposta.text();
+       console.log(valor)
+       document.getElementById("utilizador").innerHTML = valor
+    });
+
     var interval = setInterval(progresso, 1000);
 
     function progresso() {
@@ -78,6 +88,7 @@
             clearInterval(interval);
           });
     }
+
 
 
 </script>
