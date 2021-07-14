@@ -5,7 +5,7 @@
 -- Dumped from database version 13.2
 -- Dumped by pg_dump version 13.2
 
--- Started on 2021-07-12 18:20:28
+-- Started on 2021-07-14 17:42:30
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -226,7 +226,6 @@ ALTER TABLE public.objects_video OWNER TO postgres;
 
 CREATE TABLE public.stream_urls (
     user_id integer NOT NULL,
-    stream_link character varying NOT NULL,
     videre_url character varying NOT NULL
 );
 
@@ -309,12 +308,12 @@ ALTER TABLE ONLY public.objects_video
 
 
 --
--- TOC entry 2899 (class 2606 OID 107483)
+-- TOC entry 2899 (class 2606 OID 132312)
 -- Name: stream_urls stream_urls_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.stream_urls
-    ADD CONSTRAINT stream_urls_pkey PRIMARY KEY (user_id, stream_link);
+    ADD CONSTRAINT stream_urls_pkey PRIMARY KEY (user_id, videre_url);
 
 
 --
@@ -407,7 +406,7 @@ ALTER TABLE ONLY public.videos
     ADD CONSTRAINT videos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.utilizadores(id);
 
 
--- Completed on 2021-07-12 18:20:29
+-- Completed on 2021-07-14 17:42:31
 
 --
 -- PostgreSQL database dump complete
