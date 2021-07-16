@@ -1,8 +1,8 @@
-
+import config
 from sqlalchemy import create_engine, text
 
-engine = create_engine('postgresql://postgres:admin@localhost:5432/Videre', echo=False, future=True)
-names = open("coco.names", "r")
+engine = create_engine(config.database, echo=False, future=True)
+names = open("../BaseDados/coco.names", "r")
 with engine.connect() as con:
     for i in names:
         i = i[:-1]
@@ -15,4 +15,4 @@ with engine.connect() as con:
         print(row)
     '''
 
-    #para dar reset ao indicador fazer a query TRUNCATE TABLE OBJECT RESTART IDENTITY CASCADE
+    #para dar reset aos ids da tabela (que devem ser de 0 a 79) fazer a query TRUNCATE TABLE OBJECT RESTART IDENTITY CASCADE
