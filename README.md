@@ -11,6 +11,7 @@ Just execute run.py with Python 3.6+ and you should be good.
 Also, works with CUDA.
 
 
+### Extra Reading
 
 opencv-python-examples: https://github.com/cfgnunes/opencv-python-examples
 OpenCV Course - Full Tutorial with Python: https://www.youtube.com/watch?v=oXlwWbU8l2o
