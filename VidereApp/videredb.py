@@ -186,7 +186,6 @@ def seUserDonoFrame(frame, user_id):
 
 # VIDEOS
 
-
 def guardaVideo(nomeVideo, userid, objects_found):
     """
     :type userid: int # id do utilizador na base de dados

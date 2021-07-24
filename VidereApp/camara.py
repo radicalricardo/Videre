@@ -21,7 +21,6 @@ def janelaCamara(feed):
                 return redirect(url_for("painel"))
 
             r = request.json
-
             if r['tipo'] == "b":
                 per = r['valor']
                 brilho = round(int(per) * 255 / 100)
@@ -35,10 +34,8 @@ def janelaCamara(feed):
                 utilizador.obtemCrm(session["user_id"], feed).filtros = list(map(int, filtros_selecionados))
 
             return Response(status=200)
-        elif request.method == "GET":
-            # Obtem Dados
+        elif request.method == "GET": # Obtem Dados
             cmr = utilizador.obtemCrm(session["user_id"], feed)
-
             return render_template("camera.html", vd_id=feed, camara_nome=cmr.nome, brilho=cmr.brilho,
                                    contraste=cmr.contraste, classes=dataset.classes,
                                    selecionados=json.dumps(cmr.filtros))

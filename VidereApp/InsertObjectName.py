@@ -15,4 +15,4 @@ with engine.connect() as con:
         print(row)
     '''
 
-    #para dar reset aos ids da tabela (que devem ser de 0 a 79) fazer a query TRUNCATE TABLE OBJECT RESTART IDENTITY CASCADE
+    # para dar reset aos ids da tabela (que devem ser de 0 a 79) fazer a query TRUNCATE TABLE OBJECT RESTART IDENTITY CASCADE

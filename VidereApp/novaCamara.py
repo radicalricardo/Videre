@@ -18,7 +18,6 @@ def novaCamaraStream():
                 if main.session["user_id"] in utilizador.UTILIZADORES_ATIVOS:
                     linkCamara = request.form["linkCamara"].strip()
                     nomeCamara = request.form["nomeCamara"].strip()
-                    # if linkCamara == "TESTE": linkCamara = "video.mp4"  # USADO PARA TESTES
 
                     filtroObjetos = []
                     for i in dataset.classes.keys():

@@ -4,7 +4,6 @@ import time
 import uuid
 import cv2
 import numpy as np
-
 import dataset
 import config
 import videredb
@@ -24,8 +23,7 @@ def obtemVideo(user, vid):
 
 
 def ObtemExistenciaCmr(nome, nomeCmr):
-    v = UTILIZADORES_ATIVOS.get(nome).camaras.values()
-    for i in v:
+    for i in UTILIZADORES_ATIVOS.get(nome).camaras.values():
         if nomeCmr == i.nome:
             return True
     return False
@@ -58,7 +56,6 @@ class Utilizador:
         img = Imagem(self.id, filtros, imagem)
         nome = img.processar()
         return nome
-        # threading.Thread(target=img.processar).start()
 
     def CriaProcessoVideo(self, video_id, filtros):
         video = Video(self.id, filtros, video_id)
@@ -68,10 +65,7 @@ class Utilizador:
         t.start()
 
     def obtemCamarasLigacao(self):
-        cmrs = {}
-        for i in self.camaras:
-            cmrs[self.camaras[i].nome] = i
-        return cmrs
+        return dict((self.camaras[i].nome, i) for i in self.camaras)
 
 
 class Camara:
@@ -306,10 +300,10 @@ class Imagem:
 
             # Faz um texto em baixo que serve como contorno
             cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x - 1, y - 10),
-                        cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 2, lineType=cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2, lineType=cv2.LINE_AA)
 
             # Nome do objeto, texto de cima
-            cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 1,
+            cv2.putText(frame, label + " " + str(round(confidences[i], 2)), (x, y - 10), cv2.FONT_HERSHEY_COMPLEX, 1,
                         cor, 1, lineType=cv2.LINE_AA)
 
         # Converte para jpg

@@ -1,7 +1,5 @@
 import json
-
-from flask import Flask, render_template, Response, request, redirect, url_for, session, send_file, flash, \
-    send_from_directory
+from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, send_from_directory
 import config
 import utilizador
 import videredb
@@ -116,28 +114,24 @@ def progressoProcessoVideo(feed):
 def VideoPaginaProcesso(feed):
     if "user_id" in session:
         return render_template("videoResultado.html", feed=feed)
-    else:
-        return redirect(url_for("login"))
+    return redirect(url_for("login"))
 
 
 @app.route('/vdc<string:feed>')  # Video mp4 do ficheiro carregado processado
 def videoProcessadoResultado(feed):
     if "user_id" in session:
         return send_from_directory(config.pastaVideos, feed + '.webm')
-    else:
-        return redirect(url_for("login"))
+    return redirect(url_for("login"))
 
 
 # ==============================================================
 
 @app.route('/vd<string:feed>')  # Video para transmissão das camaras
-def transmitirImagem(feed):
-    # Obtem video de uma camara de um utilizador, de momento o video é privado
+def transmitirImagem(feed): # Obtem video de uma camara de um utilizador
     if "user_id" in session:
         return Response(utilizador.obtemCrm(session["user_id"], feed).obtemFrame(),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
-    else:
-        return redirect(url_for("login"))
+    return redirect(url_for("login"))
 
 
 @app.route('/tb<string:feed>')  # Obtem thumbnail
@@ -148,28 +142,24 @@ def transmitirthumbnail(feed):
             return redirect(url_for('static', filename='img/eyetumb.gif'))
         else:
             return Response(tb, mimetype='multipart/x-mixed-replace; boundary=frame')
-    else:
-        return redirect(url_for("login"))
+    return redirect(url_for("login"))
 
 
 @app.route('/sobre')
 def sobre():
     if "user_id" in session:
         return render_template("sobre.html", barra=True)
-    else:
-        return render_template("sobre.html", barra=False)
+    return render_template("sobre.html", barra=False)
 
 
 @app.route('/terminarsessao')
 def desligar():
     session.clear()
-    # session.pop("user_id", None)
     return redirect(url_for("login"))
 
 
 @app.route('/usernome')
-def obtemNomeUser():
+def obtemNomeUser() -> str:
     if "user_id" in session:
         return session["user_nome"]
-    else:
-        return ""
+    return ""
