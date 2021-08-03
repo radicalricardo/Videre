@@ -16,3 +16,4 @@ with engine.connect() as con:
     '''
 
     # para dar reset aos ids da tabela (que devem ser de 0 a 79) fazer a query TRUNCATE TABLE OBJECT RESTART IDENTITY CASCADE
+    # luis acabaste de ser baited
